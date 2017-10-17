@@ -8,5 +8,12 @@
             "email": "adam@acodesmith.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "CaterWaiter\\": "src/"
+        },
+        "files": [
+        ]
+    },
     "require": {}
 }
