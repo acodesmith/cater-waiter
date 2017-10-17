@@ -1,0 +1,12 @@
+{
+    "name": "acodesmith/cater-waiter",
+    "description": "WordPress WooCommerce plugin for online catering orders.",
+    "type": "wordpress-plugin",
+    "authors": [
+        {
+            "name": "acodesmith",
+            "email": "adam@acodesmith.com"
+        }
+    ],
+    "require": {}
+}
