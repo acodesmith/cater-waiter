@@ -1,0 +1,8 @@
+//Add carrot dashicon to custom panel
+ul.wc-tabs li.cater_waiter_options.cater_waiter_tab {
+  a {
+    &:before {
+      content: "\f511" !important;
+    }
+  }
+}
