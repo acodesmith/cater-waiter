@@ -7,6 +7,7 @@ namespace CaterWaiter;
 use CaterWaiter\Admin\PageTemplater;
 use CaterWaiter\Admin\WC_ProductDataTabs;
 use CaterWaiter\Core\Load;
+use CaterWaiter\FrontEnd\ShortCodes;
 
 class Bootstrap
 {
@@ -28,10 +29,7 @@ class Bootstrap
         }
 
         new WC_ProductDataTabs();
-
-        $page_templater = PageTemplater::get_instance();
-        $page_templater->templates = (array) json_decode( Load::config( 'page-templates' ) );
-        $page_templater->template_root = CATER_WAITER_PLUGIN_PATH . 'resources/views/templates/';
+        new ShortCodes();
     }
 
     public function admin_scripts()
