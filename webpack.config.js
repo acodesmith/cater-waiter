@@ -8,7 +8,7 @@ module.exports = {
     entry: {
         "dist/admin": BASE_DIR + '/resources/scripts/admin.js',
         "dist/front-end": BASE_DIR + '/resources/scripts/front-end.js',
-        "dist/online-orders": BASE_DIR + '/resources/component/online-orders/index.js',
+        "dist/online-orders": BASE_DIR + '/resources/scripts/online-orders.js',
     },
     output: {
         filename: '[name].js'
@@ -26,29 +26,16 @@ module.exports = {
     module : {
         loaders: [
             {
-                test: /\.vue$/,
-                loader: 'vue-loader',
-                options: {
-                    loaders: {
-                        // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
-                        // the "scss" and "sass" values for the lang attribute to the right configs here.
-                        // other preprocessors should work out of the box, no loader config like this necessary.
-                        'scss': 'vue-style-loader!css-loader!sass-loader',
-                        'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
-                    }
-                    // other vue-loader options go here
-                }
-            },{
-                test: /\.js$/,
+                test: /\.js?$/,
                 exclude: /(node_modules|build)/,
                 loader: 'eslint-loader'
             },{
-                test : /\.js$/,
+                test : /\.jsx?$/,
                 exclude: /(node_modules)/,
                 loader : 'babel-loader',
                 query: {
                     plugins: ['transform-runtime'],
-                    presets: ['stage-2', 'es2015' ],
+                    presets: ['react', 'es2015'],
                 }
             },{
                 test: /\.scss$/,

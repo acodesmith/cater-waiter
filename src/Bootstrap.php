@@ -5,9 +5,10 @@ namespace CaterWaiter;
 
 
 use CaterWaiter\Admin\PageTemplater;
+use CaterWaiter\Admin\WC_PluginSettings;
 use CaterWaiter\Admin\WC_ProductDataTabs;
 use CaterWaiter\Core\Load;
-use CaterWaiter\FrontEnd\ShortCodes;
+use CaterWaiter\FrontEnd\OnlineOrders;
 
 class Bootstrap
 {
@@ -28,8 +29,9 @@ class Bootstrap
             return;
         }
 
+        new WC_PluginSettings();
         new WC_ProductDataTabs();
-        new ShortCodes();
+        new OnlineOrders();
     }
 
     public function admin_scripts()
