@@ -8,16 +8,13 @@ module.exports = {
     entry: {
         "dist/admin": BASE_DIR + '/resources/scripts/admin.js',
         "dist/front-end": BASE_DIR + '/resources/scripts/front-end.js',
-        "dist/online-orders": BASE_DIR + '/resources/scripts/online-orders.js',
+        "dist/online-orders": BASE_DIR + '/resources/scripts/online-orders.jsx',
     },
     output: {
         filename: '[name].js'
     },
     resolve: {
-        extensions: ['.js' ],
-        alias: {
-            'vue$': 'vue/dist/vue.esm.js'
-        }
+        extensions: ['.js', '.jsx']
     },
     performance: {
         hints: false
@@ -35,7 +32,7 @@ module.exports = {
                 loader : 'babel-loader',
                 query: {
                     plugins: ['transform-runtime'],
-                    presets: ['react', 'es2015'],
+                    presets: ['react', 'es2015', 'stage-2'],
                 }
             },{
                 test: /\.scss$/,

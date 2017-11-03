@@ -4,6 +4,7 @@
 namespace CaterWaiter\FrontEnd;
 
 
+use CaterWaiter\API\Bootstrap;
 use CaterWaiter\Core\Load;
 
 class OnlineOrders
@@ -23,8 +24,7 @@ class OnlineOrders
         //$attrs
 
         wp_enqueue_script( 'cater_waiter__online_orders', CATER_WAITER_PLUGIN_URL . 'dist/online-orders.js', [ 'jquery' ], '0.0.1', true );
-
-        wp_localize_script( 'cater_waiter__online_orders', 'cw__config', Load::config( 'vue.php' ) );
+        wp_localize_script( 'cater_waiter__online_orders', 'cw__config', Load::config( 'front_end_app.php' ) );
 
         // DOM node to load vue component
         echo "<div id='cater_waiter__react_base'></div>";

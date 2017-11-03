@@ -70,6 +70,12 @@ class WC_PluginSettings
                 'desc'     => '',
                 'id'       => 'wc_settings_cater_waiter_section_title'
             ),
+            'cater_name' => array(
+                'name' => __( 'Catering Service Name', 'cater_waiter' ),
+                'type' => 'text',
+                'desc' => __( 'name displayed in the online ordering process.', 'cater_waiter' ),
+                'id'   => 'wc_settings_cater_waiter_cater_name',
+            ),
             'delivery_minimum' => array(
                 'name' => __( 'Delivery Minimum', 'cater_waiter' ),
                 'type' => 'number',

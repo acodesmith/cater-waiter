@@ -4,11 +4,12 @@
 namespace CaterWaiter;
 
 
+use CaterWaiter\Admin\Locations;
 use CaterWaiter\Admin\PageTemplater;
 use CaterWaiter\Admin\WC_PluginSettings;
 use CaterWaiter\Admin\WC_ProductDataTabs;
-use CaterWaiter\Core\Load;
 use CaterWaiter\FrontEnd\OnlineOrders;
+use CaterWaiter\API\Bootstrap as BootstrapAPI;
 
 class Bootstrap
 {
@@ -32,6 +33,8 @@ class Bootstrap
         new WC_PluginSettings();
         new WC_ProductDataTabs();
         new OnlineOrders();
+        new Locations();
+        new BootstrapAPI();
     }
 
     public function admin_scripts()

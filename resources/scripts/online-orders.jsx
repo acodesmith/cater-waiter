@@ -1,9 +1,7 @@
 /*global jQuery*/
 /*global cw__config*/
 
-import React from 'react';
-import { render } from 'react-dom';
-import App from './online-orders/index.jsx'
+import runApp from './app/index'
 
 jQuery(function(){
 
@@ -14,12 +12,8 @@ jQuery(function(){
         // The config is loaded via wp_localized_script.
         if( typeof cw__config !== 'undefined' ) {
 
-            render(
-                <App/>,
-                document.getElementById('cater_waiter__react_base')
-            );
-
             clearInterval( cw__config_watcher );
+            runApp();
         }
 
         cw_water_count++;
