@@ -17,8 +17,10 @@ return array_map( function($setting_option_id){
     return $setting['id'];
 }, array_filter( $woocommerce_admin_settings,
     function($setting) {
+        // Don't push certain keys to the front end application.
         return ! in_array( $setting['id'], [
             'wc_settings_cater_waiter_section_title',
-            'wc_settings_cater_waiter_section_end'
+            'wc_settings_cater_waiter_section_end',
+            'wc_settings_cater_waiter_google_maps_api_key',
         ] );
 } ) ) );

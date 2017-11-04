@@ -23959,15 +23959,19 @@ function verifySubselectors(mapStateToProps, mapDispatchToProps, mergeProps, dis
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.view = exports.settings = exports.labels = exports.api = undefined;
+exports.view = exports.settings = exports.request = exports.labels = exports.data = undefined;
 
-var _api = __webpack_require__(420);
+var _data = __webpack_require__(462);
 
-var _api2 = _interopRequireDefault(_api);
+var _data2 = _interopRequireDefault(_data);
 
 var _labels = __webpack_require__(180);
 
 var _labels2 = _interopRequireDefault(_labels);
+
+var _request = __webpack_require__(421);
+
+var _request2 = _interopRequireDefault(_request);
 
 var _settings = __webpack_require__(181);
 
@@ -23979,8 +23983,9 @@ var _view2 = _interopRequireDefault(_view);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.api = _api2.default;
+exports.data = _data2.default;
 exports.labels = _labels2.default;
+exports.request = _request2.default;
 exports.settings = _settings2.default;
 exports.view = _view2.default;
 
@@ -24208,8 +24213,49 @@ module.exports = document && document.documentElement;
 /* 134 */,
 /* 135 */,
 /* 136 */,
-/* 137 */,
-/* 138 */,
+/* 137 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var classof = __webpack_require__(138);
+var ITERATOR = __webpack_require__(1)('iterator');
+var Iterators = __webpack_require__(17);
+module.exports = __webpack_require__(0).getIteratorMethod = function (it) {
+  if (it != undefined) return it[ITERATOR]
+    || it['@@iterator']
+    || Iterators[classof(it)];
+};
+
+
+/***/ }),
+/* 138 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// getting tag from 19.1.3.6 Object.prototype.toString()
+var cof = __webpack_require__(33);
+var TAG = __webpack_require__(1)('toStringTag');
+// ES3 wrong here
+var ARG = cof(function () { return arguments; }()) == 'Arguments';
+
+// fallback for IE11 Script Access Denied error
+var tryGet = function (it, key) {
+  try {
+    return it[key];
+  } catch (e) { /* empty */ }
+};
+
+module.exports = function (it) {
+  var O, T, B;
+  return it === undefined ? 'Undefined' : it === null ? 'Null'
+    // @@toStringTag case
+    : typeof (T = tryGet(O = Object(it), TAG)) == 'string' ? T
+    // builtinTag case
+    : ARG ? cof(O)
+    // ES3 arguments fallback
+    : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
+};
+
+
+/***/ }),
 /* 139 */,
 /* 140 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -25203,7 +25249,9 @@ var Steps = function (_Component) {
                 dispatch = _props.dispatch,
                 settings = _props.settings,
                 labels = _props.labels,
-                current = _props.view.current;
+                current = _props.view.current,
+                request = _props.request,
+                data = _props.data;
 
 
             switch (current.text) {
@@ -25211,11 +25259,11 @@ var Steps = function (_Component) {
                     return _react2.default.createElement(_step_one2.default, (0, _extends3.default)({ dispatch: dispatch }, { settings: settings, labels: labels }));
                     break;
                 case _view.VIEW_STEP_TWO_PICK_UP:
-                    return _react2.default.createElement(_step_two_pickup2.default, (0, _extends3.default)({ dispatch: dispatch }, { settings: settings, labels: labels }));
+                    return _react2.default.createElement(_step_two_pickup2.default, (0, _extends3.default)({ dispatch: dispatch }, { settings: settings, labels: labels, request: request, locations: data.locations }));
                     break;
-                case _view.VIEW_STEP_TWO_DELIVERY:
-                    return _react2.default.createElement(_step_two_pickup2.default, (0, _extends3.default)({ dispatch: dispatch }, { settings: settings, labels: labels }));
-                    break;
+                // case VIEW_STEP_TWO_DELIVERY:
+                //     return <StepTwoPickUp dispatch={ dispatch } {...{ settings, labels }} />
+                //     break;
                 default:
                     return _react2.default.createElement(
                         'div',
@@ -25466,6 +25514,16 @@ var _form_location_search = __webpack_require__(417);
 
 var _form_location_search2 = _interopRequireDefault(_form_location_search);
 
+var _location = __webpack_require__(463);
+
+var _location2 = _interopRequireDefault(_location);
+
+var _locations = __webpack_require__(428);
+
+var _request = __webpack_require__(452);
+
+var _locations2 = __webpack_require__(461);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /*global jQuery */
@@ -25485,8 +25543,18 @@ var StepTwoPickup = function (_Component) {
         }
 
         return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = StepTwoPickup.__proto__ || (0, _getPrototypeOf2.default)(StepTwoPickup)).call.apply(_ref, [this].concat(args))), _this), _this.submit = function (values) {
-            // print the form values to the console
-            console.log(values);
+            var dispatch = _this.props.dispatch;
+
+
+            dispatch((0, _request.setLoadingState)(_request.REQUEST_LOADING_LOCATIONS));
+
+            (0, _locations.getLocationsFromZip)(values.zip_code).then(function (data) {
+
+                var locations = (0, _locations.extractDataFromResults)(data.results);
+
+                dispatch((0, _locations2.setLocations)(locations));
+                dispatch((0, _request.clearLoadingState)());
+            });
         }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
     }
 
@@ -25495,8 +25563,12 @@ var StepTwoPickup = function (_Component) {
         value: function render() {
             var _props = this.props,
                 settings = _props.settings,
-                labels = _props.labels;
+                labels = _props.labels,
+                locations = _props.locations,
+                _props$request = _props.request,
+                request = _props$request === undefined ? {} : _props$request;
             var select_pickup_location = labels.select_pickup_location;
+            var loading = request.loading;
 
 
             return _react2.default.createElement(
@@ -25507,7 +25579,19 @@ var StepTwoPickup = function (_Component) {
                     null,
                     select_pickup_location
                 ),
-                _react2.default.createElement(_form_location_search2.default, (0, _extends3.default)({ onSubmit: this.submit }, { settings: settings, labels: labels }))
+                _react2.default.createElement(_form_location_search2.default, (0, _extends3.default)({ onSubmit: this.submit }, { settings: settings, labels: labels })),
+                loading && loading === _request.REQUEST_LOADING_LOCATIONS ? _react2.default.createElement(
+                    'div',
+                    null,
+                    'Loading...'
+                ) : '',
+                !locations ? null : locations.map(function (location) {
+                    return _react2.default.createElement(
+                        _location2.default,
+                        (0, _extends3.default)({ key: location.id }, location),
+                        'CHILD'
+                    );
+                })
             );
         }
     }]);
@@ -36438,7 +36522,8 @@ exports['default'] = thunk;
 
 /***/ }),
 /* 419 */,
-/* 420 */
+/* 420 */,
+/* 421 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36452,16 +36537,495 @@ var _assign = __webpack_require__(119);
 
 var _assign2 = _interopRequireDefault(_assign);
 
+var _request = __webpack_require__(452);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var api = function api(state, action) {
 
-    switch (action.type) {}
+    switch (action.type) {
+        case _request.SET_LOADING_STATE:
+            return (0, _assign2.default)({}, state, {
+                loading: action.text
+            });
+            break;
+        case _request.CLEAR_LOADING_STATE:
+            return (0, _assign2.default)({}, state, {
+                loading: false
+            });
+    }
 
     return (0, _assign2.default)({}, state);
 };
 
 exports.default = api;
+
+/***/ }),
+/* 422 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.ajax = exports.api = undefined;
+
+var _keys = __webpack_require__(425);
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _assign = __webpack_require__(119);
+
+var _assign2 = _interopRequireDefault(_assign);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _cw__config = cw__config,
+    request = _cw__config.request;
+
+/**
+ * Interact with the WordPress Rest API
+ *
+ * @param action
+ * @param data
+ * @param method
+ */
+
+var api = exports.api = function api(action, data) {
+    var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'GET';
+
+    return fetch(request.api.baseurl + '/' + action, {
+        method: method,
+        body: (0, _assign2.default)({}, { action: action }, data)
+    }).then(function (res) {
+        return res.json();
+    }).catch(function (err) {
+        return console.error(err);
+    });
+};
+
+/**
+ * Interact with the WordPress Admin Ajax page
+ *
+ * @param action
+ * @param data
+ * @param method
+ */
+var ajax = exports.ajax = function ajax(action, data) {
+    var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'POST';
+
+
+    var request_data = '';
+
+    (0, _keys2.default)(data).forEach(function (key) {
+        request_data = request_data + '&' + key + '=' + data[key];
+    });
+
+    return fetch(request.ajax.baseurl + '/?action=' + action, {
+        method: method,
+        body: request_data,
+        headers: {
+            'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+        }
+    }).then(function (res) {
+        return res.json();
+    }).catch(function (err) {
+        return console.error(err);
+    });
+};
+
+/***/ }),
+/* 423 */,
+/* 424 */,
+/* 425 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = { "default": __webpack_require__(426), __esModule: true };
+
+/***/ }),
+/* 426 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(427);
+module.exports = __webpack_require__(0).Object.keys;
+
+
+/***/ }),
+/* 427 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.14 Object.keys(O)
+var toObject = __webpack_require__(23);
+var $keys = __webpack_require__(20);
+
+__webpack_require__(144)('keys', function () {
+  return function keys(it) {
+    return $keys(toObject(it));
+  };
+});
+
+
+/***/ }),
+/* 428 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.extractDataFromResults = exports.getLocationsFromZip = undefined;
+
+var _slicedToArray2 = __webpack_require__(429);
+
+var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+
+var _request = __webpack_require__(422);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getLocationsFromZip = exports.getLocationsFromZip = function getLocationsFromZip(zip) {
+
+    //First step we get lat long from zip code.
+    return (0, _request.api)('lat_long/' + zip).then(function (data) {
+        var _data = (0, _slicedToArray3.default)(data, 2),
+            lat = _data[0],
+            lng = _data[1];
+
+        return (0, _request.api)('simple_locator').then(function (nonce) {
+
+            return (0, _request.ajax)('locate', {
+                unit: 'miles',
+                latitude: lat,
+                longitude: lng,
+                distance: 100,
+                locatorNonce: nonce
+            });
+        });
+    }).catch(function (err) {
+        console.error(err);
+    });
+};
+
+/**
+ * Simple Locator is a WordPress plugin which handles radius based search.
+ * To make things easier on the complicated search,
+ * we parse the plugin's api html.
+ *
+ * @param results
+ */
+/*global jQuery*/
+
+var extractDataFromResults = exports.extractDataFromResults = function extractDataFromResults(results) {
+
+    var data = [];
+
+    results.forEach(function (result) {
+
+        var $output = jQuery(result.output);
+
+        data.push({
+            id: result.id,
+            latitude: result.latitude,
+            longitude: result.longitude,
+            permalink: result.permalink,
+            title: result.title,
+            distance: jQuery('em', $output).text()
+        });
+    });
+
+    return data;
+};
+
+/***/ }),
+/* 429 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _isIterable2 = __webpack_require__(430);
+
+var _isIterable3 = _interopRequireDefault(_isIterable2);
+
+var _getIterator2 = __webpack_require__(433);
+
+var _getIterator3 = _interopRequireDefault(_getIterator2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function () {
+  function sliceIterator(arr, i) {
+    var _arr = [];
+    var _n = true;
+    var _d = false;
+    var _e = undefined;
+
+    try {
+      for (var _i = (0, _getIterator3.default)(arr), _s; !(_n = (_s = _i.next()).done); _n = true) {
+        _arr.push(_s.value);
+
+        if (i && _arr.length === i) break;
+      }
+    } catch (err) {
+      _d = true;
+      _e = err;
+    } finally {
+      try {
+        if (!_n && _i["return"]) _i["return"]();
+      } finally {
+        if (_d) throw _e;
+      }
+    }
+
+    return _arr;
+  }
+
+  return function (arr, i) {
+    if (Array.isArray(arr)) {
+      return arr;
+    } else if ((0, _isIterable3.default)(Object(arr))) {
+      return sliceIterator(arr, i);
+    } else {
+      throw new TypeError("Invalid attempt to destructure non-iterable instance");
+    }
+  };
+}();
+
+/***/ }),
+/* 430 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = { "default": __webpack_require__(431), __esModule: true };
+
+/***/ }),
+/* 431 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(153);
+__webpack_require__(64);
+module.exports = __webpack_require__(432);
+
+
+/***/ }),
+/* 432 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var classof = __webpack_require__(138);
+var ITERATOR = __webpack_require__(1)('iterator');
+var Iterators = __webpack_require__(17);
+module.exports = __webpack_require__(0).isIterable = function (it) {
+  var O = Object(it);
+  return O[ITERATOR] !== undefined
+    || '@@iterator' in O
+    // eslint-disable-next-line no-prototype-builtins
+    || Iterators.hasOwnProperty(classof(O));
+};
+
+
+/***/ }),
+/* 433 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = { "default": __webpack_require__(434), __esModule: true };
+
+/***/ }),
+/* 434 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(153);
+__webpack_require__(64);
+module.exports = __webpack_require__(435);
+
+
+/***/ }),
+/* 435 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var anObject = __webpack_require__(11);
+var get = __webpack_require__(137);
+module.exports = __webpack_require__(0).getIterator = function (it) {
+  var iterFn = get(it);
+  if (typeof iterFn != 'function') throw TypeError(it + ' is not iterable!');
+  return anObject(iterFn.call(it));
+};
+
+
+/***/ }),
+/* 436 */,
+/* 437 */,
+/* 438 */,
+/* 439 */,
+/* 440 */,
+/* 441 */,
+/* 442 */,
+/* 443 */,
+/* 444 */,
+/* 445 */,
+/* 446 */,
+/* 447 */,
+/* 448 */,
+/* 449 */,
+/* 450 */,
+/* 451 */,
+/* 452 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/*
+ * action values
+ */
+
+var REQUEST_LOADING_LOCATIONS = exports.REQUEST_LOADING_LOCATIONS = 'request_loading_locations';
+
+/*
+ * action types
+ */
+
+var SET_LOADING_STATE = exports.SET_LOADING_STATE = 'SET_LOADING_STATE';
+
+/*
+ * action creators
+ */
+
+var setLoadingState = exports.setLoadingState = function setLoadingState(text) {
+  return { type: SET_LOADING_STATE, text: text };
+};
+
+var clearLoadingState = exports.clearLoadingState = function clearLoadingState() {
+  return { type: SET_LOADING_STATE, text: false };
+};
+
+/***/ }),
+/* 453 */,
+/* 454 */,
+/* 455 */,
+/* 456 */,
+/* 457 */,
+/* 458 */,
+/* 459 */,
+/* 460 */,
+/* 461 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/*
+ * action values
+ */
+
+// export const REQUEST_LOADING_LOCATIONS = 'request_loading_locations'
+
+/*
+ * action types
+ */
+
+var SET_LOCATIONS = exports.SET_LOCATIONS = 'SET_LOCATIONS';
+
+/*
+ * action creators
+ */
+
+var setLocations = exports.setLocations = function setLocations(locations) {
+  return { type: SET_LOCATIONS, locations: locations };
+};
+
+var clearLocations = exports.clearLocations = function clearLocations() {
+  return { type: SET_LOCATIONS, locations: false };
+};
+
+/***/ }),
+/* 462 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _assign = __webpack_require__(119);
+
+var _assign2 = _interopRequireDefault(_assign);
+
+var _locations = __webpack_require__(461);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var data = function data(state, action) {
+
+    switch (action.type) {
+        case _locations.SET_LOCATIONS:
+            return (0, _assign2.default)({}, state, {
+                locations: action.locations
+            });
+            break;
+    }
+
+    return (0, _assign2.default)({}, state);
+};
+
+exports.default = data;
+
+/***/ }),
+/* 463 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(9);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Location = function Location(props) {
+    var distance = props.distance,
+        id = props.id,
+        permalink = props.permalink,
+        title = props.title,
+        children = props.children;
+
+
+    return _react2.default.createElement(
+        "div",
+        { className: "cw_location" },
+        _react2.default.createElement(
+            "h4",
+            null,
+            title
+        ),
+        _react2.default.createElement(
+            "p",
+            null,
+            distance
+        ),
+        children
+    );
+};
+
+exports.default = Location;
 
 /***/ })
 /******/ ]);

@@ -13,7 +13,9 @@ class Steps extends Component
             dispatch,
             settings,
             labels,
-            view: { current }
+            view: { current },
+            request,
+            data
         } = this.props
 
         switch( current.text ) {
@@ -21,11 +23,11 @@ class Steps extends Component
                 return <StepOne dispatch={ dispatch } {...{ settings, labels }} />
                 break;
             case VIEW_STEP_TWO_PICK_UP:
-                return <StepTwoPickUp dispatch={ dispatch } {...{ settings, labels }} />
+                return <StepTwoPickUp dispatch={ dispatch } {...{ settings, labels, request, locations: data.locations }} />
                 break;
-            case VIEW_STEP_TWO_DELIVERY:
-                return <StepTwoPickUp dispatch={ dispatch } {...{ settings, labels }} />
-                break;
+            // case VIEW_STEP_TWO_DELIVERY:
+            //     return <StepTwoPickUp dispatch={ dispatch } {...{ settings, labels }} />
+            //     break;
             default:
                 return <div className="cw_error">Something has gone wrong!</div>
         }

@@ -5,7 +5,6 @@ namespace CaterWaiter;
 
 
 use CaterWaiter\Admin\Locations;
-use CaterWaiter\Admin\PageTemplater;
 use CaterWaiter\Admin\WC_PluginSettings;
 use CaterWaiter\Admin\WC_ProductDataTabs;
 use CaterWaiter\FrontEnd\OnlineOrders;

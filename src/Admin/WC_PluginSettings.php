@@ -64,8 +64,8 @@ class WC_PluginSettings
     public static function get_settings()
     {
         $settings = array(
-            'section_title' => array(
-                'name'     => __( 'Cater Waiter', 'cater_waiter' ),
+            'section_online_ordering_settings' => array(
+                'name'     => __( 'Cater Waiter Online Ordering Settings', 'cater_waiter' ),
                 'type'     => 'title',
                 'desc'     => '',
                 'id'       => 'wc_settings_cater_waiter_section_title'
@@ -96,16 +96,22 @@ class WC_PluginSettings
                     'step'  => '0.01'
                 ]
             ),
-            'description' => array(
-                'name' => __( 'Description', 'cater_waiter' ),
-                'type' => 'textarea',
-                'desc' => __( 'This is a paragraph describing the setting. Lorem ipsum yadda yadda yadda. Lorem ipsum yadda yadda yadda. Lorem ipsum yadda yadda yadda. Lorem ipsum yadda yadda yadda.', 'cater_waiter' ),
-                'id'   => 'wc_settings_tab_demo_description'
+//            'description' => array(
+//                'name' => __( 'Description', 'cater_waiter' ),
+//                'type' => 'textarea',
+//                'desc' => __( 'This is a paragraph describing the setting. Lorem ipsum yadda yadda yadda. Lorem ipsum yadda yadda yadda. Lorem ipsum yadda yadda yadda. Lorem ipsum yadda yadda yadda.', 'cater_waiter' ),
+//                'id'   => 'wc_settings_tab_demo_description'
+//            ),
+            'google_maps_api' => array(
+                'name' => __( 'Google Maps API Key', 'cater_waiter' ),
+                'type' => 'password',
+                'desc' => __( 'Need to build lat/long values for radius based searching.', 'cater_waiter' ),
+                'id'   => 'wc_settings_cater_waiter_google_maps_api_key',
             ),
             'section_end' => array(
                 'type' => 'sectionend',
                 'id' => 'wc_settings_cater_waiter_section_end'
-            )
+            ),
         );
 
         return apply_filters( self::FILTER_SETTINGS, $settings );
