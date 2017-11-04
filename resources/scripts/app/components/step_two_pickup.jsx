@@ -22,9 +22,7 @@ export default class StepTwoPickup extends Component
 
         let { dispatch } = this.props
 
-        dispatch(
-            setLoadingState( REQUEST_LOADING_LOCATIONS )
-        )
+        dispatch( setLoadingState( REQUEST_LOADING_LOCATIONS ) )
 
         getLocationsFromZip( values.zip_code )
             .then(data => {
@@ -41,7 +39,7 @@ export default class StepTwoPickup extends Component
         const {
             settings,
             labels,
-            locations,
+            locations = [],
             request = { }
         } = this.props
 
@@ -52,10 +50,10 @@ export default class StepTwoPickup extends Component
             <section className="cw__step_two_pick_up">
                 <h2>{select_pickup_location}</h2>
                 <FormLocationSearch onSubmit={ this.submit } {...{ settings, labels }} />
-                { loading && loading === REQUEST_LOADING_LOCATIONS ? <div>Loading...</div> : '' }
-                { ! locations ? null : locations.map((location) => (
+                { loading === REQUEST_LOADING_LOCATIONS ? <div>Loading...</div> : '' }
+                { locations.map( (location) => (
                     <Location key={location.id} {...location} >CHILD</Location>
-                ))}
+                ) ) }
             </section>
         )
     }

@@ -8,7 +8,7 @@ export const REQUEST_LOADING_LOCATIONS = 'request_loading_locations'
  * action types
  */
 
-export const SET_LOADING_STATE      = 'SET_LOADING_STATE'
+export const SET_LOADING_STATE = 'SET_LOADING_STATE'
 
 /*
  * action creators
