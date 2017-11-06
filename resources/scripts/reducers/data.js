@@ -1,4 +1,7 @@
-import { SET_LOCATIONS } from '../constansts/locations'
+import {
+    SET_LOCATIONS,
+    SET_LOCATION
+} from '../constansts/locations'
 
 const data = (state, action) => {
 

@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { map_value } from '../../utilities/labels'
-import { setCurrentScreen, VIEW_STEP_TWO_PICK_UP, VIEW_STEP_TWO_DELIVERY } from '../../constansts/view'
+import { setCurrentScreen, VIEW_STEP_TWO_PICKUP, VIEW_STEP_TWO_DELIVERY } from '../../constansts/view'
 import Button from '../elements/button'
 
 export default class StepOne extends Component
@@ -35,7 +35,7 @@ export default class StepOne extends Component
                 }
                 <div className="cw__next_step_selector">
                     <Button onClick={() => {
-                        this.props.dispatch( setCurrentScreen( VIEW_STEP_TWO_PICK_UP ) );
+                        this.props.dispatch( setCurrentScreen( VIEW_STEP_TWO_PICKUP ) );
                     }}>
                         { button_pickup }
                     </Button>

@@ -10,19 +10,19 @@ return [
     'settings'  => Load::config( 'settings.php' ),
     'request'   => [
         'api'   => [
-            'baseurl' => '/wp-json/' . \CaterWaiter\API\Bootstrap::ENDPOINT_NAMESPACE
+            'baseurl' => '/wp-json/' . \CaterWaiter\API\Bootstrap::ENDPOINT_NAMESPACE,
         ],
         'ajax'  => [
-            'baseurl' => admin_url( 'admin-ajax.php' )
+            'baseurl' => admin_url( 'admin-ajax.php' ),
         ],
-        'loading' => false
+        'loading' => false,
     ],
     'view'      => [
-        'current'   => [
-            'text'  => 'step_one',
-        ]
+        'current'   => 'step_one',
+        'history'   => [],
     ],
     'data'  => [
-        'locations' => false
+        'locations' => [],
+        'location'  => null
     ]
 ];

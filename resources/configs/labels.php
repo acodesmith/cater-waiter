@@ -9,4 +9,6 @@ return apply_filters( 'cater_waiter_filter_labels', [
     'select_pickup_location'    => __( 'Select Pickup Location', 'cater_waiter' ),
     'label_zip_code_action'     => __( 'Enter your zip code and we\'ll show you nearby %VALUE%\'s locations', 'cater_waiter' ),
     'label_zip_code_prompt'     => __( 'Enter Zip Code', 'cater_waiter' ),
+    'select_this_location'      => __( 'Select This Location', 'cater_waiter' ),
+    'delivery_address_title'    => __( 'Enter Your Delivery Address', 'cater_waiter' ),
 ] );
