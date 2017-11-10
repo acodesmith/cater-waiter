@@ -2,8 +2,8 @@ import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { map_value } from '../../utilities/labels'
 
-const FormLocationSearch = props => {
-
+const FormLocationSearch = props =>
+{
     const { labels: {
         label_zip_code_action,
         label_zip_code_prompt,

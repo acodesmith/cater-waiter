@@ -2,10 +2,14 @@
  * action values
  */
 
-export const VIEW_STEP_ONE                  = 'step_one'
-export const VIEW_STEP_TWO_PICKUP           = 'step_two_pickup'
-export const VIEW_STEP_TWO_DELIVERY         = 'step_two_delivery'
-export const VIEW_STEP_THREE_PICKUP        = 'step_three_pickup'
+export const VIEW_SELECT_ORDER_TYPE         = 'select_order_type'
+export const VIEW_DELIVERY_ADDRESS          = 'delivery_address'
+export const VIEW_SELECT_LOCATION           = 'select_location'
+export const VIEW_SCHEDULE_ORDER            = 'schedule_order'
+export const VIEW_CART                      = 'cart'
+export const VIEW_CHECKOUT                  = 'checkout'
+export const VIEW_CONFIRM                   = 'confirm'
+export const VIEW_COMPLETE                  = 'complete'
 
 /*
  * action types
@@ -19,7 +23,7 @@ export const BACK_TO_PREVIOUS_SCREEN    = 'BACK_TO_PREVIOUS_SCREEN'
  */
 
 export function setCurrentScreen(text) {
-    return { type: SET_CURRENT_SCREEN, text }
+    return { type: SET_CURRENT_SCREEN, text: text }
 }
 
 export function backToPreviousScreen()

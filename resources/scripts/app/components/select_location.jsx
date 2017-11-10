@@ -1,6 +1,5 @@
-/*global jQuery */
-
 import React, { Component } from 'react'
+import { batchActions } from 'redux-batched-actions'
 import FormLocationSearch from '../forms/location_search'
 import Location from './location'
 import {
@@ -19,27 +18,31 @@ import {
 } from '../../constansts/locations'
 import {
     setCurrentScreen,
-    VIEW_STEP_THREE_PICKUP
+    VIEW_SCHEDULE_ORDER
 } from '../../constansts/view'
 import BackButton from '../elements/back_button'
 import Button from '../elements/button'
 
-export default class StepTwoPickup extends Component
+export default class SelectLocation extends Component
 {
     submit = (values) => {
 
         let { dispatch } = this.props
 
-        dispatch( setLoadingState( REQUEST_LOADING_LOCATIONS ) )
-        dispatch( clearLocations() )
+        dispatch( batchActions([
+            setLoadingState( REQUEST_LOADING_LOCATIONS ),
+            clearLocations()
+        ]) )
 
         getLocationsFromZip( values.zip_code )
             .then(data => {
 
                 let locations = extractDataFromResults( data.results )
 
-                dispatch( setLocations( locations ) )
-                dispatch( clearLoadingState() )
+                dispatch( batchActions([
+                    setLocations( locations ),
+                    clearLoadingState()
+                ]) )
             })
     }
 
@@ -48,7 +51,7 @@ export default class StepTwoPickup extends Component
         const {
             settings,
             labels,
-            locations = [],
+            data: { locations = [] },
             request = { },
             history,
             dispatch,
@@ -62,7 +65,7 @@ export default class StepTwoPickup extends Component
         const { loading } = request
 
         return (
-            <section className="cw__step_two_pick_up">
+            <section className="cw__select_location">
                 <h2>{select_pickup_location}</h2>
                 { history && history.length ? <BackButton dispatch={this.props.dispatch}>Back</BackButton> : null }
                 <FormLocationSearch onSubmit={ this.submit } {...{ settings, labels }} />
@@ -71,8 +74,10 @@ export default class StepTwoPickup extends Component
                     <Location key={location.id} {...location} >
                         <Button onClick={event => {
                             event.preventDefault()
-                            dispatch( setLocation( location.id ) )
-                            dispatch( setCurrentScreen( VIEW_STEP_THREE_PICKUP ) )
+                            dispatch( batchActions([
+                                setLocation( location ),
+                                setCurrentScreen( VIEW_SCHEDULE_ORDER )
+                            ]) )
                         }}>{ select_this_location }</Button>
                     </Location>
                 ) ) }

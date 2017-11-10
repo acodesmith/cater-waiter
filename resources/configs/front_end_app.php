@@ -18,11 +18,33 @@ return [
         'loading' => false,
     ],
     'view'      => [
-        'current'   => 'step_one',
+        'current'   => 'select_order_type',
         'history'   => [],
+        'pathway'   => [
+            'delivery'  => [
+                'select_order_type',
+                'delivery_address',
+                'schedule_order',
+                'cart',
+                'checkout',
+                'confirm',
+                'complete'
+            ],
+            'pickup'    => [
+                'select_order_type',
+                'select_location',
+                'schedule_order',
+                'cart',
+                'checkout',
+                'confirm',
+                'complete'
+            ]
+        ]
     ],
-    'data'  => [
-        'locations' => [],
-        'location'  => null
+    'data'  => Load::config( 'data.php' ),
+    'order' => [
+        'order_type'        => null,
+        'order_location'    => null,
+        'order_pickup_time' => null
     ]
 ];

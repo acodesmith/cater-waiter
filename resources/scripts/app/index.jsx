@@ -5,14 +5,12 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { reducer as formReducer } from 'redux-form'
+import { enableBatching } from 'redux-batched-actions'
 import thunk from 'redux-thunk'
 import * as reducers from '../reducers/index'
 import { LOCAL_STORAGE_KEY } from '../constansts/local_storage'
 import { retrieveWithout, storeLocal, clear } from '../utilities/local_storage'
-import Steps from './containers/steps'
-
-//TEMP
-import Button from './elements/button'
+import App from './app'
 
 /**
  * Check for the Redux dev tools
@@ -36,14 +34,21 @@ const locallyStoredData = Object.assign({}, cw__config, retrieveWithout( LOCAL_S
 ] ))
 
 /**
+ * Combine all the top level reducers into single var
+ *
+ * @type {Reducer<any>}
+ */
+const combinedReducers = combineReducers(
+    Object.assign({}, { ...reducers, }, { form: formReducer } )
+)
+
+/**
  * Create the redux store
  *
  * @type {Store<any>}
  */
 const store = activeCreateStore(
-    combineReducers(
-        Object.assign({}, { ...reducers, }, { form: formReducer } )
-    ),
+    enableBatching( combinedReducers ),
     locallyStoredData,
     applyMiddleware(thunk)
 )
@@ -63,7 +68,7 @@ const runApp = function()
 {
     render(
         <Provider store={store}>
-            <Steps />
+            <App/>
         </Provider>,
         document.getElementById('cater_waiter__react_base')
     )
