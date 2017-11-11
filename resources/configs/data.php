@@ -5,7 +5,7 @@ return [
     'locations' => [],
     'location'  => null,
     'dates'     => [
-        'today'         => date( 'm/d/Y', time() ),
+        'today'         => date( 'Y-m-d', time() ),
         'timestamp'     => time()
     ]
 ];

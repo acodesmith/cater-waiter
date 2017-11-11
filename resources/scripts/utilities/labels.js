@@ -5,7 +5,7 @@
  * @param value
  * @param label
  */
-export const map_value = function( value, label )
+export const mapValue = function(value, label )
 {
     return label.replace( '%VALUE%', value );
 }

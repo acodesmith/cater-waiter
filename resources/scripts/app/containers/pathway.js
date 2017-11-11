@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import SelectOrderType from '../components/select_order_type'
 import SelectLocation from '../components/select_location'
 import ScheduleOrder from '../components/schedule_order'
-import StepThreePickUp from '../components/step_three_pickup'
 import {
     VIEW_SELECT_ORDER_TYPE,
     VIEW_SELECT_LOCATION,
@@ -18,7 +17,6 @@ import {
 
 const Pathway = props =>
 {
-
     switch( props.view.current ) {
         case VIEW_SELECT_ORDER_TYPE:
             return <SelectOrderType {...props} />
@@ -26,9 +24,6 @@ const Pathway = props =>
         case VIEW_SELECT_LOCATION:
             return <SelectLocation {...props} />
             break;
-        // case VIEW_STEP_TWO_DELIVERY:
-        //     return <StepTwoPickUp dispatch={ dispatch } {...{ settings, labels }} />
-        //     break;
         case VIEW_SCHEDULE_ORDER:
             return <ScheduleOrder {...props} />
             break;

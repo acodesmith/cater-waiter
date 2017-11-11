@@ -1,6 +1,6 @@
 import React from 'react'
 import { batchActions } from 'redux-batched-actions'
-import { map_value } from '../../utilities/labels'
+import { mapValue } from '../../utilities/labels'
 import Button from '../elements/button'
 import {
     VIEW_DELIVERY_ADDRESS,
@@ -34,11 +34,11 @@ const SelectOrderType = props =>
         <section className="cw__select_order_type">
             <h2>{welcome_title}</h2>
             { label_delivery_minimum && settings_delivery_minimum ?
-                <p className="cw__delivery_minimum">{ map_value( settings_delivery_minimum, label_delivery_minimum ) }</p>
+                <p className="cw__delivery_minimum">{ mapValue( settings_delivery_minimum, label_delivery_minimum ) }</p>
                 : null
             }
             { label_hours_in_advance && settings_hours_in_advance && parseFloat( settings_hours_in_advance ) ?
-                <p className="cw__hours_in_advance">{ map_value( settings_hours_in_advance, label_hours_in_advance ) }</p>
+                <p className="cw__hours_in_advance">{ mapValue( settings_hours_in_advance, label_hours_in_advance ) }</p>
                 : null
             }
             <div className="cw__next_step_selector">
