@@ -1,5 +1,6 @@
 import {
-    SET_ORDER_TYPE
+    SET_ORDER_TYPE,
+    SET_DELIVERY_ADDRESS
 } from '../constansts/order'
 import {
     SET_LOCATION
@@ -16,6 +17,15 @@ const order = (state, action) => {
         case SET_LOCATION:
             return Object.assign( {}, state, {
                 order_location: action.location,
+            } )
+            break;
+        case SET_DELIVERY_ADDRESS:
+            return Object.assign( {}, state, {
+                order_delivery_address: Object.assign(
+                    {},
+                    state.order_delivery_address,
+                    action.data
+                ),
             } )
             break;
     }

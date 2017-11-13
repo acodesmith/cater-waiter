@@ -1,5 +1,4 @@
 import React from 'react'
-import { batchActions } from 'redux-batched-actions'
 import { mapValue } from '../../utilities/labels'
 import Button from '../elements/button'
 import {
@@ -43,18 +42,14 @@ const SelectOrderType = props =>
             }
             <div className="cw__next_step_selector">
                 <Button onClick={() => {
-                    dispatch( batchActions([
-                        setOrderType( ORDER_TYPE_PICKUP ),
-                        setCurrentScreen( VIEW_SELECT_LOCATION ),
-                    ]) );
+                    dispatch( setOrderType( ORDER_TYPE_PICKUP ) )
+                    dispatch( setCurrentScreen( VIEW_SELECT_LOCATION ) )
                 }}>
                     { button_pickup }
                 </Button>
                 <Button onClick={() => {
-                    dispatch( batchActions([
-                        setOrderType( ORDER_TYPE_DELIVERY ),
-                        setCurrentScreen( VIEW_DELIVERY_ADDRESS ),
-                    ]) );
+                    dispatch( setOrderType( ORDER_TYPE_DELIVERY ) )
+                    dispatch( setCurrentScreen( VIEW_DELIVERY_ADDRESS ) )
                 }}>
                     { button_delivery }
                 </Button>
@@ -63,4 +58,4 @@ const SelectOrderType = props =>
     )
 }
 
-export default SelectOrderType
+export { SelectOrderType }

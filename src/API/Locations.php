@@ -41,6 +41,20 @@ class Locations
                 ),
             ]);
         });
+
+        add_action( 'rest_api_init', function () {
+            register_rest_route(Bootstrap::ENDPOINT_NAMESPACE, '/location/(?P<id>[a-z0-9 .\-]+)', [
+                'methods' => 'GET',
+                'callback' => [ $this, 'location' ],
+                'args' => array(
+                    'zip' => array(
+                        'validate_callback' => function($param, $request, $key) {
+                            return is_numeric( $param );
+                        }
+                    ),
+                ),
+            ]);
+        });
     }
 
     /**
@@ -57,6 +71,11 @@ class Locations
     public function simple_locator()
     {
         return wp_create_nonce( 'locatornonce' );
+    }
+
+    public function location( \WP_REST_Request $request )
+    {
+        return apply_filters( 'cater_waiter_filter_location', $request->get_param('id') );
     }
 
     /**

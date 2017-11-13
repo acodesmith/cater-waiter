@@ -2,7 +2,6 @@
  * action values
  */
 
-// export const REQUEST_LOADING_LOCATIONS = 'request_loading_locations'
 
 /*
  * action types

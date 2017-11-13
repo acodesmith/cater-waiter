@@ -2,8 +2,8 @@
 
 import { api, ajax} from './request'
 
-export const getLocationsFromZip = zip => {
-
+export const getLocationsFromZip = zip =>
+{
     //First step we get lat long from zip code.
     return api( `lat_long/${zip}` ).then(data => {
 
@@ -34,7 +34,8 @@ export const getLocationsFromZip = zip => {
  *
  * @param results
  */
-export const extractDataFromResults = results => {
+export const extractDataFromResults = results =>
+{
 
     let data = [];
 
@@ -53,4 +54,9 @@ export const extractDataFromResults = results => {
     })
 
     return data
+}
+
+export const getLocationFromId = id =>
+{
+    return api( `location/${id}` )
 }

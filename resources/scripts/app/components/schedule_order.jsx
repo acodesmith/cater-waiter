@@ -2,19 +2,22 @@ import React, { Component } from 'react'
 import _ from 'lodash'
 import { mapValue } from '../../utilities/labels'
 import FormScheduleOrder from '../forms/schedule_order'
+import {
+    VIEW_CART,
+    setCurrentScreen
+} from '../../constansts/view'
 
-export default class ScheduleOrder extends Component
+class ScheduleOrder extends Component
 {
-    submit = (values) =>
+    submit = values =>
     {
-
-
-        console.log("submit values",values);
+        console.log("values",values);
+        this.props.dispatch( setCurrentScreen( VIEW_CART ) )
     }
 
     render()
     {
-        let {
+        const {
             labels,
             order: {
                 order_type,
@@ -30,12 +33,12 @@ export default class ScheduleOrder extends Component
             }
         } = this.props
 
-        let {
+        const {
             schedule_order_title,
             hours_in_advance: label_hours_in_advance
         } = labels
 
-        let formProps = {
+        const formProps = {
             today,
             hours_in_advance: settings_hours_in_advance,
             labels
@@ -48,8 +51,10 @@ export default class ScheduleOrder extends Component
                     <p className="cw__delivery_minimum">{ mapValue( settings_hours_in_advance, label_hours_in_advance ) }</p>
                     : null
                 }
-                <FormScheduleOrder onSubmit={ this.submit } {...formProps} />
+                <FormScheduleOrder onSubmit={this.submit} {...formProps} />
             </div>
         )
     }
 }
+
+export { ScheduleOrder }

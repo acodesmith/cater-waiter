@@ -4,13 +4,36 @@ import moment from 'moment'
 import { required } from '../../utilities/validators'
 import { renderField } from '../../utilities/form'
 import { mapValue } from '../../utilities/labels'
- 
+
+/**
+ * Confirm the selected date is a certain number of hours in advanced.
+ * Currently testing at 24 hours.
+ *
+ * @param hours
+ * @param today
+ * @param value
+ * @param error
+ * @returns {undefined}
+ */
 const hoursInAdvanced = (hours, today, value, error) =>
 {
     const minTime = moment( `${today} 00:00:00` ).add(hours, 'hours')
         , currentTime = moment( `${value} 00:00:01` )
 
     return ! currentTime.isAfter( minTime ) ? error : undefined
+}
+
+/**
+ * Confirm the time value is between the min and max range.
+ *
+ * @param min
+ * @param max
+ * @param value
+ * @param error
+ */
+const windowOfTime = (min, max, value, error) =>
+{
+
 }
 
 const FormScheduleOrder = props =>
@@ -48,14 +71,13 @@ const FormScheduleOrder = props =>
             <Field
                 name="order_time"
                 placeholder={label_time_prompt}
-                component="input"
+                component={renderField}
                 type="time"
+                validate={[ required ]}
             />
             <button
-                type="submit"
-                placeholder={ button_continue }
-            >
-                Search
+                type="submit">
+                { button_continue }
             </button>
         </form>
     )

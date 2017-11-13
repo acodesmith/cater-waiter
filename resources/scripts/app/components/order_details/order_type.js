@@ -52,4 +52,4 @@ const OrderType = props =>
     );
 }
 
-export default OrderType
+export { OrderType }

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { mapValue } from '../../utilities/labels'
+import { required } from '../../utilities/validators'
 
 const FormLocationSearch = props =>
 {
@@ -21,7 +22,12 @@ const FormLocationSearch = props =>
                 <label className="label_zip_code_action">{mapValue( cater_name, label_zip_code_action )}</label>
                 : null
             }
-            <Field name="zip_code" component="input" type="text" />
+            <Field
+                name="zip_code"
+                component="input"
+                type="text"
+                validation={[ required ]}
+            />
             <button
                 type="submit"
                 placeholder={ label_zip_code_prompt }

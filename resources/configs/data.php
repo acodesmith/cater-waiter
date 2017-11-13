@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'franchises'=> '',
     'locations' => [],
     'location'  => null,
     'dates'     => [

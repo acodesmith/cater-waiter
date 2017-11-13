@@ -60,26 +60,40 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 284);
+/******/ 	return __webpack_require__(__webpack_require__.s = 286);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 284:
+/***/ 286:
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+   if (true) {
+      !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(287)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+   } else if (typeof exports !== "undefined") {
+      factory(require('../styles/admin.scss'));
+   } else {
+      var mod = {
+         exports: {}
+      };
+      factory(global.admin);
+      global.admin = mod.exports;
+   }
+})(this, function () {
+   'use strict';
 
-
-__webpack_require__(285);
-
-jQuery(function () {
-   //Do do!
-}); /*global jQuery*/
+   jQuery(function () {
+      //Do do!
+   }); /*global jQuery*/
+});
 
 /***/ }),
 
-/***/ 285:
+/***/ 287:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

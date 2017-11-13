@@ -22,4 +22,4 @@ const PickupTime = props =>
     )
 }
 
-export default PickupTime
+export { PickupTime }

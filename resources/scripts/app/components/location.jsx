@@ -19,4 +19,4 @@ const Location = props => {
     )
 }
 
-export default Location
+export { Location }

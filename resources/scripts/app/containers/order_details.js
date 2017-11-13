@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import OrderType from '../components/order_details/order_type'
-import PickupLocation from '../components/order_details/pickup_location'
+import { ORDER_TYPE_PICKUP } from '../../constansts/order'
+import { OrderType } from '../components/order_details/order_type'
+import { PickupLocation } from '../components/order_details/pickup_location'
+import { DeliveryLocation } from '../components/order_details/delivery_location'
 
 //TEMP
 import Button from '../elements/button'
@@ -29,6 +31,9 @@ class OrderDetails extends Component
             labels: {
                 order_details_title,
                 order_type_title
+            },
+            order: {
+                order_type
             }
         } = this.props
 
@@ -37,7 +42,9 @@ class OrderDetails extends Component
                 <section>
                     <header>{ order_details_title }</header>
                     <OrderType {...this.props} />
-                    <PickupLocation {...this.props} />
+                    { order_type === ORDER_TYPE_PICKUP ?
+                        <PickupLocation {...this.props} /> :
+                        <DeliveryLocation {...this.props} /> }
                 </section>
                 <Button onClick={this.clearData}>Clear Data</Button>
             </div>

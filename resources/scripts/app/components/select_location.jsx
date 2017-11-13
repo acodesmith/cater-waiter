@@ -1,49 +1,15 @@
 import React, { Component } from 'react'
-import { batchActions } from 'redux-batched-actions'
 import FormLocationSearch from '../forms/location_search'
-import Location from './location'
-import {
-    getLocationsFromZip,
-    extractDataFromResults
-} from '../../utilities/locations'
-import {
-    setLoadingState,
-    clearLoadingState,
-    REQUEST_LOADING_LOCATIONS,
-} from '../../constansts/request'
-import {
-    setLocations,
-    setLocation,
-    clearLocations
-} from '../../constansts/locations'
-import {
-    setCurrentScreen,
-    VIEW_SCHEDULE_ORDER
-} from '../../constansts/view'
+import { Location } from './location'
+import { REQUEST_LOADING_LOCATIONS, } from '../../constansts/request'
+import { loadLocations, selectLocation } from '../../thunks/locations'
 import BackButton from '../elements/back_button'
 import Button from '../elements/button'
 
-export default class SelectLocation extends Component
+class SelectLocation extends Component
 {
-    submit = (values) => {
-
-        let { dispatch } = this.props
-
-        dispatch( batchActions([
-            setLoadingState( REQUEST_LOADING_LOCATIONS ),
-            clearLocations()
-        ]) )
-
-        getLocationsFromZip( values.zip_code )
-            .then(data => {
-
-                let locations = extractDataFromResults( data.results )
-
-                dispatch( batchActions([
-                    setLocations( locations ),
-                    clearLoadingState()
-                ]) )
-            })
+    submit = (values = { zip_code }) => {
+        this.props.dispatch( loadLocations( values.zip_code ) )
     }
 
     render()
@@ -74,10 +40,7 @@ export default class SelectLocation extends Component
                     <Location key={location.id} {...location} >
                         <Button onClick={event => {
                             event.preventDefault()
-                            dispatch( batchActions([
-                                setLocation( location ),
-                                setCurrentScreen( VIEW_SCHEDULE_ORDER )
-                            ]) )
+                            dispatch( selectLocation( location ) )
                         }}>{ select_this_location }</Button>
                     </Location>
                 ) ) }
@@ -85,3 +48,5 @@ export default class SelectLocation extends Component
         )
     }
 }
+
+export { SelectLocation }

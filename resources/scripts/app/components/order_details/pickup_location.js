@@ -22,4 +22,4 @@ const PickupLocation = props =>
     )
 }
 
-export default PickupLocation
+export { PickupLocation }

@@ -31,7 +31,6 @@
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
-    "redux-batched-actions": "^0.1.6",
     "redux-devtools": "^3.4.0",
     "redux-form": "^7.1.2",
     "redux-thunk": "^2.2.0",

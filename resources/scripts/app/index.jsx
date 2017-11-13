@@ -3,23 +3,10 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux'
-import { createStore, combineReducers, applyMiddleware } from 'redux'
-import { reducer as formReducer } from 'redux-form'
-import { enableBatching } from 'redux-batched-actions'
-import thunk from 'redux-thunk'
-import * as reducers from '../reducers/index'
+import createStore from '../configs/store'
 import { LOCAL_STORAGE_KEY } from '../constansts/local_storage'
-import { retrieveWithout, storeLocal, clear } from '../utilities/local_storage'
+import { storeLocal, retrieveWithout } from '../utilities/local_storage'
 import App from './app'
-
-/**
- * Check for the Redux dev tools
- *
- * @type {StoreCreator}
- */
-const activeCreateStore = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__()(createStore)
-    : createStore
 
 /**
  * Retrieve the locally stored data to rehydrate the redux application.
@@ -33,25 +20,7 @@ const locallyStoredData = Object.assign({}, cw__config, retrieveWithout( LOCAL_S
     'settings'
 ] ))
 
-/**
- * Combine all the top level reducers into single var
- *
- * @type {Reducer<any>}
- */
-const combinedReducers = combineReducers(
-    Object.assign({}, { ...reducers, }, { form: formReducer } )
-)
-
-/**
- * Create the redux store
- *
- * @type {Store<any>}
- */
-const store = activeCreateStore(
-    enableBatching( combinedReducers ),
-    locallyStoredData,
-    applyMiddleware(thunk)
-)
+const store = createStore( locallyStoredData )
 
 /**
  * Subscribe to redux changes then write
