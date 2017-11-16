@@ -1,5 +1,6 @@
 export * from './local_storage'
 export * from './locations'
 export * from './order'
+export * from './products'
 export * from './request'
 export * from './view'

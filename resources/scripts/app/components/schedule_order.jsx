@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import { mapValue } from '../../utilities/labels'
+import { mapValue } from '../../utilities/'
 import FormScheduleOrder from '../forms/schedule_order'
 import {
     VIEW_CART,
     setCurrentScreen
-} from '../../constansts/view'
+} from '../../constansts/'
 
 class ScheduleOrder extends Component
 {
     submit = values =>
     {
-        console.log("values",values);
+
         this.props.dispatch( setCurrentScreen( VIEW_CART ) )
     }
 

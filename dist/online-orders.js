@@ -51982,20 +51982,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(5), __webpack_require__(94), __webpack_require__(9)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(5), __webpack_require__(553)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('babel-runtime/core-js/object/assign'), require('../constansts/locations'), require('../constansts/view'));
+        factory(exports, require('babel-runtime/core-js/object/assign'), require('../constansts/'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.assign, global.locations, global.view);
+        factory(mod.exports, global.assign, global.constansts);
         global.data = mod.exports;
     }
-})(this, function (exports, _assign, _locations, _view) {
+})(this, function (exports, _assign, _constansts) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -52013,19 +52013,24 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var data = function data(state, action) {
 
         switch (action.type) {
-            case _locations.SET_LOCATIONS:
+            case _constansts.SET_LOCATIONS:
                 return (0, _assign2.default)({}, state, {
                     locations: action.locations
                 });
                 break;
-            case _locations.SET_LOCATION:
+            case _constansts.SET_LOCATION:
                 return (0, _assign2.default)({}, state, {
                     location: action.location
                 });
                 break;
-            case _view.SET_CURRENT_SCREEN:
+            case _constansts.SET_CURRENT_SCREEN:
                 if (typeof action.order_type !== 'undefined') return (0, _assign2.default)({}, state, {
                     order_type: action.order_type
+                });
+                break;
+            case _constansts.SET_PRODUCTS:
+                return (0, _assign2.default)({}, state, {
+                    products: action.data
                 });
                 break;
         }
@@ -52935,20 +52940,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(8), __webpack_require__(529), __webpack_require__(549), __webpack_require__(530), __webpack_require__(546), __webpack_require__(548), __webpack_require__(9)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(8), __webpack_require__(575), __webpack_require__(576), __webpack_require__(553)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('react-redux'), require('../components/select_order_type'), require('../components/select_location'), require('../components/schedule_order'), require('../components/delivery_address'), require('../components/cart'), require('../../constansts/view'));
+        factory(exports, require('react'), require('react-redux'), require('../components/'), require('../../thunks'), require('../../constansts/'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.reactRedux, global.select_order_type, global.select_location, global.schedule_order, global.delivery_address, global.cart, global.view);
+        factory(mod.exports, global.react, global.reactRedux, global.components, global.thunks, global.constansts);
         global.pathway = mod.exports;
     }
-})(this, function (exports, _react, _reactRedux, _select_order_type, _select_location, _schedule_order, _delivery_address, _cart, _view) {
+})(this, function (exports, _react, _reactRedux, _components, _thunks, _constansts) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -52963,23 +52968,28 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         };
     }
 
-    //import {  } from '../../constansts/view'
     var Pathway = function Pathway(props) {
+        var products = props.data.products;
+
+
+        // Preload all the products
+        if (!products.length) props.dispatch((0, _thunks.getProducts)());
+
         switch (props.view.current) {
-            case _view.VIEW_SELECT_ORDER_TYPE:
-                return _react2.default.createElement(_select_order_type.SelectOrderType, props);
+            case _constansts.VIEW_SELECT_ORDER_TYPE:
+                return _react2.default.createElement(_components.SelectOrderType, props);
                 break;
-            case _view.VIEW_SELECT_LOCATION:
-                return _react2.default.createElement(_select_location.SelectLocation, props);
+            case _constansts.VIEW_SELECT_LOCATION:
+                return _react2.default.createElement(_components.SelectLocation, props);
                 break;
-            case _view.VIEW_DELIVERY_ADDRESS:
-                return _react2.default.createElement(_delivery_address.DeliveryAddress, props);
+            case _constansts.VIEW_DELIVERY_ADDRESS:
+                return _react2.default.createElement(_components.DeliveryAddress, props);
                 break;
-            case _view.VIEW_SCHEDULE_ORDER:
-                return _react2.default.createElement(_schedule_order.ScheduleOrder, props);
+            case _constansts.VIEW_SCHEDULE_ORDER:
+                return _react2.default.createElement(_components.ScheduleOrder, props);
                 break;
-            case _view.VIEW_CART:
-                return _react2.default.createElement(_cart.Cart, props);
+            case _constansts.VIEW_CART:
+                return _react2.default.createElement(_components.Cart, props);
             default:
                 return _react2.default.createElement(
                     'div',
@@ -53099,20 +53109,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(32), __webpack_require__(57), __webpack_require__(58), __webpack_require__(59), __webpack_require__(60), __webpack_require__(62), __webpack_require__(1), __webpack_require__(536), __webpack_require__(28), __webpack_require__(537), __webpack_require__(9)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(32), __webpack_require__(57), __webpack_require__(58), __webpack_require__(59), __webpack_require__(60), __webpack_require__(62), __webpack_require__(1), __webpack_require__(536), __webpack_require__(554), __webpack_require__(537), __webpack_require__(553)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('babel-runtime/helpers/extends'), require('babel-runtime/core-js/object/get-prototype-of'), require('babel-runtime/helpers/classCallCheck'), require('babel-runtime/helpers/createClass'), require('babel-runtime/helpers/possibleConstructorReturn'), require('babel-runtime/helpers/inherits'), require('react'), require('lodash'), require('../../utilities/labels'), require('../forms/schedule_order'), require('../../constansts/view'));
+        factory(exports, require('babel-runtime/helpers/extends'), require('babel-runtime/core-js/object/get-prototype-of'), require('babel-runtime/helpers/classCallCheck'), require('babel-runtime/helpers/createClass'), require('babel-runtime/helpers/possibleConstructorReturn'), require('babel-runtime/helpers/inherits'), require('react'), require('lodash'), require('../../utilities/'), require('../forms/schedule_order'), require('../../constansts/'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global._extends, global.getPrototypeOf, global.classCallCheck, global.createClass, global.possibleConstructorReturn, global.inherits, global.react, global.lodash, global.labels, global.schedule_order, global.view);
+        factory(mod.exports, global._extends, global.getPrototypeOf, global.classCallCheck, global.createClass, global.possibleConstructorReturn, global.inherits, global.react, global.lodash, global.utilities, global.schedule_order, global.constansts);
         global.schedule_order = mod.exports;
     }
-})(this, function (exports, _extends2, _getPrototypeOf, _classCallCheck2, _createClass2, _possibleConstructorReturn2, _inherits2, _react, _lodash, _labels, _schedule_order, _view) {
+})(this, function (exports, _extends2, _getPrototypeOf, _classCallCheck2, _createClass2, _possibleConstructorReturn2, _inherits2, _react, _lodash, _utilities, _schedule_order, _constansts) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -53159,8 +53169,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             }
 
             return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = ScheduleOrder.__proto__ || (0, _getPrototypeOf2.default)(ScheduleOrder)).call.apply(_ref, [this].concat(args))), _this), _this.submit = function (values) {
-                console.log("values", values);
-                _this.props.dispatch((0, _view.setCurrentScreen)(_view.VIEW_CART));
+
+                _this.props.dispatch((0, _constansts.setCurrentScreen)(_constansts.VIEW_CART));
             }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
         }
 
@@ -53190,12 +53200,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     _react2.default.createElement(
                         'h1',
                         null,
-                        (0, _labels.mapValue)(_lodash2.default.capitalize(order_type), schedule_order_title)
+                        (0, _utilities.mapValue)(_lodash2.default.capitalize(order_type), schedule_order_title)
                     ),
                     label_hours_in_advance && settings_hours_in_advance ? _react2.default.createElement(
                         'p',
                         { className: 'cw__delivery_minimum' },
-                        (0, _labels.mapValue)(settings_hours_in_advance, label_hours_in_advance)
+                        (0, _utilities.mapValue)(settings_hours_in_advance, label_hours_in_advance)
                     ) : null,
                     _react2.default.createElement(_schedule_order2.default, (0, _extends3.default)({ onSubmit: this.submit }, formProps))
                 );
@@ -71328,15 +71338,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('../constansts/index'), require('../utilities/index'));
+        factory(exports, require('../constansts/'), require('../utilities/'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.index, global.index);
+        factory(mod.exports, global.constansts, global.utilities);
         global.locations = mod.exports;
     }
-})(this, function (exports, _index, _index2) {
+})(this, function (exports, _constansts, _utilities) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -71355,15 +71365,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         return function (dispatch) {
 
-            dispatch((0, _index.setLoadingState)(_index.REQUEST_LOADING_LOCATIONS));
-            dispatch((0, _index.clearLocations)());
+            dispatch((0, _constansts.setLoadingState)(_constansts.REQUEST_LOADING_LOCATIONS));
+            dispatch((0, _constansts.clearLocations)());
 
-            return (0, _index2.getLocationsFromZip)(zip_code).then(function (data) {
+            return (0, _utilities.getLocationsFromZip)(zip_code).then(function (data) {
 
-                var locations = (0, _index2.extractDataFromResults)(data.results);
+                var locations = (0, _utilities.extractDataFromResults)(data.results);
 
-                dispatch((0, _index.setLocations)(locations));
-                dispatch((0, _index.clearLoadingState)());
+                dispatch((0, _constansts.setLocations)(locations));
+                dispatch((0, _constansts.clearLoadingState)());
             }, function (error) {
                 return console.error(error);
             });
@@ -71384,7 +71394,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
              * Extract the post meta data from the post object.
              * Assign the post data to the location object.
              */
-            return (0, _index2.getLocationFromId)(id).then(function (post) {
+            return (0, _utilities.getLocationFromId)(id).then(function (post) {
                 var _post$post_meta = post.post_meta,
                     post_meta = _post$post_meta === undefined ? {} : _post$post_meta;
                 var delivery_time_end = post_meta.delivery_time_end,
@@ -71399,8 +71409,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 location.pickup_time_end = pickup_time_end;
                 location.pickup_time_start = pickup_time_start;
 
-                dispatch((0, _index.setLocation)(location));
-                dispatch((0, _index.setCurrentScreen)(_index.VIEW_SCHEDULE_ORDER));
+                dispatch((0, _constansts.setLocation)(location));
+                dispatch((0, _constansts.setCurrentScreen)(_constansts.VIEW_SCHEDULE_ORDER));
             });
         };
     };
@@ -71412,20 +71422,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(96), __webpack_require__(94), __webpack_require__(21), __webpack_require__(95), __webpack_require__(9)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(96), __webpack_require__(94), __webpack_require__(21), __webpack_require__(573), __webpack_require__(95), __webpack_require__(9)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else if (typeof exports !== "undefined") {
-    factory(exports, require('./local_storage'), require('./locations'), require('./order'), require('./request'), require('./view'));
+    factory(exports, require('./local_storage'), require('./locations'), require('./order'), require('./products'), require('./request'), require('./view'));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.local_storage, global.locations, global.order, global.request, global.view);
+    factory(mod.exports, global.local_storage, global.locations, global.order, global.products, global.request, global.view);
     global.index = mod.exports;
   }
-})(this, function (exports, _local_storage, _locations, _order, _request, _view) {
+})(this, function (exports, _local_storage, _locations, _order, _products, _request, _view) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -71458,6 +71468,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }
     });
   });
+  Object.keys(_products).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function () {
+        return _products[key];
+      }
+    });
+  });
   Object.keys(_request).forEach(function (key) {
     if (key === "default" || key === "__esModule") return;
     Object.defineProperty(exports, key, {
@@ -71484,20 +71503,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(555), __webpack_require__(107), __webpack_require__(28), __webpack_require__(97), __webpack_require__(556), __webpack_require__(285), __webpack_require__(61)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(555), __webpack_require__(107), __webpack_require__(28), __webpack_require__(97), __webpack_require__(556), __webpack_require__(574), __webpack_require__(285), __webpack_require__(61)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else if (typeof exports !== "undefined") {
-    factory(exports, require('./address'), require('./form'), require('./labels'), require('./local_storage'), require('./locations'), require('./request'), require('./validators'));
+    factory(exports, require('./address'), require('./form'), require('./labels'), require('./local_storage'), require('./locations'), require('./products'), require('./request'), require('./validators'));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.address, global.form, global.labels, global.local_storage, global.locations, global.request, global.validators);
+    factory(mod.exports, global.address, global.form, global.labels, global.local_storage, global.locations, global.products, global.request, global.validators);
     global.index = mod.exports;
   }
-})(this, function (exports, _address, _form, _labels, _local_storage, _locations, _request, _validators) {
+})(this, function (exports, _address, _form, _labels, _local_storage, _locations, _products, _request, _validators) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -71545,6 +71564,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       enumerable: true,
       get: function () {
         return _locations[key];
+      }
+    });
+  });
+  Object.keys(_products).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function () {
+        return _products[key];
       }
     });
   });
@@ -72204,6 +72232,252 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     };
 
     exports.DeliveryLocation = DeliveryLocation;
+});
+
+/***/ }),
+/* 570 */,
+/* 571 */,
+/* 572 */,
+/* 573 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else if (typeof exports !== "undefined") {
+    factory(exports);
+  } else {
+    var mod = {
+      exports: {}
+    };
+    factory(mod.exports);
+    global.products = mod.exports;
+  }
+})(this, function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.setProducts = setProducts;
+  /*
+   * action values
+   */
+
+  var SET_PRODUCTS = exports.SET_PRODUCTS = 'SET_PRODUCTS';
+
+  /*
+   * action types
+   */
+
+  /*
+   * action creators
+   */
+
+  function setProducts(data) {
+    return { type: SET_PRODUCTS, data: data };
+  }
+});
+
+/***/ }),
+/* 574 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(285)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('./request'));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.request);
+        global.products = mod.exports;
+    }
+})(this, function (exports, _request) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.getProducts = undefined;
+    var getProducts = exports.getProducts = function getProducts() {
+        //First step we get lat long from zip code.
+        return (0, _request.api)('products').then(function (data) {
+
+            return data;
+        }).catch(function (err) {
+            console.error(err);
+        });
+    };
+});
+
+/***/ }),
+/* 575 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(548), __webpack_require__(546), __webpack_require__(551), __webpack_require__(530), __webpack_require__(549), __webpack_require__(529)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else if (typeof exports !== "undefined") {
+    factory(exports, require('./cart'), require('./delivery_address'), require('./location'), require('./schedule_order'), require('./select_location'), require('./select_order_type'));
+  } else {
+    var mod = {
+      exports: {}
+    };
+    factory(mod.exports, global.cart, global.delivery_address, global.location, global.schedule_order, global.select_location, global.select_order_type);
+    global.index = mod.exports;
+  }
+})(this, function (exports, _cart, _delivery_address, _location, _schedule_order, _select_location, _select_order_type) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.keys(_cart).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function () {
+        return _cart[key];
+      }
+    });
+  });
+  Object.keys(_delivery_address).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function () {
+        return _delivery_address[key];
+      }
+    });
+  });
+  Object.keys(_location).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function () {
+        return _location[key];
+      }
+    });
+  });
+  Object.keys(_schedule_order).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function () {
+        return _schedule_order[key];
+      }
+    });
+  });
+  Object.keys(_select_location).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function () {
+        return _select_location[key];
+      }
+    });
+  });
+  Object.keys(_select_order_type).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function () {
+        return _select_order_type[key];
+      }
+    });
+  });
+});
+
+/***/ }),
+/* 576 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(552), __webpack_require__(577)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else if (typeof exports !== "undefined") {
+    factory(exports, require('./locations'), require('./products'));
+  } else {
+    var mod = {
+      exports: {}
+    };
+    factory(mod.exports, global.locations, global.products);
+    global.index = mod.exports;
+  }
+})(this, function (exports, _locations, _products) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.keys(_locations).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function () {
+        return _locations[key];
+      }
+    });
+  });
+  Object.keys(_products).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function () {
+        return _products[key];
+      }
+    });
+  });
+});
+
+/***/ }),
+/* 577 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(574), __webpack_require__(573)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('../utilities/products'), require('../constansts/products'));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.products, global.products);
+        global.products = mod.exports;
+    }
+})(this, function (exports, _products, _products2) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.getProducts = undefined;
+    var getProducts = exports.getProducts = function getProducts() {
+        return function (dispatch) {
+            (0, _products.getProducts)().then(function (data) {
+                dispatch((0, _products2.setProducts)(data));
+            });
+        };
+    };
 });
 
 /***/ })

@@ -1,11 +1,9 @@
 import {
     SET_LOCATIONS,
-    SET_LOCATION
-} from '../constansts/locations'
-import {
+    SET_LOCATION,
     SET_CURRENT_SCREEN,
-
-} from '../constansts/view'
+    SET_PRODUCTS
+} from '../constansts/'
 
 const data = (state, action) => {
 
@@ -25,6 +23,11 @@ const data = (state, action) => {
                 return Object.assign( {}, state, {
                     order_type: action.order_type,
                 })
+            break;
+        case SET_PRODUCTS:
+            return Object.assign( {}, state, {
+                products: action.data,
+            })
             break;
     }
 

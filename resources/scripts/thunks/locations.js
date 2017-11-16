@@ -7,12 +7,12 @@ import {
     clearLocations,
     setLocations,
     setLocation
-} from '../constansts/index'
+} from '../constansts/'
 import {
     extractDataFromResults,
     getLocationsFromZip,
     getLocationFromId
-} from '../utilities/index'
+} from '../utilities/'
 
 /**
  * Load all the locations based off the zip code.
@@ -48,8 +48,6 @@ export const selectLocation = location =>
         return () => {
             console.error('Missing location id')
         }
-
-
 
     return dispatch => {
 

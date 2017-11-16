@@ -11,5 +11,6 @@ class Bootstrap
     public function __construct()
     {
         new Locations();
+        new Products();
     }
 }

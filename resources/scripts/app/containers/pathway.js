@@ -1,11 +1,15 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
-//import {  } from '../../constansts/view'
-import { SelectOrderType } from '../components/select_order_type'
-import { SelectLocation } from '../components/select_location'
-import { ScheduleOrder } from '../components/schedule_order'
-import { DeliveryAddress } from '../components/delivery_address'
-import { Cart } from '../components/cart'
+import {
+    SelectOrderType,
+    SelectLocation,
+    ScheduleOrder,
+    DeliveryAddress,
+    Cart
+} from '../components/'
+import {
+    getProducts
+} from '../../thunks'
 import {
     VIEW_SELECT_ORDER_TYPE,
     VIEW_SELECT_LOCATION,
@@ -15,10 +19,16 @@ import {
     VIEW_CHECKOUT,
     VIEW_CONFIRM,
     VIEW_COMPLETE
-} from '../../constansts/view'
+} from '../../constansts/'
 
 const Pathway = props =>
 {
+    let { products } = props.data
+
+    // Preload all the products
+    if( ! products.length )
+        props.dispatch( getProducts() )
+
     switch( props.view.current ) {
         case VIEW_SELECT_ORDER_TYPE:
             return <SelectOrderType {...props} />
