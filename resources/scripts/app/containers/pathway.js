@@ -23,12 +23,6 @@ import {
 
 const Pathway = props =>
 {
-    let { products } = props.data
-
-    // Preload all the products
-    if( ! products.length )
-        props.dispatch( getProducts() )
-
     switch( props.view.current ) {
         case VIEW_SELECT_ORDER_TYPE:
             return <SelectOrderType {...props} />

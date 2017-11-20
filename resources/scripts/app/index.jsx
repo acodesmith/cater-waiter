@@ -5,7 +5,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux'
 import createStore from '../configs/store'
 import { LOCAL_STORAGE_KEY } from '../constansts/local_storage'
-import { storeLocal, retrieveWithout } from '../utilities/local_storage'
+import { storeLocal, retrieveWithout, retrieve } from '../utilities/local_storage'
 import App from './app'
 
 /**
@@ -15,10 +15,20 @@ import App from './app'
  *
  * @type {*}
  */
-const locallyStoredData = Object.assign({}, cw__config, retrieveWithout( LOCAL_STORAGE_KEY, [
-    'labels',
-    'settings'
-] ))
+const locallyStoredData = Object.assign({}, cw__config, retrieveWithout( LOCAL_STORAGE_KEY, {
+    'labels': null,
+    'settings': null,
+    'data': null
+}))
+/*@todo fix nested object cleaning, retrieveWithout( LOCAL_STORAGE_KEY, {
+    'labels': null,
+    'settings': null,
+    'data': {
+        'products' : null,
+        'grouped_products': null,
+        'catering_categories': null
+    }
+} ))*/
 
 const store = createStore( locallyStoredData )
 

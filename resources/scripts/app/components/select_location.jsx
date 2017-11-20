@@ -3,8 +3,8 @@ import FormLocationSearch from '../forms/location_search'
 import { Location } from './location'
 import { REQUEST_LOADING_LOCATIONS, } from '../../constansts/request'
 import { loadLocations, selectLocation } from '../../thunks/locations'
-import BackButton from '../elements/back_button'
-import Button from '../elements/button'
+import { BackButton } from '../elements/back_button'
+import { Button } from '../elements/button'
 
 class SelectLocation extends Component
 {

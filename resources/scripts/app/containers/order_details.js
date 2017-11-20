@@ -6,7 +6,7 @@ import { PickupLocation } from '../components/order_details/pickup_location'
 import { DeliveryLocation } from '../components/order_details/delivery_location'
 
 //TEMP
-import Button from '../elements/button'
+import { Button } from '../elements/button'
 import { LOCAL_STORAGE_KEY } from '../../constansts/local_storage'
 import { clear } from '../../utilities/local_storage'
 
@@ -25,6 +25,14 @@ class OrderDetails extends Component
         window.location.reload()
     }
 
+    display()
+    {
+        const { view: { current } } = this.props
+            ,views = [ 'cart' ]
+
+        return views.indexOf( current ) !== -1
+    }
+
     render()
     {
         let {
@@ -34,8 +42,11 @@ class OrderDetails extends Component
             },
             order: {
                 order_type
-            }
+            },
         } = this.props
+
+        if( ! this.display() )
+            return null
 
         return (
             <div className="cw__order_details">

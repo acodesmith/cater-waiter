@@ -2,7 +2,8 @@ import {
     SET_LOCATIONS,
     SET_LOCATION,
     SET_CURRENT_SCREEN,
-    SET_PRODUCTS
+    SET_PRODUCTS,
+    SHOW_ITEM_OPTIONS,
 } from '../constansts/'
 
 const data = (state, action) => {
@@ -27,6 +28,11 @@ const data = (state, action) => {
         case SET_PRODUCTS:
             return Object.assign( {}, state, {
                 products: action.data,
+            })
+            break;
+        case SHOW_ITEM_OPTIONS:
+            return Object.assign( {}, state, {
+                show_product_options: action.data,
             })
             break;
     }

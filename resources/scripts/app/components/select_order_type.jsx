@@ -1,6 +1,6 @@
 import React from 'react'
 import { mapValue } from '../../utilities/labels'
-import Button from '../elements/button'
+import { Button } from '../elements/button'
 import {
     VIEW_DELIVERY_ADDRESS,
     VIEW_SELECT_LOCATION,

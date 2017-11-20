@@ -46,21 +46,30 @@ export const retrieve = (key) => {
  * @param ignored
  * @returns {*}
  */
-export const retrieveWithout = (key, ignored = []) => {
+export const retrieveWithout = (key, ignored = {}) => {
 
     let data = retrieve( key )
 
     if( data ) {
+        
+        //@todo make recursive for Nth depth
+        Object.keys(ignored).forEach(key => {
 
-        let finalData = {}
+            if( ignored[ key ] !== null
+                && Object.keys( ignored[ key ] ).length ) {
 
-        Object.keys(data).forEach(dataKey => {
-            if( ignored.indexOf( dataKey ) === -1 ) {
-                finalData[ dataKey ] = data[ dataKey ]
+                Object.keys( ignored[ key ] ).forEach(subKey => {
+
+                    if( data[ key ] )
+                        delete data[ key ][ subKey ];
+                })
+
+            }else{
+                delete data[ key ];
             }
         })
 
-        return finalData
+        return data;
 
     } else {
 
@@ -69,6 +78,8 @@ export const retrieveWithout = (key, ignored = []) => {
     }
 
 }
+
+
 
 export const clear = (key) => {
 

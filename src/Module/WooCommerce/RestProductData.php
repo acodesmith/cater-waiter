@@ -46,11 +46,12 @@ class RestProductData extends \WC_REST_Products_Controller
         return $this->catering_data( $data );
     }
 
-    /**
-     * @param $function
-     * @param $args
-     * @return null
-     */
+	/**
+	 * @param $function
+	 * @param $args
+	 *
+	 * @return mixed
+	 */
     private function get($function, $args)
     {
         switch( count($args) )
@@ -58,21 +59,10 @@ class RestProductData extends \WC_REST_Products_Controller
             case 0:
                 return $this->$function();
                 break;
-            case 1:
-                return $this->$function($args[0]);
-                break;
-            case 2:
-                return $this->$function($args[0], $args[1]);
-                break;
-            case 3:
-                return $this->$function($args[0], $args[2], $args[3]);
-                break;
-            case 4:
-                return $this->$function($args[0], $args[2], $args[3], $args[4]);
+	        default:
+                return $this->$function(...$args);
                 break;
         }
-
-        return null;
     }
 
     /**
@@ -88,7 +78,17 @@ class RestProductData extends \WC_REST_Products_Controller
             }
         }
 
-        /** @todo get the custom catering taxonomy in order for catering category groups */
+	    $terms = [];
+
+	    foreach ( wc_get_object_terms( $product['id'], 'catering_category' ) as $term ) {
+		    $terms[] = [
+			    'id'   => $term->term_id,
+			    'name' => $term->name,
+			    'slug' => $term->slug,
+		    ];
+	    }
+
+	    $product['catering_categories'] = $terms;
 
         return $product;
     }
