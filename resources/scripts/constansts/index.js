@@ -1,3 +1,4 @@
+export * from './forms'
 export * from './local_storage'
 export * from './locations'
 export * from './order'

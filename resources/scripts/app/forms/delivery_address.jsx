@@ -1,8 +1,7 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
-import { required } from '../../utilities/validators'
-import { renderField } from '../../utilities/form'
-import { mapValue } from '../../utilities/labels'
+import { FORM_DELIVERY_ADDRESS } from '../../constansts'
+import { required, renderField } from '../../utilities'
 
 const FormDeliverAddress = props =>
 {
@@ -12,7 +11,7 @@ const FormDeliverAddress = props =>
         }
     } = props
 
-    const { handleSubmit, pristine, reset, submitting, error } = props
+    const { handleSubmit, error } = props
 
     return (
         <form onSubmit={ handleSubmit }>
@@ -61,5 +60,5 @@ const FormDeliverAddress = props =>
 }
 
 export default reduxForm({
-    form: 'form_delivery_address'
+    form: FORM_DELIVERY_ADDRESS
 })(FormDeliverAddress)

@@ -1,6 +1,6 @@
 /*global jQuery*/
 
-import { api, ajax} from './request'
+import { api, ajax } from './request'
 
 export const getLocationsFromZip = zip =>
 {

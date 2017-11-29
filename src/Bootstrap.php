@@ -4,7 +4,9 @@
 namespace CaterWaiter;
 
 
+use CaterWaiter\Admin\Cart;
 use CaterWaiter\Admin\Locations;
+use CaterWaiter\Admin\Order;
 use CaterWaiter\Admin\WC_PluginSettings;
 use CaterWaiter\Admin\WC_ProductDataTabs;
 use CaterWaiter\FrontEnd\OnlineOrders;
@@ -36,6 +38,8 @@ class Bootstrap
         new Locations();
         new BootstrapAPI();
         new ProductTaxonomy();
+        new Cart();
+        new Order();
     }
 
     public function admin_scripts()

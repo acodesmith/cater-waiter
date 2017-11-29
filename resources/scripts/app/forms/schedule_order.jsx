@@ -1,9 +1,8 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 import moment from 'moment'
-import { required } from '../../utilities/validators'
-import { renderField } from '../../utilities/form'
-import { mapValue } from '../../utilities/labels'
+import { FORM_SCHEDULE_ORDER } from '../../constansts'
+import { required, renderField, mapValue } from '../../utilities'
 
 /**
  * Confirm the selected date is a certain number of hours in advanced.
@@ -84,5 +83,5 @@ const FormScheduleOrder = props =>
 }
 
 export default reduxForm({
-    form: 'form_schedule_order'
+    form: FORM_SCHEDULE_ORDER
 })(FormScheduleOrder)

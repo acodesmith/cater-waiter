@@ -17,3 +17,10 @@ export const getProductById = (id, products = []) =>
 {
     return products.filter(product => product.id === id).shift()
 }
+
+export const mapVariationAttributes = (variationAttrs, productAttrs) =>
+{
+    return Object.keys( variationAttrs ).map(key => {
+        return productAttrs.filter( productAttr => productAttr.attribute_slug === key ).shift()
+    })
+}

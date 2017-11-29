@@ -37,6 +37,7 @@
     "sass-loader": "^6.0.2",
     "scss-loader": "0.0.1",
     "style-loader": "^0.13.2",
+    "unescape": "^1.0.1",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.9.1"
   }

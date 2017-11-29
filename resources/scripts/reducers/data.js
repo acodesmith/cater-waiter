@@ -4,6 +4,7 @@ import {
     SET_CURRENT_SCREEN,
     SET_PRODUCTS,
     SHOW_ITEM_OPTIONS,
+    HIDE_ITEM_OPTIONS,
 } from '../constansts/'
 
 const data = (state, action) => {
@@ -33,6 +34,11 @@ const data = (state, action) => {
         case SHOW_ITEM_OPTIONS:
             return Object.assign( {}, state, {
                 show_product_options: action.data,
+            })
+            break;
+        case HIDE_ITEM_OPTIONS:
+            return Object.assign( {}, state, {
+                show_product_options: null,
             })
             break;
     }

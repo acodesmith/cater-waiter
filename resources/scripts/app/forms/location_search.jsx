@@ -1,7 +1,7 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
-import { mapValue } from '../../utilities/labels'
-import { required } from '../../utilities/validators'
+import { FORM_LOCATION_SEARCH } from '../../constansts'
+import { mapValue, required } from '../../utilities'
 
 const FormLocationSearch = props =>
 {
@@ -26,7 +26,7 @@ const FormLocationSearch = props =>
                 name="zip_code"
                 component="input"
                 type="text"
-                validation={[ required ]}
+                validate={[ required ]}
             />
             <button
                 type="submit"
@@ -39,5 +39,5 @@ const FormLocationSearch = props =>
 }
 
 export default reduxForm({
-    form: 'form_location_search'
+    form: FORM_LOCATION_SEARCH
 })(FormLocationSearch)

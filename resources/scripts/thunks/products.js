@@ -9,3 +9,10 @@ export const getProducts = () =>
         })
     }
 }
+
+export const addToCart = values =>
+{
+    return dispatch => {
+
+    }
+}

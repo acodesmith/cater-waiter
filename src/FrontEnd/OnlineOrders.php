@@ -26,7 +26,10 @@ class OnlineOrders
         wp_enqueue_script( 'cater_waiter__online_orders', CATER_WAITER_PLUGIN_URL . 'dist/online-orders.js', [ 'jquery' ], '0.0.1', true );
         wp_localize_script( 'cater_waiter__online_orders', 'cw__config', Load::config( 'front_end_app.php' ) );
 
-        // DOM node to load vue component
+        //@todo remove TEMP
+	    wp_enqueue_style( 'bootstrap_3', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' );
+
+        // DOM node to load react component
         echo "<div id='cater_waiter__react_base'></div>";
     }
 }

@@ -7,12 +7,12 @@ const { request } = cw__config;
  * @param data
  * @param method
  */
-export const api = (action,data,method = 'GET') => {
+export const api = (action,data=null,method = 'GET') => {
     return fetch(
         `${ request.api.baseurl }/${ action }`,
         {
             method: method,
-            body: Object.assign({}, { action: action }, data),
+            body: data ? data : undefined,
         }
     ).then((res) => res.json())
     .catch((err) => console.error(err))

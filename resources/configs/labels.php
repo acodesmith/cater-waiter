@@ -26,4 +26,6 @@ return apply_filters( 'cater_waiter_filter_labels', [
 	'change_delivery_location'  => __( 'Change Delivery Location', 'cater_waiter'),
 	'catering_menu_title'       => __( 'Select Your Food', 'cater_waiter' ),
 	'add_to_cart_title'         => __( 'Add To Cart', 'cater_waiter' ),
+	'add_to_cart_button'        => __( 'Add To Cart', 'cater_waiter' ),
+	'add_more_button'           => __( 'Add More', 'cater_waiter' ),
 ] );

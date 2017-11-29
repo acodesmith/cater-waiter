@@ -8,6 +8,7 @@ export const SET_ORDER_TYPE             = 'SET_ORDER_TYPE'
 export const SET_DELIVERY_ADDRESS       = 'SET_DELIVERY_ADDRESS'
 export const ADD_ITEM_TO_CART           = 'ADD_ITEM_TO_CART'
 export const SHOW_ITEM_OPTIONS          = 'SHOW_ITEM_OPTIONS'
+export const HIDE_ITEM_OPTIONS          = 'HIDE_ITEM_OPTIONS'
 
 /*
  * action types
@@ -34,4 +35,8 @@ export function addItemToCart(data) {
 
 export function showItemOptions(data) {
     return { type: SHOW_ITEM_OPTIONS, data: data }
+}
+
+export function hideItemOptions(data) {
+    return { type: SHOW_ITEM_OPTIONS }
 }
