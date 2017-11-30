@@ -8229,26 +8229,28 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(46)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(513), __webpack_require__(46)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('babel-runtime/core-js/object/keys'));
+        factory(exports, require('babel-runtime/core-js/json/stringify'), require('babel-runtime/core-js/object/keys'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.keys);
+        factory(mod.exports, global.stringify, global.keys);
         global.request = mod.exports;
     }
-})(this, function (exports, _keys) {
+})(this, function (exports, _stringify, _keys) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
     exports.ajax = exports.api = undefined;
+
+    var _stringify2 = _interopRequireDefault(_stringify);
 
     var _keys2 = _interopRequireDefault(_keys);
 
@@ -8262,6 +8264,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         request = _cw__config.request;
 
 
+    request.ajax.baseurl = request.ajax.baseurl.replace(request.ajax.site_url, '');
+
+    console.log("request.ajax.baseurl", request.ajax.baseurl);
     /**
      * Interact with the WordPress Rest API
      *
@@ -8289,28 +8294,48 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
      * @param action
      * @param data
      * @param method
+     * @param json_data
+     * @param cookies
      */
     var ajax = exports.ajax = function ajax(action, data) {
         var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'POST';
+        var json_data = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+        var cookies = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
 
         var request_data = '';
 
-        (0, _keys2.default)(data).forEach(function (key) {
+        if (!json_data) (0, _keys2.default)(data).forEach(function (key) {
             request_data = request_data + '&' + key + '=' + data[key];
         });
 
-        return fetch(request.ajax.baseurl + '/?action=' + action, {
+        if (!cookies) return fetch(request.ajax.baseurl + '/?action=' + action, {
             method: method,
-            body: request_data,
+            body: !json_data ? request_data : (0, _stringify2.default)(data),
             headers: {
                 'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-            }
+                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                'Cache': 'no-cache'
+            },
+            credentials: 'include'
         }).then(function (res) {
             return res.json();
         }).catch(function (err) {
             return console.error(err);
+        });
+
+        console.log("jQuery.ajax");
+        /**
+         * Having trouble with the fetch() api and sending cookies. :(
+         * So I'm falling back to jQuery XRHRequest :)
+         **/
+        return jQuery.ajax({
+            url: request.ajax.baseurl + '/?action=' + action,
+            contentType: 'application/json',
+            data: json_data ? (0, _stringify2.default)(data) : request_data,
+            method: 'POST'
+        }).then(function (data) {
+            return JSON.parse(data);
         });
     };
 });
@@ -53586,20 +53611,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(5), __webpack_require__(32), __webpack_require__(33), __webpack_require__(34), __webpack_require__(36), __webpack_require__(35), __webpack_require__(1), __webpack_require__(3), __webpack_require__(16), __webpack_require__(560)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(5), __webpack_require__(32), __webpack_require__(33), __webpack_require__(34), __webpack_require__(36), __webpack_require__(35), __webpack_require__(1), __webpack_require__(3), __webpack_require__(16), __webpack_require__(560), __webpack_require__(16)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('babel-runtime/core-js/object/assign'), require('babel-runtime/core-js/object/get-prototype-of'), require('babel-runtime/helpers/classCallCheck'), require('babel-runtime/helpers/createClass'), require('babel-runtime/helpers/possibleConstructorReturn'), require('babel-runtime/helpers/inherits'), require('react'), require('prop-types'), require('../../utilities/index'), require('../forms/add_product_to_cart'));
+        factory(exports, require('babel-runtime/core-js/object/assign'), require('babel-runtime/core-js/object/get-prototype-of'), require('babel-runtime/helpers/classCallCheck'), require('babel-runtime/helpers/createClass'), require('babel-runtime/helpers/possibleConstructorReturn'), require('babel-runtime/helpers/inherits'), require('react'), require('prop-types'), require('../../utilities/index'), require('../forms/add_product_to_cart'), require('../../utilities'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.assign, global.getPrototypeOf, global.classCallCheck, global.createClass, global.possibleConstructorReturn, global.inherits, global.react, global.propTypes, global.index, global.add_product_to_cart);
+        factory(mod.exports, global.assign, global.getPrototypeOf, global.classCallCheck, global.createClass, global.possibleConstructorReturn, global.inherits, global.react, global.propTypes, global.index, global.add_product_to_cart, global.utilities);
         global.add_product_to_cart = mod.exports;
     }
-})(this, function (exports, _assign, _getPrototypeOf, _classCallCheck2, _createClass2, _possibleConstructorReturn2, _inherits2, _react, _propTypes, _index, _add_product_to_cart) {
+})(this, function (exports, _assign, _getPrototypeOf, _classCallCheck2, _createClass2, _possibleConstructorReturn2, _inherits2, _react, _propTypes, _index, _add_product_to_cart, _utilities) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -53642,8 +53667,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         (0, _createClass3.default)(AddProductToCart, [{
             key: 'addToCart',
             value: function addToCart(values) {
+                var _values$items = values.items,
+                    items = _values$items === undefined ? [] : _values$items;
 
-                console.log("values", values);
+
+                if (items.length) (0, _utilities.addToCart)(items);
             }
         }, {
             key: 'render',
@@ -53995,6 +54023,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
             return (0, _request.api)('simple_locator').then(function (nonce) {
 
+                //Simple Locator Action
                 return (0, _request.ajax)('locate', {
                     unit: 'miles',
                     latitude: lat,
@@ -54250,20 +54279,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var FormAddProductToCart = function (_Component) {
         (0, _inherits3.default)(FormAddProductToCart, _Component);
 
-        function FormAddProductToCart() {
-            var _ref;
-
-            var _temp, _this, _ret;
-
+        function FormAddProductToCart(props) {
             (0, _classCallCheck3.default)(this, FormAddProductToCart);
 
-            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-                args[_key] = arguments[_key];
-            }
+            var _this = (0, _possibleConstructorReturn3.default)(this, (FormAddProductToCart.__proto__ || (0, _getPrototypeOf2.default)(FormAddProductToCart)).call(this, props));
 
-            return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = FormAddProductToCart.__proto__ || (0, _getPrototypeOf2.default)(FormAddProductToCart)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            _this.state = {
                 rows: 1
-            }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
+            };
+
+            _this.removeRow = _this.removeRow.bind(_this);
+            return _this;
         }
 
         (0, _createClass3.default)(FormAddProductToCart, [{
@@ -54276,13 +54302,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
                 this.props.dispatch((0, _reduxForm.arrayPush)(_constansts.FORM_ADD_PRODUCT_TO_CART, 'items', {
                     product_id: product.id,
-                    variation_id: variations[0].variation_id
+                    variation_id: variations[0].variation_id,
+                    quantity: 1
                 }));
             }
         }, {
             key: 'componentWillUnmount',
             value: function componentWillUnmount() {
-                console.log("componentWillUnmount");
                 this.props.dispatch((0, _reduxForm.arrayRemoveAll)(_constansts.FORM_ADD_PRODUCT_TO_CART, 'items'));
             }
         }, {
@@ -54295,8 +54321,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
                 this.props.dispatch((0, _reduxForm.arrayPush)(_constansts.FORM_ADD_PRODUCT_TO_CART, 'items', {
                     product_id: product.id,
-                    variation_id: variations[0].variation_id
+                    variation_id: variations[0].variation_id,
+                    quantity: 1
                 }));
+            }
+        }, {
+            key: 'removeRow',
+            value: function removeRow(index) {
+                (0, _reduxForm.arraySplice)(_constansts.FORM_ADD_PRODUCT_TO_CART, 'items', index, 1);
             }
         }, {
             key: 'render',
@@ -54320,13 +54352,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     _react2.default.createElement(
                         'div',
                         { className: 'container-fluid' },
-                        _react2.default.createElement(_reduxForm.FieldArray, {
-                            name: 'items',
-                            component: _product_row.ProductRow,
-                            variations: variations,
-                            product: product,
-                            rows: rows
-                        }),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'product-variations-wrap' },
+                            _react2.default.createElement(_reduxForm.FieldArray, {
+                                name: 'items',
+                                component: _product_row.ProductRow,
+                                variations: variations,
+                                product: product,
+                                remove: this.removeRow,
+                                rows: rows
+                            })
+                        ),
                         rows < 2 ? null : _react2.default.createElement(_total_row.TotalRow, { formData: formData }),
                         _react2.default.createElement(
                             'div',
@@ -54436,54 +54473,47 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }
 
         (0, _createClass3.default)(ProductRow, [{
-            key: 'addRow',
-            value: function addRow() {}
-        }, {
-            key: 'removeRow',
-            value: function removeRow(index) {
-                //splice function
-            }
-        }, {
             key: 'render',
             value: function render() {
                 var _props = this.props,
                     variations = _props.variations,
                     product = _props.product,
-                    fields = _props.fields;
+                    fields = _props.fields,
+                    remove = _props.remove;
 
 
-                return fields.map(function (value, index) {
+                return fields.map(function (items, index) {
 
                     return variations.map(function (variation, variationIndex) {
                         return _react2.default.createElement(
                             'div',
                             { style: { clear: 'both' }, className: 'cw__variation', key: variationIndex },
                             _react2.default.createElement(_reduxForm.Field, {
-                                name: 'variation_id[' + index + ']',
+                                name: items + '.variation_id',
                                 type: 'hidden',
                                 value: variation.variation_id,
                                 validate: [_utilities.required],
                                 component: _utilities.renderField
                             }),
                             _react2.default.createElement(_reduxForm.Field, {
-                                name: 'product_id[' + index + ']',
+                                name: items + '.product_id',
                                 type: 'hidden',
                                 value: product.id,
                                 validate: [_utilities.required],
                                 component: _utilities.renderField
                             }),
                             _react2.default.createElement(_reduxForm.Field, {
-                                name: 'quantity[' + index + ']',
+                                name: items + '.quantity',
                                 label: 'Quantity',
                                 type: 'number',
-                                className: 'col-md-4',
+                                className: 'col-md-3',
                                 validate: [_utilities.required, _utilities.minNumericValueOne],
                                 attr: { min: 1 },
                                 component: _utilities.renderField }),
                             variation.attributes.map(function (attribute) {
                                 return _react2.default.createElement(
                                     'div',
-                                    { className: 'option col-md-4', key: attribute.id },
+                                    { className: 'option col-md-3', key: attribute.id },
                                     _react2.default.createElement(
                                         'label',
                                         { htmlFor: attribute.attribute_slug },
@@ -54492,10 +54522,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                     _react2.default.createElement(
                                         _reduxForm.Field,
                                         {
-                                            name: attribute.attribute_slug + '[' + index + ']',
+                                            name: items + '.' + attribute.attribute_slug,
                                             id: attribute.attribute_slug,
                                             validate: [_utilities.required],
-                                            component: 'select' },
+                                            type: 'select',
+                                            component: _utilities.renderField },
                                         _react2.default.createElement(
                                             'option',
                                             { value: '' },
@@ -54511,7 +54542,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                         })
                                     )
                                 );
-                            })
+                            }),
+                            index < 1 ? null : _react2.default.createElement(
+                                'button',
+                                { className: 'option col-md-3', onClick: function onClick() {
+                                        return fields.remove(index);
+                                    } },
+                                'remove'
+                            )
                         );
                     });
                 });
@@ -73652,27 +73690,32 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(108)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else if (typeof exports !== "undefined") {
-    factory(exports);
-  } else {
-    var mod = {
-      exports: {}
-    };
-    factory(mod.exports);
-    global.cart = mod.exports;
-  }
-})(this, function (exports) {
-  "use strict";
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('./request'));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.request);
+        global.cart = mod.exports;
+    }
+})(this, function (exports, _request) {
+    'use strict';
 
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  var addToCart = exports.addToCart = function addToCart(items) {};
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.addToCart = undefined;
+    var addToCart = exports.addToCart = function addToCart(items) {
+        (0, _request.ajax)('add_item_to_cart', items, 'POST', true, true).then(function (data) {
+            console.log("data", data);
+        });
+    };
 });
 
 /***/ })

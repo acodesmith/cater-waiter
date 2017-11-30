@@ -2,13 +2,16 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { mapVariationAttributes } from '../../utilities/index'
 import FormAddProductToCart from '../forms/add_product_to_cart'
+import { addToCart as addToCartAjax } from '../../utilities'
 
 class AddProductToCart extends Component
 {
     addToCart(values)
     {
+        const { items = [] } = values
 
-        console.log("values",values);
+        if( items.length  )
+            addToCartAjax( items );
     }
 
     render()

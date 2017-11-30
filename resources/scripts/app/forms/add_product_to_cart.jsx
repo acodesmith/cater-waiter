@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { FieldArray, reduxForm, arrayPush, arrayRemoveAll } from 'redux-form'
+import {
+    FieldArray,
+    reduxForm,
+    arrayPush,
+    arrayRemoveAll,
+    arraySplice
+} from 'redux-form'
 import { FORM_ADD_PRODUCT_TO_CART } from '../../constansts'
 import { ProductRow } from './add_product_to_cart/product_row'
 import { TotalRow } from './add_product_to_cart/total_row'
@@ -8,6 +14,12 @@ import { TotalRow } from './add_product_to_cart/total_row'
 
 class FormAddProductToCart extends Component
 {
+    constructor(props)
+    {
+        super(props)
+        this.removeRow = this.removeRow.bind(this)
+    }
+
     state = {
         rows: 1
     }
@@ -22,13 +34,14 @@ class FormAddProductToCart extends Component
         this.props.dispatch(
             arrayPush( FORM_ADD_PRODUCT_TO_CART, 'items', {
                 product_id: product.id,
-                variation_id: variations[0].variation_id
+                variation_id: variations[0].variation_id,
+                quantity: 1,
             } )
         )
     }
 
-    componentWillUnmount() {
-        console.log("componentWillUnmount");
+    componentWillUnmount()
+    {
         this.props.dispatch(
             arrayRemoveAll( FORM_ADD_PRODUCT_TO_CART, 'items' )
         )
@@ -44,9 +57,15 @@ class FormAddProductToCart extends Component
         this.props.dispatch(
             arrayPush( FORM_ADD_PRODUCT_TO_CART, 'items', {
                 product_id: product.id,
-                variation_id: variations[0].variation_id
+                variation_id: variations[0].variation_id,
+                quantity: 1,
             } )
         )
+    }
+
+    removeRow(index)
+    {
+        arraySplice( FORM_ADD_PRODUCT_TO_CART, 'items', index, 1 )
     }
 
     render()
@@ -67,13 +86,16 @@ class FormAddProductToCart extends Component
         return (
             <form onSubmit={ handleSubmit }>
                 <div className="container-fluid">
-                    <FieldArray
-                        name={'items'}
-                        component={ProductRow}
-                        variations={variations}
-                        product={product}
-                        rows={rows}
-                    />
+                    <div className="product-variations-wrap">
+                        <FieldArray
+                            name={'items'}
+                            component={ProductRow}
+                            variations={variations}
+                            product={product}
+                            remove={this.removeRow}
+                            rows={rows}
+                        />
+                    </div>
                     { rows < 2 ? null : <TotalRow formData={formData} />}
                     <div className="row">
                         <div className="col-sm-12">

@@ -11,6 +11,7 @@ export const getLocationsFromZip = zip =>
 
         return api( 'simple_locator' ).then(nonce => {
 
+            //Simple Locator Action
             return ajax( 'locate', {
                 unit: 'miles',
                 latitude: lat,

@@ -13,6 +13,7 @@ return [
             'baseurl' => '/wp-json/' . \CaterWaiter\API\Bootstrap::ENDPOINT_NAMESPACE,
         ],
         'ajax'  => [
+        	'site_url'=> get_site_url(),
             'baseurl' => admin_url( 'admin-ajax.php' ),
         ],
         'loading' => false,

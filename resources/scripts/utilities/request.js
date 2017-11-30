@@ -1,5 +1,9 @@
-const { request } = cw__config;
+/*global jQuery*/
+let { request } = cw__config;
 
+request.ajax.baseurl = request.ajax.baseurl.replace( request.ajax.site_url, '' )
+
+console.log("request.ajax.baseurl",request.ajax.baseurl);
 /**
  * Interact with the WordPress Rest API
  *
@@ -24,25 +28,44 @@ export const api = (action,data=null,method = 'GET') => {
  * @param action
  * @param data
  * @param method
+ * @param json_data
+ * @param cookies
  */
-export const ajax = (action,data,method = 'POST') => {
+export const ajax = ( action, data, method = 'POST', json_data = false, cookies = false) => {
 
     let request_data = '';
 
-    Object.keys( data ).forEach((key) => {
-        request_data = `${ request_data }&${ key }=${ data[key] }`
-    })
+    if( ! json_data )
+        Object.keys( data ).forEach((key) => {
+            request_data = `${ request_data }&${ key }=${ data[key] }`
+        })
 
-    return fetch(
-        `${request.ajax.baseurl}/?action=${action}`,
-        {
-            method: method,
-            body: request_data,
-            headers: {
-                'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-            },
-        }
-    ).then((res) => res.json())
-    .catch((err) => console.error(err))
+    if( ! cookies )
+        return fetch(
+            `${request.ajax.baseurl}/?action=${action}`,
+            {
+                method: method,
+                body: ! json_data ? request_data : JSON.stringify( data ),
+                headers: {
+                    'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                    'Cache': 'no-cache'
+                },
+                credentials: 'include',
+            }
+        ).then((res) => res.json())
+        .catch((err) => console.error(err))
+
+
+    console.log("jQuery.ajax");
+    /**
+     * Having trouble with the fetch() api and sending cookies. :(
+     * So I'm falling back to jQuery XRHRequest :)
+     **/
+    return jQuery.ajax({
+        url: `${request.ajax.baseurl}/?action=${action}`,
+        contentType : 'application/json',
+        data: json_data ? JSON.stringify( data ) : request_data,
+        method: 'POST'
+    }).then((data) => JSON.parse(data))
 }

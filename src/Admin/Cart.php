@@ -14,10 +14,14 @@ class Cart
 
     public function add_item_to_cart()
     {
-    	global $woocommerce;
+		$data = json_decode( stripslashes( file_get_contents("php://input") ) );
+		$item = (array) reset( $data );
+	    $remove = ['product_id', 'quantity', 'variation_id'];
+	    $variations = array_diff_key( (array) $item, array_flip( $remove ) );
 
-    	var_dump( $woocommerce->cart );
+    	$result = \WC()->cart->add_to_cart( $item['product_id'], $item['quantity'], $item['variation_id'], $variations, $cart_item_data = array() );
 
-    	//\WC()->cart->add_to_cart( $product_id = 0, $quantity = 1, $variation_id = 0, $variation = array(), $cart_item_data = array() );
+    	wp_send_json( $result );
+	    wp_die();
     }
 }
