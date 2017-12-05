@@ -5,6 +5,7 @@ import {
     SET_PRODUCTS,
     SHOW_ITEM_OPTIONS,
     HIDE_ITEM_OPTIONS,
+    LOADING_TOGGLE
 } from '../constansts/'
 
 const data = (state, action) => {
@@ -39,6 +40,12 @@ const data = (state, action) => {
         case HIDE_ITEM_OPTIONS:
             return Object.assign( {}, state, {
                 show_product_options: null,
+            })
+            break;
+        case LOADING_TOGGLE:
+            return Object.assign( {}, state, {
+                loading: ! state.loading,
+                loadingMessage: action.data
             })
             break;
     }

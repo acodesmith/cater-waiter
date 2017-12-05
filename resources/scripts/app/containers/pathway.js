@@ -5,48 +5,67 @@ import {
     SelectLocation,
     ScheduleOrder,
     DeliveryAddress,
-    Cart
+    Cart,
+    Confirm
 } from '../components/'
-import {
-    getProducts
-} from '../../thunks'
 import {
     VIEW_SELECT_ORDER_TYPE,
     VIEW_SELECT_LOCATION,
     VIEW_DELIVERY_ADDRESS,
     VIEW_SCHEDULE_ORDER,
     VIEW_CART,
-    VIEW_CHECKOUT,
     VIEW_CONFIRM,
+    VIEW_CHECKOUT,
     VIEW_COMPLETE
 } from '../../constansts/'
 
-const Pathway = props =>
+let Pathway = props =>
 {
-    switch( props.view.current ) {
-        case VIEW_SELECT_ORDER_TYPE:
-            return <SelectOrderType {...props} />
-            break;
-        case VIEW_SELECT_LOCATION:
-            return <SelectLocation {...props} />
-            break;
-        case VIEW_DELIVERY_ADDRESS:
-            return <DeliveryAddress {...props} />
-            break;
-        case VIEW_SCHEDULE_ORDER:
-            return <ScheduleOrder {...props} />
-            break;
-        case VIEW_CART:
-            return <Cart {...props} />
-        default:
-            return (
-                <div className="cw__error">
-                    Something has gone wrong! Trying to render view <strong>{ props.view.current }</strong>
-                </div>
-            )
-    }
+
+    const {
+        view: {
+            current
+        }
+    } = props
+
+    const page_with_sidebar = [ VIEW_CART ]
+
+    const wrapper_class = page_with_sidebar.indexOf( current ) === -1 ? "col-md-12" : "col-md-8"
+
+    return (
+        <div className={ wrapper_class }>
+            {(()=>{
+                switch( current ) {
+                    case VIEW_SELECT_ORDER_TYPE:
+                        return <SelectOrderType {...props} />
+                        break;
+                    case VIEW_SELECT_LOCATION:
+                        return <SelectLocation {...props} />
+                        break;
+                    case VIEW_DELIVERY_ADDRESS:
+                        return <DeliveryAddress {...props} />
+                        break;
+                    case VIEW_SCHEDULE_ORDER:
+                        return <ScheduleOrder {...props} />
+                        break;
+                    case VIEW_CART:
+                        return <Cart {...props} />
+                    case VIEW_CONFIRM:
+                        return <Confirm {...props} />
+                    default:
+                        return (
+                            <div className="cw__error">
+                                Something has gone wrong! Trying to render view <strong>{ props.view.current }</strong>
+                            </div>
+                        )
+                }
+            })()}
+        </div>
+    )
 }
 
-export default connect(
+Pathway = connect(
     state => state
 )(Pathway)
+
+export { Pathway }

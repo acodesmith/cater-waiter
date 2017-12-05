@@ -1,4 +1,3 @@
-import { setCurrentScreen } from './view'
 
 /*
  * action values
@@ -6,6 +5,7 @@ import { setCurrentScreen } from './view'
 
 export const SET_ORDER_TYPE             = 'SET_ORDER_TYPE'
 export const SET_DELIVERY_ADDRESS       = 'SET_DELIVERY_ADDRESS'
+export const SET_ORDER_TIME             = 'SET_ORDER_TIME'
 export const ADD_ITEM_TO_CART           = 'ADD_ITEM_TO_CART'
 export const SHOW_ITEM_OPTIONS          = 'SHOW_ITEM_OPTIONS'
 export const HIDE_ITEM_OPTIONS          = 'HIDE_ITEM_OPTIONS'
@@ -23,6 +23,11 @@ export const ORDER_TYPE_PICKUP          = 'pickup'
 
 export function setOrderType(text) {
     return { type: SET_ORDER_TYPE, text: text }
+}
+
+
+export function setOrderTime(text) {
+    return { type: SET_ORDER_TIME, data: text }
 }
 
 export function setDeliveryAddress(data) {

@@ -1,9 +1,14 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { backToPreviousScreen } from '../../constansts/view'
+import { connect } from 'react-redux'
+import { backToPreviousScreen } from '../../constansts/'
 import { Button } from './button'
 
-const BackButton = props => {
+let BackButton = props => {
+
+    const { display } = props
+
+    if( ! display )
+        return null
 
     return <Button onClick={event => {
         event.preventDefault()
@@ -11,8 +16,12 @@ const BackButton = props => {
     }}>{ props.children }</Button>
 }
 
-BackButton.propTypes = {
-    dispatch: PropTypes.func.isRequired
-}
+BackButton = connect(
+    state => {
+        return {
+            display: state.view.history.length
+        }
+    }
+)(BackButton)
 
 export { BackButton }

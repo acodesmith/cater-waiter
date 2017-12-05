@@ -30,7 +30,7 @@ const SelectOrderType = props =>
     } } = props
 
     return (
-        <section className="cw__select_order_type">
+        <section className="cw__select_order_type text-center">
             <h2>{welcome_title}</h2>
             { label_delivery_minimum && settings_delivery_minimum ?
                 <p className="cw__delivery_minimum">{ mapValue( settings_delivery_minimum, label_delivery_minimum ) }</p>

@@ -27,8 +27,8 @@ return [
                 'delivery_address',
                 'schedule_order',
                 'cart',
-                'checkout',
-                'confirm',
+	            'confirm',
+	            'checkout',
                 'complete'
             ],
             'pickup'    => [
@@ -36,23 +36,12 @@ return [
                 'select_location',
                 'schedule_order',
                 'cart',
-                'checkout',
-                'confirm',
+	            'confirm',
+	            'checkout',
                 'complete'
             ]
         ]
     ],
     'data'  => Load::config( 'data.php' ),
-    'order' => [
-        'order_type'        => null,
-        'order_location'    => null,
-        'order_pickup_time' => null,
-        'order_delivery_address' => [
-            'delivery_address_city'     => null,
-            'delivery_address_line_one' => null,
-            'delivery_address_state'    => null,
-            'delivery_address_zip'      => null,
-            'delivery_within_range'     => null
-        ]
-    ]
+    'order' => Load::config( 'order.php' ),
 ];

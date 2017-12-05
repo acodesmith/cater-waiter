@@ -3,7 +3,6 @@ let { request } = cw__config;
 
 request.ajax.baseurl = request.ajax.baseurl.replace( request.ajax.site_url, '' )
 
-console.log("request.ajax.baseurl",request.ajax.baseurl);
 /**
  * Interact with the WordPress Rest API
  *
@@ -49,15 +48,12 @@ export const ajax = ( action, data, method = 'POST', json_data = false, cookies 
                 headers: {
                     'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
                     'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-                    'Cache': 'no-cache'
-                },
-                credentials: 'include',
+                }
             }
         ).then((res) => res.json())
         .catch((err) => console.error(err))
 
 
-    console.log("jQuery.ajax");
     /**
      * Having trouble with the fetch() api and sending cookies. :(
      * So I'm falling back to jQuery XRHRequest :)

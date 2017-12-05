@@ -45,7 +45,7 @@ const OrderType = props =>
 
     return (
         <div className="cw__order_type">
-            <h4>{ order_type_title }</h4>
+            <h3>{ order_type_title }</h3>
             <span>{ order_type }</span>
             { orderTypeSwitch(order_type, labels, dispatch) }
         </div>

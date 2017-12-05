@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { mapVariationAttributes } from '../../utilities/index'
 import FormAddProductToCart from '../forms/add_product_to_cart'
-import { addToCart as addToCartAjax } from '../../utilities'
+import { addToCart } from '../../thunks'
 
 class AddProductToCart extends Component
 {
@@ -10,8 +10,14 @@ class AddProductToCart extends Component
     {
         const { items = [] } = values
 
+        const {
+            labels: {
+                adding_items_to_cart
+            }
+        } = this.props
+
         if( items.length  )
-            addToCartAjax( items );
+            addToCart( items, adding_items_to_cart );
     }
 
     render()

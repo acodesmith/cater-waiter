@@ -22,18 +22,20 @@ const FormLocationSearch = props =>
                 <label className="label_zip_code_action">{mapValue( cater_name, label_zip_code_action )}</label>
                 : null
             }
-            <Field
-                name="zip_code"
-                component="input"
-                type="text"
-                validate={[ required ]}
-            />
-            <button
-                type="submit"
-                placeholder={ label_zip_code_prompt }
-            >
-                Search
-            </button>
+            <div>
+                <Field
+                    name="zip_code"
+                    component="input"
+                    type="text"
+                    validate={[ required ]}
+                />
+                <button
+                    type="submit"
+                    placeholder={ label_zip_code_prompt }
+                >
+                    Search
+                </button>
+            </div>
         </form>
     )
 }

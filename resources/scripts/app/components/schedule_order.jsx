@@ -1,18 +1,23 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
+import { setSubmitFailed, untouch } from 'redux-form'
 import { mapValue } from '../../utilities/'
 import FormScheduleOrder from '../forms/schedule_order'
 import {
+    setCurrentScreen,
+    setOrderTime,
     VIEW_CART,
-    setCurrentScreen
+    FORM_SCHEDULE_ORDER
 } from '../../constansts/'
 
 class ScheduleOrder extends Component
 {
     submit = values =>
     {
+        const { dispatch } = this.props
 
-        this.props.dispatch( setCurrentScreen( VIEW_CART ) )
+        dispatch( setOrderTime( values ) )
+        dispatch( setCurrentScreen( VIEW_CART ) )
     }
 
     render()
@@ -27,6 +32,7 @@ class ScheduleOrder extends Component
                 hours_in_advance: settings_hours_in_advance
             },
             data: {
+                location,
                 dates: {
                     today
                 }
@@ -41,7 +47,9 @@ class ScheduleOrder extends Component
         const formProps = {
             today,
             hours_in_advance: settings_hours_in_advance,
-            labels
+            labels,
+            location,
+            order_type
         }
 
         return (

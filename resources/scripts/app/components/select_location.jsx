@@ -31,7 +31,7 @@ class SelectLocation extends Component
         const { loading } = request
 
         return (
-            <section className="cw__select_location">
+            <section className="cw__select_location text-center">
                 <h2>{select_pickup_location}</h2>
                 { history && history.length ? <BackButton dispatch={this.props.dispatch}>Back</BackButton> : null }
                 <FormLocationSearch onSubmit={ this.submit } {...{ settings, labels }} />

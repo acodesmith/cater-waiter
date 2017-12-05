@@ -7,8 +7,8 @@ export const VIEW_DELIVERY_ADDRESS          = 'delivery_address'
 export const VIEW_SELECT_LOCATION           = 'select_location'
 export const VIEW_SCHEDULE_ORDER            = 'schedule_order'
 export const VIEW_CART                      = 'cart'
-export const VIEW_CHECKOUT                  = 'checkout'
 export const VIEW_CONFIRM                   = 'confirm'
+export const VIEW_CHECKOUT                  = 'checkout'
 export const VIEW_COMPLETE                  = 'complete'
 
 /*

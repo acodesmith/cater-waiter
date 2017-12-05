@@ -1,16 +1,21 @@
-import React, { Component } from 'react'
-import Pathway from './containers/pathway'
-import OrderDetails from './containers/order_details'
+import React from 'react'
+import { Pathway, OrderDetails } from './containers'
+import { Loading } from './components'
+import { BackButton } from "./elements/back_button";
 
 const App = () => {
     return (
         <div className="cw__app_base">
+            <Loading />
             <div className="container">
-                <div className="col-md-8">
+                <div className="row">
                     <Pathway/>
+                    <div className="col-md-4">
+                        <OrderDetails/>
+                    </div>
                 </div>
-                <div className="col-md-4">
-                    <OrderDetails/>
+                <div className="row">
+                    <BackButton>Back</BackButton>
                 </div>
             </div>
         </div>

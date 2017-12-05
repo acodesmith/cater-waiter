@@ -15,20 +15,11 @@ import App from './app'
  *
  * @type {*}
  */
-const locallyStoredData = Object.assign({}, cw__config, retrieveWithout( LOCAL_STORAGE_KEY, {
-    'labels': null,
-    'settings': null,
-    'data': null
-}))
-/*@todo fix nested object cleaning, retrieveWithout( LOCAL_STORAGE_KEY, {
-    'labels': null,
-    'settings': null,
-    'data': {
-        'products' : null,
-        'grouped_products': null,
-        'catering_categories': null
-    }
-} ))*/
+let locallyStoredData = Object.assign({}, cw__config, retrieve( LOCAL_STORAGE_KEY ) )
+
+// Always pull most recent labels and cart data
+locallyStoredData.labels = cw__config.labels
+locallyStoredData.order.order_cart = cw__config.order.order_cart
 
 const store = createStore( locallyStoredData )
 
