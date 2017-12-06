@@ -11,20 +11,20 @@ class AddProductToCart extends Component
         const { items = [] } = values
 
         const {
+            dispatch,
             labels: {
                 adding_items_to_cart
             }
         } = this.props
 
         if( items.length  )
-            addToCart( items, adding_items_to_cart );
+            dispatch( addToCart( items, adding_items_to_cart ) )
     }
 
     render()
     {
         const {
             formData,
-            dispatch,
             labels,
             product
         } = this.props

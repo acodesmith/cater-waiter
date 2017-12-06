@@ -1,6 +1,7 @@
 import React from 'react'
 import numeral from 'numeral'
 import { getProductById } from '../../utilities'
+import { Button } from '../elements/button'
 
 const Confirm = props => {
 
@@ -9,12 +10,15 @@ const Confirm = props => {
             confirm_order_title,
             quantity,
             currency,
-            item_total
+            item_total,
+            continue_to_checkout_button,
+            remove
         },
         data: {
             products
         },
         order: {
+            order_checkout_url,
             order_cart = {
                 subtotal: 0,
                 tax: [],
@@ -46,12 +50,23 @@ const Confirm = props => {
                                     <div className="col-md-3">{ product.name }</div>
                                     <div className="col-md-3">{ quantity } { item.quantity }</div>
                                     <div className="col-md-3">{ item_total } {currency}{ numeral( item.line_total ).format('0.00') }</div>
-                                    <div className="col-md-3">Remove</div>
+                                    <div className="col-md-3">
+                                        <Button onClick={event => {
+                                            event.preventDefault()
+                                            console.log("remove item")
+                                        }}>{ remove }</Button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     )
                 }) }
+            </div>
+            <div className="cw__buttons">
+                <Button onClick={event => {
+                    event.preventDefault()
+                    window.location = order_checkout_url;
+                }}>{ continue_to_checkout_button }</Button>
             </div>
         </div>
     )

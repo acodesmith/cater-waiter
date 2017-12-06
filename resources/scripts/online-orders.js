@@ -2,6 +2,7 @@
 /*global cw__config*/
 
 import runApp from './app/index'
+import '../styles/front_end.scss'
 
 jQuery(function(){
 

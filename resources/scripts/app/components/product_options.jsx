@@ -12,7 +12,9 @@ const ProductOptions = props => {
         labels,
         data: {
             show_product_options,
-            products
+            products,
+            modal_loading,
+            modal_loading_message
         }
     } = props
 
@@ -32,6 +34,9 @@ const ProductOptions = props => {
         <div className="cw__product_options">
             <Modal
                 display_footer={false}
+                loading={modal_loading}
+                loading_message={modal_loading_message}
+                loading_default_message={labels.loading}
                 heading={product.name}
                 close={close}>
                 <AddProductToCart

@@ -14,7 +14,9 @@ let Loading = props => {
 
     return (
         <div className="cw__loading">
-            { label ? label : default_label }
+            <div className="cw__loading_content">
+                <span>{ label ? label : default_label }</span>
+            </div>
         </div>
     )
 }

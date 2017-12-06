@@ -4,8 +4,10 @@ $product_data = \CaterWaiter\Module\WooCommerce\ProductData::get();
 
 
 return [
-	'loading'               => null,
+	'loading'               => false,
 	'loading_message'       => null,
+	'modal_loading'         => false,
+	'modal_loading_message' => null,
     'locations'             => [],
     'location'              => null,
     'products'              => $product_data['products'],

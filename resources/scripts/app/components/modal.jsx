@@ -8,6 +8,9 @@ const Modal = props => {
     }, props)
 
     const {
+        loading = false,
+        loading_message,
+        loading_default_message,
         heading,
         children,
         close,
@@ -18,6 +21,13 @@ const Modal = props => {
         <div className="modal fade in" tabIndex="-1" style={{display: 'block'}} role="dialog">
             <div className="modal-dialog modal-lg" role="document">
                 <div className="modal-content">
+                    { ! loading ? null :
+                        <div className="cw__modal_loading">
+                            <div className="cw__modal_loading_content">
+                                { loading_message ? loading_message : loading_default_message }
+                            </div>
+                        </div>
+                    }
                     <div className="modal-header">
                         <button
                             type="button"

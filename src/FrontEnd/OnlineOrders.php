@@ -21,15 +21,15 @@ class OnlineOrders
 
     public function online_orders($attrs)
     {
-        //$attrs
+        wp_enqueue_script( 'cater_waiter__online_orders_scripts', CATER_WAITER_PLUGIN_URL . 'dist/online-orders.js', [ 'jquery' ], '0.0.1', true );
+        wp_localize_script( 'cater_waiter__online_orders_scripts', 'cw__config', Load::config( 'front_end_app.php' ) );
 
-        wp_enqueue_script( 'cater_waiter__online_orders', CATER_WAITER_PLUGIN_URL . 'dist/online-orders.js', [ 'jquery' ], '0.0.1', true );
-        wp_localize_script( 'cater_waiter__online_orders', 'cw__config', Load::config( 'front_end_app.php' ) );
+        wp_enqueue_style( 'cater_waiter__online_order_styles', CATER_WAITER_PLUGIN_URL . 'dist/online-orders.css', [], 1 );
 
         //@todo remove TEMP
 	    wp_enqueue_style( 'bootstrap_3', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' );
 
         // DOM node to load react component
-        echo "<div id='cater_waiter__react_base'></div>";
+        echo "<div id='cater_waiter__react_base' class='cw__base'></div>";
     }
 }

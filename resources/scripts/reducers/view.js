@@ -1,6 +1,7 @@
 import {
     SET_CURRENT_SCREEN,
-    BACK_TO_PREVIOUS_SCREEN
+    BACK_TO_PREVIOUS_SCREEN,
+    JUMP_TO_VIEW
 } from '../constansts/view'
 
 const view = (state, action) => {
@@ -10,7 +11,7 @@ const view = (state, action) => {
 
             state.history.push( state.current );
 
-            return Object.assign({},state,{
+            return Object.assign({}, state, {
                 current: action.text,
                 history: state.history
             })
@@ -21,9 +22,15 @@ const view = (state, action) => {
 
             state.history.pop()
 
-            return Object.assign({},state,{
+            return Object.assign({}, state, {
                 current: current,
                 history: state.history
+            })
+            break;
+        case JUMP_TO_VIEW:
+            return Object.assign({}, state, {
+                current: action.data.view,
+                history: action.data.history
             })
             break;
     }

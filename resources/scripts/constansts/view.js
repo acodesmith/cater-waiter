@@ -17,6 +17,7 @@ export const VIEW_COMPLETE                  = 'complete'
 
 export const SET_CURRENT_SCREEN         = 'SET_CURRENT_SCREEN'
 export const BACK_TO_PREVIOUS_SCREEN    = 'BACK_TO_PREVIOUS_SCREEN'
+export const JUMP_TO_VIEW               = 'JUMP_TO_VIEW'
 
 /*
  * action creators
@@ -29,4 +30,14 @@ export function setCurrentScreen(text) {
 export function backToPreviousScreen()
 {
     return { type: BACK_TO_PREVIOUS_SCREEN }
+}
+
+export function jumpToView(view, history) {
+    return {
+        type: JUMP_TO_VIEW,
+        data: {
+            view: view,
+            history: history
+        }
+    }
 }

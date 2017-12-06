@@ -8,7 +8,7 @@ module.exports = {
     entry: {
         "dist/admin": BASE_DIR + '/resources/scripts/admin.js',
         "dist/front-end": BASE_DIR + '/resources/scripts/front-end.js',
-        "dist/online-orders": BASE_DIR + '/resources/scripts/online-orders.jsx',
+        "dist/online-orders": BASE_DIR + '/resources/scripts/online-orders.js',
     },
     output: {
         filename: '[name].js'

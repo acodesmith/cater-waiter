@@ -1,0 +1,50 @@
+/**
+ * Main Loading Section
+ */
+.cw__base {
+  position: relative;
+}
+
+.cw__loading_overlay {
+  background: rgba(255, 255, 255, 0.9);
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.cw__loading_center_content {
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  max-height: 100%;
+}
+
+.cw__loading {
+  @extend .cw__loading_overlay;
+  z-index: 1000;
+}
+
+.cw__loading_content {
+  @extend .cw__loading_center_content;
+}
+
+.cw__loading_content span {
+  background: #fff;
+  display: block;
+  padding: 1.5rem;
+}
+
+/**
+ * Modal Loading Section
+ */
+.cw__modal_loading {
+  @extend .cw__loading_overlay;
+  z-index: 1;
+}
+
+.cw__modal_loading_content {
+  @extend .cw__loading_center_content;
+}

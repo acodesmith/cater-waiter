@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { backToPreviousScreen } from '../../constansts/'
-import { Button } from './button'
+import { Button } from '../elements/button'
 
 let BackButton = props => {
 

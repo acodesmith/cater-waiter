@@ -1,10 +1,33 @@
 import React, { Component } from 'react'
 import { Field } from 'redux-form'
 import unescape from 'unescape'
+import { arrayPush, } from 'redux-form'
+import { FORM_ADD_PRODUCT_TO_CART } from '../../../constansts'
 import { renderField, required, minNumericValueOne } from '../../../utilities'
 
 class ProductRow extends Component
 {
+    componentDidMount()
+    {
+        const {
+            dispatch,
+            product,
+            variations,
+            fields: {
+                length
+            },
+        } = this.props
+
+        if( ! length )
+            dispatch(
+                arrayPush( FORM_ADD_PRODUCT_TO_CART, 'items', {
+                    product_id: product.id,
+                    variation_id: variations[0].variation_id,
+                    quantity: 1,
+                } )
+            )
+    }
+
     render()
     {
         let {

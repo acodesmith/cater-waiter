@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import FormLocationSearch from '../forms/location_search'
 import { Location } from './location'
 import { REQUEST_LOADING_LOCATIONS, } from '../../constansts/request'
-import { loadLocations, selectLocation } from '../../thunks/locations'
-import { BackButton } from '../elements/back_button'
+import { loadLocations, selectLocation } from '../../thunks'
 import { Button } from '../elements/button'
 
 class SelectLocation extends Component
@@ -33,7 +32,6 @@ class SelectLocation extends Component
         return (
             <section className="cw__select_location text-center">
                 <h2>{select_pickup_location}</h2>
-                { history && history.length ? <BackButton dispatch={this.props.dispatch}>Back</BackButton> : null }
                 <FormLocationSearch onSubmit={ this.submit } {...{ settings, labels }} />
                 { loading === REQUEST_LOADING_LOCATIONS ? <div>Loading...</div> : '' }
                 { locations.map( (location) => (

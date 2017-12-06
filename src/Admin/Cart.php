@@ -20,7 +20,9 @@ class Cart
 		$cart_items = (array) json_decode( stripslashes( file_get_contents("php://input") ) );
 		$items_added = 0;
 
+
 		foreach ( $cart_items as $cart_item ) {
+			$cart_item = (array) $cart_item;
 			$remove = ['product_id', 'quantity', 'variation_id'];
 			$variations = array_diff_key( (array) $cart_item, array_flip( $remove ) );
 
@@ -28,7 +30,6 @@ class Cart
 				$items_added++;
 			}
 		}
-
 
     	if( $items_added )
 		    $this->cart( $items_added . __( ' items added to the your order.', 'cater_waiter' ) );
@@ -66,8 +67,8 @@ class Cart
 
 	    return [
 		    'subtotal'  => $cart->get_subtotal(),
-		    'tax'       => $cart->get_tax_totals(),
-		    'total'     => $cart->get_total(),
+		    'tax'       => $cart->get_taxes_total(),
+		    'total'     => $cart->get_cart_total(),
 		    'items'     => $cart_items,
 	    ];
     }

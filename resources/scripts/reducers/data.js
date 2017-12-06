@@ -5,7 +5,8 @@ import {
     SET_PRODUCTS,
     SHOW_ITEM_OPTIONS,
     HIDE_ITEM_OPTIONS,
-    LOADING_TOGGLE
+    LOADING_TOGGLE,
+    MODAL_LOADING_TOGGLE
 } from '../constansts/'
 
 const data = (state, action) => {
@@ -45,7 +46,13 @@ const data = (state, action) => {
         case LOADING_TOGGLE:
             return Object.assign( {}, state, {
                 loading: ! state.loading,
-                loadingMessage: action.data
+                loading_message: action.data
+            })
+            break;
+        case MODAL_LOADING_TOGGLE:
+            return Object.assign( {}, state, {
+                modal_loading: ! state.modal_loading,
+                modal_loading_message: action.data
             })
             break;
     }

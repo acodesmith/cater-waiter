@@ -15,13 +15,25 @@ import App from './app'
  *
  * @type {*}
  */
-let locallyStoredData = Object.assign({}, cw__config, retrieve( LOCAL_STORAGE_KEY ) )
+let locally_stored_data = Object.assign({}, cw__config, retrieve( LOCAL_STORAGE_KEY ) )
 
-// Always pull most recent labels and cart data
-locallyStoredData.labels = cw__config.labels
-locallyStoredData.order.order_cart = cw__config.order.order_cart
+/**
+ * Always pull most recent labels and cart data
+ */
+locally_stored_data.labels = cw__config.labels
+locally_stored_data.order.order_cart = cw__config.order.order_cart
 
-const store = createStore( locallyStoredData )
+/**
+ * In case someone is stuck in a loading state after a failed request
+ * clear loading state
+ */
+locally_stored_data.data.loading = false
+locally_stored_data.data.modal_loading = false
+
+/**
+ * Create the Rudux Store
+ */
+const store = createStore( locally_stored_data )
 
 /**
  * Subscribe to redux changes then write
@@ -36,7 +48,7 @@ store.subscribe(() => {
  */
 const runApp = function()
 {
-    render(
+    window.app = render(
         <Provider store={store}>
             <App/>
         </Provider>,

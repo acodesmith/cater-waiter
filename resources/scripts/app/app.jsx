@@ -1,7 +1,10 @@
 import React from 'react'
-import { Pathway, OrderDetails } from './containers'
-import { Loading } from './components'
-import { BackButton } from "./elements/back_button";
+import {
+    BackButton,
+    Loading,
+    OrderDetails,
+    Pathway,
+} from './containers'
 
 const App = () => {
     return (

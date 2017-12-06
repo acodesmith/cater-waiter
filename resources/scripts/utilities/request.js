@@ -63,5 +63,5 @@ export const ajax = ( action, data, method = 'POST', json_data = false, cookies 
         contentType : 'application/json',
         data: json_data ? JSON.stringify( data ) : request_data,
         method: 'POST'
-    }).then((data) => JSON.parse(data))
+    })
 }

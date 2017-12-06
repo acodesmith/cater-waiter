@@ -23,22 +23,6 @@ class FormAddProductToCart extends Component
     state = {
         rows: 1
     }
-    
-    componentDidMount()
-    {
-        const {
-            product,
-            variations,
-        } = this.props
-
-        this.props.dispatch(
-            arrayPush( FORM_ADD_PRODUCT_TO_CART, 'items', {
-                product_id: product.id,
-                variation_id: variations[0].variation_id,
-                quantity: 1,
-            } )
-        )
-    }
 
     componentWillUnmount()
     {
@@ -71,6 +55,7 @@ class FormAddProductToCart extends Component
     render()
     {
         const {
+            dispatch,
             formData,
             product,
             variations,
@@ -88,6 +73,7 @@ class FormAddProductToCart extends Component
                 <div className="container-fluid">
                     <div className="product-variations-wrap">
                         <FieldArray
+                            dispatch={dispatch}
                             name={'items'}
                             component={ProductRow}
                             variations={variations}
@@ -96,7 +82,7 @@ class FormAddProductToCart extends Component
                             rows={rows}
                         />
                     </div>
-                    { rows < 2 ? null : <TotalRow formData={formData} />}
+                    { rows < 2 ? null : <TotalRow formData={formData} /> }
                     <div className="row">
                         <div className="col-sm-12">
                             <hr/>
