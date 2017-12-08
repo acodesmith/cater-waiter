@@ -43,6 +43,7 @@ export const extractDataFromResults = results =>
     results.forEach(result => {
 
         let $output = jQuery( result.output )
+            ,distance = jQuery( 'em', $output ).text()
 
         data.push({
             id: result.id,
@@ -50,7 +51,8 @@ export const extractDataFromResults = results =>
             longitude: result.longitude,
             permalink: result.permalink,
             title: result.title,
-            distance: jQuery( 'em', $output ).text()
+            distance: distance,
+            distance_num: parseFloat( distance.replace(/[^\d+(\.\d+)]?/g, '') )
         })
     })
 

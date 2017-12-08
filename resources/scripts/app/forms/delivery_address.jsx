@@ -60,5 +60,6 @@ const FormDeliverAddress = props =>
 }
 
 export default reduxForm({
-    form: FORM_DELIVERY_ADDRESS
+    form: FORM_DELIVERY_ADDRESS,
+    destroyOnUnmount: false,
 })(FormDeliverAddress)

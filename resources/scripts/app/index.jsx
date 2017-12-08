@@ -21,6 +21,7 @@ let locally_stored_data = Object.assign({}, cw__config, retrieve( LOCAL_STORAGE_
  * Always pull most recent labels and cart data
  */
 locally_stored_data.labels = cw__config.labels
+locally_stored_data.settings = cw__config.settings
 locally_stored_data.order.order_cart = cw__config.order.order_cart
 
 /**

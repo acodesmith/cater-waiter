@@ -1,8 +1,9 @@
 import {
-    SET_ORDER_TYPE,
+    ADD_ITEM_TO_CART,
+    OUT_OF_RANGE_DELIVERY,
     SET_DELIVERY_ADDRESS,
     SET_ORDER_TIME,
-    ADD_ITEM_TO_CART
+    SET_ORDER_TYPE
 } from '../constansts/order'
 import {
     SET_LOCATION
@@ -23,10 +24,11 @@ const order = (state, action) => {
             break;
         case SET_DELIVERY_ADDRESS:
             return Object.assign( {}, state, {
+                order_delivery_location: action.data.location,
                 order_delivery_address: Object.assign(
                     {},
                     state.order_delivery_address,
-                    action.data
+                    action.data.address
                 ),
             } )
             break;
@@ -40,6 +42,12 @@ const order = (state, action) => {
                 order_cart: action.data,
             } )
             break;
+        case OUT_OF_RANGE_DELIVERY:
+            return Object.assign( {}, state, {
+                order_delivery_address: {
+                    delivery_within_range: false
+                }
+            })
     }
 
     return Object.assign({}, state)

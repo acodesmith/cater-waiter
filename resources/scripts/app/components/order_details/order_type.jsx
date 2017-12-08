@@ -36,7 +36,7 @@ const OrderType = props =>
 
                     dispatch( jumpToView( VIEW_SELECT_ORDER_TYPE, history ) )
                 }} className="btn-link">
-                    { order_type == ORDER_TYPE_DELIVERY ? change_order_to_delivery : change_order_to_pickup }
+                    { order_type === ORDER_TYPE_DELIVERY ? change_order_to_delivery : change_order_to_pickup }
                 </Button>
             </div>
         </div>
