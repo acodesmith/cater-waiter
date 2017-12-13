@@ -13,7 +13,8 @@ import {
     validateAddressRadius,
     getLocationFromId,
     setTaxRateBasedOnLocation,
-    getCart
+    getCart,
+    removeGroupedProduct as removeGroupedProductAjax
 } from '../utilities'
 
 export const addToCart = (items, loading_message, closeModal) =>
@@ -76,5 +77,19 @@ export const validateDeliveryRange = (values, max, loading_message) => {
                     dispatch( outOfRangeDelivery() )
                 }
             })
+    }
+}
+
+export const removeGroupedProduct = (product_id, loading_message, cart_updating_message) => {
+
+    return dispatch => {
+
+        dispatch( loadingToggle( loading_message ) )
+
+        removeGroupedProductAjax(product_id)
+            .then(() => dispatch( loadingToggle( cart_updating_message ) ))
+            .then(() => { return getCart() })
+            .then(result => { return dispatch( setCart( result.cart ) ) })
+            .then(() => dispatch( loadingToggle() ))
     }
 }

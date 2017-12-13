@@ -13,6 +13,9 @@ class Cart
 
         add_action( 'wp_ajax_cart', [ $this, 'cart' ] );
         add_action( 'wp_ajax_nopriv_cart', [ $this, 'cart' ] );
+
+        add_action( 'wp_ajax_remove_grouped_product', [ $this, 'remove_grouped_product' ] );
+        add_action( 'wp_ajax_remove_grouped_product', [ $this, 'remove_grouped_product' ] );
     }
 
     public function add_item_to_cart()
@@ -41,7 +44,7 @@ class Cart
 	    }
     }
 
-    public static function cart($message = '')
+    public function cart($message = '')
     {
     	$cart = self::cart_data();
 
@@ -71,5 +74,27 @@ class Cart
 		    'total'     => $cart->get_cart_total(),
 		    'items'     => $cart_items,
 	    ];
+    }
+
+    public function remove_grouped_product()
+    {
+    	if( ! empty( $_REQUEST['product_id'] ) ) {
+
+			foreach( \WC()->cart->get_cart() as $cart_item ) {
+				if( $cart_item['product_id'] == $_REQUEST['product_id'] )
+					\WC()->cart->remove_cart_item( $cart_item['key'] );
+			}
+
+		    wp_send_json([
+			    'success' => true
+		    ]);
+		    wp_die();
+	    }
+
+	    wp_send_json([
+		    'success' => false,
+		    'error' => 'Missing product_id'
+	    ]);
+	    wp_die();
     }
 }

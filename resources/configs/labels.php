@@ -37,6 +37,7 @@ return apply_filters( 'cater_waiter_filter_labels', [
 	'pickup_time_title'             => __( 'Pickup Time', 'cater_waiter' ),
 	'quantity'                      => __( 'Quantity', 'cater_waiter' ),
 	'remove'                        => __( 'Remove', 'cater_waiter' ),
+	'removing_item_from_cart'       => __( 'Removing Item From Cart', 'cater_waiter' ),
 	'review_order_button'           => __( 'Review Order', 'cater_waiter' ),
 	'schedule_order_title'          => __( 'Schedule Your %VALUE%', 'cater_waiter' ),
 	'select_pickup_location'        => __( 'Select Pickup Location', 'cater_waiter' ),
@@ -44,6 +45,8 @@ return apply_filters( 'cater_waiter_filter_labels', [
 	'subtotal'                      => __( 'Subtotal', 'cater_waiter' ),
 	'tax'                           => __( 'Tax', 'cater_waiter' ),
 	'total'                         => __( 'Total', 'cater_waiter' ),
+	'update'                        => __( 'update', 'cater_waiter' ),
+	'updating_cart'                 => __( 'Updating Cart', 'cater_waiter' ),
 	'welcome_title'                 => __( 'Select Pickup or Delivery for Your Catering Order', 'cater_waiter' ),
 	'window_of_time_error'          => __( '%VALUE% must be between', 'cater_waiter' ),
 ] );

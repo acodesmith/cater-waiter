@@ -54,6 +54,7 @@ export const ajax = ( action, data, method = 'POST', json_data = false, cookies 
         .catch((err) => console.error(err))
 
 
+    console.log("json_data ? JSON.stringify( data ) : request_data",json_data ? JSON.stringify( data ) : request_data);
     /**
      * Having trouble with the fetch() api and sending cookies. :(
      * So I'm falling back to jQuery XRHRequest :)
@@ -62,6 +63,6 @@ export const ajax = ( action, data, method = 'POST', json_data = false, cookies 
         url: `${request.ajax.baseurl}/?action=${action}`,
         contentType : 'application/json',
         data: json_data ? JSON.stringify( data ) : request_data,
-        method: 'POST'
+        method: method
     })
 }

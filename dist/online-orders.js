@@ -7781,8 +7781,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     exports.setOrderTime = setOrderTime;
     exports.setDeliveryAddress = setDeliveryAddress;
     exports.addItemToCart = addItemToCart;
-    exports.showItemOptions = showItemOptions;
-    exports.hideItemOptions = hideItemOptions;
     exports.outOfRangeDelivery = outOfRangeDelivery;
     exports.setCart = setCart;
 
@@ -7794,8 +7792,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var SET_DELIVERY_ADDRESS = exports.SET_DELIVERY_ADDRESS = 'SET_DELIVERY_ADDRESS';
     var SET_ORDER_TIME = exports.SET_ORDER_TIME = 'SET_ORDER_TIME';
     var ADD_ITEM_TO_CART = exports.ADD_ITEM_TO_CART = 'ADD_ITEM_TO_CART';
-    var SHOW_ITEM_OPTIONS = exports.SHOW_ITEM_OPTIONS = 'SHOW_ITEM_OPTIONS';
-    var HIDE_ITEM_OPTIONS = exports.HIDE_ITEM_OPTIONS = 'HIDE_ITEM_OPTIONS';
     var OUT_OF_RANGE_DELIVERY = exports.OUT_OF_RANGE_DELIVERY = 'OUT_OF_RANGE_DELIVERY';
     var SET_CART = exports.SET_CART = 'SET_CART';
 
@@ -7827,14 +7823,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     function addItemToCart(data) {
         return { type: ADD_ITEM_TO_CART, data: data };
-    }
-
-    function showItemOptions(data) {
-        return { type: SHOW_ITEM_OPTIONS, data: data };
-    }
-
-    function hideItemOptions(data) {
-        return { type: SHOW_ITEM_OPTIONS };
     }
 
     function outOfRangeDelivery() {
@@ -25348,20 +25336,20 @@ module.exports.f = function (C) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(584), __webpack_require__(606), __webpack_require__(607), __webpack_require__(608), __webpack_require__(304), __webpack_require__(617), __webpack_require__(610), __webpack_require__(611), __webpack_require__(612), __webpack_require__(614), __webpack_require__(616)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(584), __webpack_require__(606), __webpack_require__(607), __webpack_require__(608), __webpack_require__(304), __webpack_require__(617), __webpack_require__(610), __webpack_require__(611), __webpack_require__(612), __webpack_require__(614), __webpack_require__(616), __webpack_require__(623)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else if (typeof exports !== "undefined") {
-    factory(exports, require('./add_product_to_cart'), require('./cart'), require('./confirm'), require('./delivery_address'), require('./location'), require('./modal'), require('./product'), require('./product_options'), require('./schedule_order'), require('./select_location'), require('./select_order_type'));
+    factory(exports, require('./add_product_to_cart'), require('./cart'), require('./confirm'), require('./delivery_address'), require('./location'), require('./modal'), require('./product'), require('./product_options'), require('./schedule_order'), require('./select_location'), require('./select_order_type'), require('./update_grouped_products'));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.add_product_to_cart, global.cart, global.confirm, global.delivery_address, global.location, global.modal, global.product, global.product_options, global.schedule_order, global.select_location, global.select_order_type);
+    factory(mod.exports, global.add_product_to_cart, global.cart, global.confirm, global.delivery_address, global.location, global.modal, global.product, global.product_options, global.schedule_order, global.select_location, global.select_order_type, global.update_grouped_products);
     global.index = mod.exports;
   }
-})(this, function (exports, _add_product_to_cart, _cart, _confirm, _delivery_address, _location, _modal, _product, _product_options, _schedule_order, _select_location, _select_order_type) {
+})(this, function (exports, _add_product_to_cart, _cart, _confirm, _delivery_address, _location, _modal, _product, _product_options, _schedule_order, _select_location, _select_order_type, _update_grouped_products) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -25463,6 +25451,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       enumerable: true,
       get: function () {
         return _select_order_type[key];
+      }
+    });
+  });
+  Object.keys(_update_grouped_products).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function () {
+        return _update_grouped_products[key];
       }
     });
   });
@@ -29718,6 +29715,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             return console.error(err);
         });
 
+        console.log("json_data ? JSON.stringify( data ) : request_data", json_data ? (0, _stringify2.default)(data) : request_data);
         /**
          * Having trouble with the fetch() api and sending cookies. :(
          * So I'm falling back to jQuery XRHRequest :)
@@ -29726,7 +29724,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             url: request.ajax.baseurl + '/?action=' + action,
             contentType: 'application/json',
             data: json_data ? (0, _stringify2.default)(data) : request_data,
-            method: 'POST'
+            method: method
         });
     };
 });
@@ -70987,9 +70985,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     show_product_options: null
                 });
                 break;
+            case _constansts.SHOW_GROUPED_ITEMS_OPTIONS:
+                return (0, _assign2.default)({}, state, {
+                    update_grouped_products: action.data
+                });
+                break;
+            case _constansts.HIDE_GROUPED_ITEMS_OPTIONS:
+                return (0, _assign2.default)({}, state, {
+                    update_grouped_products: null
+                });
+                break;
             case _constansts.LOADING_TOGGLE:
                 return (0, _assign2.default)({}, state, {
-                    loading: !state.loading,
+                    loading: action.data !== null ? true : !state.loading,
                     loading_message: action.data
                 });
                 break;
@@ -71012,51 +71020,75 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else if (typeof exports !== "undefined") {
-    factory(exports);
-  } else {
-    var mod = {
-      exports: {}
-    };
-    factory(mod.exports);
-    global.data = mod.exports;
-  }
+    } else if (typeof exports !== "undefined") {
+        factory(exports);
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports);
+        global.data = mod.exports;
+    }
 })(this, function (exports) {
-  'use strict';
+    'use strict';
 
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.loadingToggle = loadingToggle;
-  exports.modalLoadingToggle = modalLoadingToggle;
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.loadingToggle = loadingToggle;
+    exports.modalLoadingToggle = modalLoadingToggle;
+    exports.showItemOptions = showItemOptions;
+    exports.hideItemOptions = hideItemOptions;
+    exports.showGroupedItemsOptions = showGroupedItemsOptions;
+    exports.hideGroupedItemsOptions = hideGroupedItemsOptions;
 
-  /*
-   * action values
-   */
+    /*
+     * action values
+     */
 
-  var LOADING_TOGGLE = exports.LOADING_TOGGLE = 'LOADING_CART_TOGGLE';
-  var MODAL_LOADING_TOGGLE = exports.MODAL_LOADING_TOGGLE = 'MODAL_LOADING_CART_TOGGLE';
+    var LOADING_TOGGLE = exports.LOADING_TOGGLE = 'LOADING_CART_TOGGLE';
+    var MODAL_LOADING_TOGGLE = exports.MODAL_LOADING_TOGGLE = 'MODAL_LOADING_CART_TOGGLE';
+    var SHOW_ITEM_OPTIONS = exports.SHOW_ITEM_OPTIONS = 'SHOW_ITEM_OPTIONS';
+    var HIDE_ITEM_OPTIONS = exports.HIDE_ITEM_OPTIONS = 'HIDE_ITEM_OPTIONS';
+    var SHOW_GROUPED_ITEMS_OPTIONS = exports.SHOW_GROUPED_ITEMS_OPTIONS = 'SHOW_GROUPED_ITEMS_OPTIONS';
+    var HIDE_GROUPED_ITEMS_OPTIONS = exports.HIDE_GROUPED_ITEMS_OPTIONS = 'HIDE_GROUPED_ITEMS_OPTIONS';
 
-  /*
-   * action creators
-   */
+    /*
+     * action creators
+     */
 
-  function loadingToggle() {
-    var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    function loadingToggle() {
+        var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
-    return { type: LOADING_TOGGLE, data: message };
-  }
+        return { type: LOADING_TOGGLE, data: message };
+    }
 
-  function modalLoadingToggle() {
-    var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    function modalLoadingToggle() {
+        var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
-    return { type: MODAL_LOADING_TOGGLE, data: message };
-  }
+        return { type: MODAL_LOADING_TOGGLE, data: message };
+    }
+
+    function showItemOptions(data) {
+        return { type: SHOW_ITEM_OPTIONS, data: data };
+    }
+
+    function hideItemOptions() {
+        return { type: SHOW_ITEM_OPTIONS };
+    }
+
+    function showGroupedItemsOptions(data) {
+        return { type: SHOW_GROUPED_ITEMS_OPTIONS, data: data };
+    }
+
+    function hideGroupedItemsOptions() {
+        return { type: HIDE_GROUPED_ITEMS_OPTIONS };
+    }
 });
 
 /***/ }),
@@ -72475,20 +72507,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(20), __webpack_require__(5), __webpack_require__(6), __webpack_require__(113)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('../../../utilities'));
+        factory(exports, require('react'), require('../../elements/button'), require('../../../utilities'), require('../../../constansts'), require('../../../thunks'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.utilities);
+        factory(mod.exports, global.react, global.button, global.utilities, global.constansts, global.thunks);
         global.menu_items = mod.exports;
     }
-})(this, function (exports, _react, _utilities) {
+})(this, function (exports, _react, _button, _utilities, _constansts, _thunks) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -72505,13 +72537,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
 
     var MenuItems = function MenuItems(props) {
-        var _props$labels = props.labels,
+        var dispatch = props.dispatch,
+            _props$labels = props.labels,
+            update = _props$labels.update,
             quantity = _props$labels.quantity,
             currency = _props$labels.currency,
             item_total = _props$labels.item_total,
             subtotal_label = _props$labels.subtotal,
             tax_label = _props$labels.tax,
             total_label = _props$labels.total,
+            remove = _props$labels.remove,
+            removing_item_from_cart = _props$labels.removing_item_from_cart,
+            updating_cart = _props$labels.updating_cart,
             products = props.data.products,
             _props$order$order_ca = props.order.order_cart,
             order_cart = _props$order$order_ca === undefined ? {
@@ -72575,6 +72612,22 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                             null,
                             (0, _utilities.formatCurrency)(group.line_total, currency)
                         )
+                    ),
+                    _react2.default.createElement(
+                        _button.Button,
+                        { className: 'btn btn-xs', onClick: function onClick(event) {
+                                event.preventDefault();
+                                dispatch((0, _constansts.showGroupedItemsOptions)(group.product.id));
+                            } },
+                        update
+                    ),
+                    _react2.default.createElement(
+                        _button.Button,
+                        { className: 'btn btn-xs btn-danger', onClick: function onClick(event) {
+                                event.preventDefault();
+                                dispatch((0, _thunks.removeGroupedProduct)(group.product.id, removing_item_from_cart, updating_cart));
+                            } },
+                        remove
                     )
                 );
             }),
@@ -72619,7 +72672,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     ':'
                 ),
                 _react2.default.createElement('span', { className: 'html--set', dangerouslySetInnerHTML: { __html: total } })
-            )
+            ),
+            _react2.default.createElement('hr', null)
         );
     };
 
@@ -73301,7 +73355,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.getCart = exports.groupCartItemsByProductId = exports.addToCart = undefined;
+    exports.removeGroupedProduct = exports.getCart = exports.groupCartItemsByProductId = exports.addToCart = undefined;
     var addToCart = exports.addToCart = function addToCart(items) {
         return (0, _utilities.ajax)('add_item_to_cart', items, 'POST', true, true);
     };
@@ -73339,6 +73393,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
      */
     var getCart = exports.getCart = function getCart() {
         return (0, _utilities.ajax)('cart', {}, 'GET', false, true);
+    };
+
+    var removeGroupedProduct = exports.removeGroupedProduct = function removeGroupedProduct(product_id) {
+        return (0, _utilities.ajax)('remove_grouped_product', {
+            product_id: product_id
+        }, 'GET', false, true);
     };
 });
 
@@ -75298,7 +75358,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.validateDeliveryRange = exports.addToCart = undefined;
+    exports.removeGroupedProduct = exports.validateDeliveryRange = exports.addToCart = undefined;
     var addToCart = exports.addToCart = function addToCart(items, loading_message, closeModal) {
         return function (dispatch) {
 
@@ -75353,6 +75413,24 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             });
         };
     };
+
+    var removeGroupedProduct = exports.removeGroupedProduct = function removeGroupedProduct(product_id, loading_message, cart_updating_message) {
+
+        return function (dispatch) {
+
+            dispatch((0, _constansts.loadingToggle)(loading_message));
+
+            (0, _utilities2.removeGroupedProduct)(product_id).then(function () {
+                return dispatch((0, _constansts.loadingToggle)(cart_updating_message));
+            }).then(function () {
+                return (0, _utilities2.getCart)();
+            }).then(function (result) {
+                return dispatch((0, _constansts.setCart)(result.cart));
+            }).then(function () {
+                return dispatch((0, _constansts.loadingToggle)());
+            });
+        };
+    };
 });
 
 /***/ }),
@@ -75396,20 +75474,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(45), __webpack_require__(27), __webpack_require__(28), __webpack_require__(29), __webpack_require__(30), __webpack_require__(31), __webpack_require__(1), __webpack_require__(112)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(45), __webpack_require__(1), __webpack_require__(112)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('babel-runtime/core-js/object/keys'), require('babel-runtime/core-js/object/get-prototype-of'), require('babel-runtime/helpers/classCallCheck'), require('babel-runtime/helpers/createClass'), require('babel-runtime/helpers/possibleConstructorReturn'), require('babel-runtime/helpers/inherits'), require('react'), require('./index'));
+        factory(exports, require('babel-runtime/core-js/object/keys'), require('react'), require('./index'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.keys, global.getPrototypeOf, global.classCallCheck, global.createClass, global.possibleConstructorReturn, global.inherits, global.react, global.index);
+        factory(mod.exports, global.keys, global.react, global.index);
         global.cart = mod.exports;
     }
-})(this, function (exports, _keys, _getPrototypeOf, _classCallCheck2, _createClass2, _possibleConstructorReturn2, _inherits2, _react, _index) {
+})(this, function (exports, _keys, _react, _index) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -75419,16 +75497,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     var _keys2 = _interopRequireDefault(_keys);
 
-    var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
-    var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-    var _createClass3 = _interopRequireDefault(_createClass2);
-
-    var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-    var _inherits3 = _interopRequireDefault(_inherits2);
-
     var _react2 = _interopRequireDefault(_react);
 
     function _interopRequireDefault(obj) {
@@ -75437,60 +75505,47 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         };
     }
 
-    var Cart = function (_Component) {
-        (0, _inherits3.default)(Cart, _Component);
-
-        function Cart() {
-            (0, _classCallCheck3.default)(this, Cart);
-            return (0, _possibleConstructorReturn3.default)(this, (Cart.__proto__ || (0, _getPrototypeOf2.default)(Cart)).apply(this, arguments));
-        }
-
-        (0, _createClass3.default)(Cart, [{
-            key: 'render',
-            value: function render() {
-                var _props = this.props,
-                    dispatch = _props.dispatch,
-                    labels = _props.labels,
-                    _props$data = _props.data,
-                    grouped_products = _props$data.grouped_products,
-                    catering_categories = _props$data.catering_categories,
-                    show_product_options = _props$data.show_product_options;
-                var catering_menu_title = labels.catering_menu_title;
+    var Cart = function Cart(props) {
+        var dispatch = props.dispatch,
+            catering_menu_title = props.labels.catering_menu_title,
+            _props$data = props.data,
+            grouped_products = _props$data.grouped_products,
+            catering_categories = _props$data.catering_categories,
+            show_product_options = _props$data.show_product_options,
+            update_grouped_products = _props$data.update_grouped_products;
 
 
+        return _react2.default.createElement(
+            'div',
+            { className: 'cw__cart' },
+            _react2.default.createElement(
+                'h1',
+                null,
+                catering_menu_title
+            ),
+            !update_grouped_products ? null : _react2.default.createElement(_index.UpdateGroupedProducts, props),
+            !show_product_options ? null : _react2.default.createElement(_index.ProductOptions, props),
+            !catering_categories.length ? null : catering_categories.map(function (category) {
                 return _react2.default.createElement(
                     'div',
-                    { className: 'cw__cart' },
+                    { key: category.term_id, className: 'cw__category cw__category_' + category.slug },
                     _react2.default.createElement(
-                        'h1',
+                        'h3',
                         null,
-                        catering_menu_title
+                        category.name
                     ),
-                    !show_product_options ? null : _react2.default.createElement(_index.ProductOptions, this.props),
-                    !catering_categories.length ? null : catering_categories.map(function (category) {
-                        return _react2.default.createElement(
-                            'div',
-                            { key: category.term_id, className: 'cw__category cw__category_' + category.slug },
-                            _react2.default.createElement(
-                                'h3',
-                                null,
-                                category.name
-                            ),
-                            !(0, _keys2.default)(grouped_products).length && grouped_products[category.slug] ? null : grouped_products[category.slug].map(function (product) {
-                                return _react2.default.createElement(_index.Product, {
-                                    key: product.id,
-                                    product: product,
-                                    dispatch: dispatch,
-                                    labels: labels
-                                });
-                            })
-                        );
+                    !(0, _keys2.default)(grouped_products).length && grouped_products[category.slug] ? null : grouped_products[category.slug].map(function (product) {
+                        return _react2.default.createElement(_index.Product, {
+                            key: product.id,
+                            product: product,
+                            dispatch: dispatch,
+                            labels: props.labels
+                        });
                     })
                 );
-            }
-        }]);
-        return Cart;
-    }(_react.Component);
+            })
+        );
+    };
 
     exports.Cart = Cart;
 });
@@ -76686,6 +76741,72 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 619 */,
+/* 620 */,
+/* 621 */,
+/* 622 */,
+/* 623 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(18), __webpack_require__(112), __webpack_require__(6), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('redux-form'), require('./index'), require('../../constansts'), require('../../utilities'));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.reduxForm, global.index, global.constansts, global.utilities);
+        global.update_grouped_products = mod.exports;
+    }
+})(this, function (exports, _react, _reduxForm, _index, _constansts, _utilities) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.UpdateGroupedProducts = undefined;
+
+    var _react2 = _interopRequireDefault(_react);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    var UpdateGroupedProducts = function UpdateGroupedProducts(props) {
+        var dispatch = props.dispatch,
+            update_grouped_products = props.data.update_grouped_products;
+
+
+        var close = function close(event) {
+            event.preventDefault();
+            dispatch((0, _constansts.hideGroupedItemsOptions)());
+            //dispatch( destroy( FORM_ADD_PRODUCT_TO_CART ) )
+        };
+
+        console.log("update_grouped_products", update_grouped_products);
+
+        return _react2.default.createElement(
+            'div',
+            { className: 'cw__update_grouped_products' },
+            _react2.default.createElement(
+                _index.Modal,
+                { close: close },
+                update_grouped_products
+            )
+        );
+    };
+
+    exports.UpdateGroupedProducts = UpdateGroupedProducts;
+});
 
 /***/ })
 /******/ ]);

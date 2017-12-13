@@ -44,3 +44,10 @@ export const getCart = () =>
 {
     return ajax('cart', {}, 'GET', false, true)
 }
+
+export const removeGroupedProduct = product_id =>
+{
+    return ajax('remove_grouped_product', {
+        product_id: product_id
+    }, 'GET', false, true)
+}

@@ -1,20 +1,31 @@
 import React from 'react'
+import { Button } from '../../elements/button'
 import {
     formatCurrency,
-    getProductById,
     groupCartItemsByProductId
 } from '../../../utilities'
+import {
+    showGroupedItemsOptions
+} from '../../../constansts'
+import {
+    removeGroupedProduct
+} from '../../../thunks'
 
 const MenuItems = props => {
 
     const {
+        dispatch,
         labels: {
+            update,
             quantity,
             currency,
             item_total,
             subtotal: subtotal_label,
             tax: tax_label,
-            total: total_label
+            total: total_label,
+            remove,
+            removing_item_from_cart,
+            updating_cart
         },
         data: {
             products
@@ -54,6 +65,14 @@ const MenuItems = props => {
                             <span>{ item_total }:</span>
                             <span>{ formatCurrency(group.line_total, currency) }</span>
                         </div>
+                        <Button className="btn btn-xs" onClick={event => {
+                            event.preventDefault()
+                            dispatch( showGroupedItemsOptions( group.product.id ) )
+                        }}>{ update }</Button>
+                        <Button className="btn btn-xs btn-danger" onClick={event => {
+                            event.preventDefault()
+                            dispatch( removeGroupedProduct( group.product.id, removing_item_from_cart, updating_cart ) )
+                        }}>{ remove }</Button>
                     </div>
                 )
             }) }
@@ -70,6 +89,7 @@ const MenuItems = props => {
                 <span>{ total_label }:</span>
                 <span className="html--set" dangerouslySetInnerHTML={{__html: total}}></span>
             </div>
+            <hr/>
         </div>
     )
 }

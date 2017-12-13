@@ -6,7 +6,9 @@ import {
     SHOW_ITEM_OPTIONS,
     HIDE_ITEM_OPTIONS,
     LOADING_TOGGLE,
-    MODAL_LOADING_TOGGLE
+    MODAL_LOADING_TOGGLE,
+    SHOW_GROUPED_ITEMS_OPTIONS,
+    HIDE_GROUPED_ITEMS_OPTIONS
 } from '../constansts/'
 
 const data = (state, action) => {
@@ -43,9 +45,19 @@ const data = (state, action) => {
                 show_product_options: null,
             })
             break;
+        case SHOW_GROUPED_ITEMS_OPTIONS:
+            return Object.assign( {}, state, {
+                update_grouped_products: action.data,
+            })
+            break;
+        case HIDE_GROUPED_ITEMS_OPTIONS:
+            return Object.assign( {}, state, {
+                update_grouped_products: null,
+            })
+            break;
         case LOADING_TOGGLE:
             return Object.assign( {}, state, {
-                loading: ! state.loading,
+                loading: action.data !== null ? true : ! state.loading,
                 loading_message: action.data
             })
             break;

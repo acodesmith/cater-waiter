@@ -7,8 +7,6 @@ export const SET_ORDER_TYPE             = 'SET_ORDER_TYPE'
 export const SET_DELIVERY_ADDRESS       = 'SET_DELIVERY_ADDRESS'
 export const SET_ORDER_TIME             = 'SET_ORDER_TIME'
 export const ADD_ITEM_TO_CART           = 'ADD_ITEM_TO_CART'
-export const SHOW_ITEM_OPTIONS          = 'SHOW_ITEM_OPTIONS'
-export const HIDE_ITEM_OPTIONS          = 'HIDE_ITEM_OPTIONS'
 export const OUT_OF_RANGE_DELIVERY      = 'OUT_OF_RANGE_DELIVERY'
 export const SET_CART                   = 'SET_CART'
 
@@ -40,14 +38,6 @@ export function setDeliveryAddress(address, location) {
 
 export function addItemToCart(data) {
     return { type: ADD_ITEM_TO_CART, data: data }
-}
-
-export function showItemOptions(data) {
-    return { type: SHOW_ITEM_OPTIONS, data: data }
-}
-
-export function hideItemOptions(data) {
-    return { type: SHOW_ITEM_OPTIONS }
 }
 
 export function outOfRangeDelivery() {
