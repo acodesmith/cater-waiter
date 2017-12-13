@@ -88,13 +88,14 @@ class Cart
 		    wp_send_json([
 			    'success' => true
 		    ]);
-		    wp_die();
+	    }else{
+		    wp_send_json([
+			    'success' => false,
+			    'error' => 'Missing product_id'
+		    ]);
 	    }
 
-	    wp_send_json([
-		    'success' => false,
-		    'error' => 'Missing product_id'
-	    ]);
+
 	    wp_die();
     }
 }

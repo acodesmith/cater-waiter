@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { mapVariationAttributes } from '../../utilities/index'
+import { mapVariationAttributes } from '../../utilities'
 import FormAddProductToCart from '../forms/add_product_to_cart'
 import { addToCart } from '../../thunks'
+import { MODE_ADD } from '../../constansts'
 
 class AddProductToCart extends Component
 {
@@ -45,6 +46,7 @@ class AddProductToCart extends Component
                     variations={variations}
                     labels={labels}
                     formData={formData}
+                    mode={MODE_ADD}
                     onSubmit={(values) => {
                         this.addToCart(values, this.props.closeModal)
                     }}

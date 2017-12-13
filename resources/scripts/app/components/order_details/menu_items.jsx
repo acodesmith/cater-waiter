@@ -1,4 +1,5 @@
 import React from 'react'
+import _ from 'lodash'
 import { Button } from '../../elements/button'
 import {
     formatCurrency,
@@ -65,14 +66,14 @@ const MenuItems = props => {
                             <span>{ item_total }:</span>
                             <span>{ formatCurrency(group.line_total, currency) }</span>
                         </div>
-                        <Button className="btn btn-xs" onClick={event => {
+                        <Button className="btn btn-xs btn-default" onClick={event => {
                             event.preventDefault()
                             dispatch( showGroupedItemsOptions( group.product.id ) )
-                        }}>{ update }</Button>
+                        }}>{ _.upperFirst(update) }</Button>
                         <Button className="btn btn-xs btn-danger" onClick={event => {
                             event.preventDefault()
                             dispatch( removeGroupedProduct( group.product.id, removing_item_from_cart, updating_cart ) )
-                        }}>{ remove }</Button>
+                        }}>{ _.upperFirst(remove) }</Button>
                     </div>
                 )
             }) }

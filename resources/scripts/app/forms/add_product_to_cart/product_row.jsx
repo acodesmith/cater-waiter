@@ -1,31 +1,76 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 import { Field } from 'redux-form'
 import unescape from 'unescape'
-import { arrayPush, } from 'redux-form'
-import { FORM_ADD_PRODUCT_TO_CART } from '../../../constansts'
-import { renderField, required, minNumericValueOne } from '../../../utilities'
+import { arrayPush, arrayRemoveAll } from 'redux-form'
+import {
+    FORM_ADD_PRODUCT_TO_CART,
+    MODE_ADD,
+    MODE_EDIT
+} from '../../../constansts'
+import {
+    renderField,
+    required,
+    minNumericValueOne
+} from '../../../utilities'
 
 class ProductRow extends Component
 {
     componentDidMount()
     {
         const {
-            dispatch,
-            product,
-            variations,
+            mode = MODE_ADD,
             fields: {
                 length
             },
         } = this.props
 
-        if( ! length )
+        if( ! length && mode === MODE_ADD )
+            this.addFirstDefaultRow()
+        else if( mode === MODE_EDIT )
+            this.addCartItems()
+    }
+
+    addCartItems()
+    {
+        const {
+            dispatch,
+            product,
+            variations,
+            items,
+            formId = FORM_ADD_PRODUCT_TO_CART
+        } = this.props
+
+        dispatch( arrayRemoveAll( formId, 'items') )
+
+        items.map(item => {
             dispatch(
-                arrayPush( FORM_ADD_PRODUCT_TO_CART, 'items', {
+                arrayPush( formId, 'items', Object.assign({}, {
                     product_id: product.id,
                     variation_id: variations[0].variation_id,
-                    quantity: 1,
-                } )
+                    quantity: item.quantity,
+                    key: item.key
+                }, item.variation) )
             )
+        })
+    }
+
+    addFirstDefaultRow()
+    {
+        const {
+            dispatch,
+            product,
+            variations,
+            formId = FORM_ADD_PRODUCT_TO_CART
+        } = this.props
+
+        dispatch(
+            arrayPush( formId, 'items', {
+                product_id: product.id,
+                variation_id: variations[0].variation_id,
+                quantity: 1,
+            } )
+        )
     }
 
     render()
@@ -34,12 +79,18 @@ class ProductRow extends Component
             variations,
             product,
             fields,
-            remove
+            mode = MODE_ADD,
+            labels: {
+                remove
+            }
         } = this.props
 
         return fields.map((items, index) => {
 
             return variations.map((variation, variationIndex) => {
+
+                let attributes = variation.attributes;
+
                 return (
                     <div style={{clear: 'both'}} className="cw__variation" key={variationIndex}>
                         <Field
@@ -82,8 +133,8 @@ class ProductRow extends Component
                                 </div>
                             )
                         })}
-                        { index < 1 ? null : <button className="option col-md-3" onClick={() => fields.remove(index)}>
-                            remove
+                        { index < 1 && mode !== MODE_EDIT ? null : <button className="option col-md-3" onClick={() => fields.remove(index)}>
+                            { remove }
                         </button> }
                     </div>
                 )

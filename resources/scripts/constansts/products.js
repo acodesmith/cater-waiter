@@ -2,12 +2,13 @@
  * action values
  */
 
-export const SET_PRODUCTS               = 'SET_PRODUCTS'
+export const MODE_ADD  = 'MODE_ADD'
+export const MODE_EDIT = 'MODE_EDIT'
 
 /*
  * action types
  */
-
+export const SET_PRODUCTS               = 'SET_PRODUCTS'
 
 /*
  * action creators
