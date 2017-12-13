@@ -1,7 +1,8 @@
 import React from 'react'
 import {
     formatCurrency,
-    getProductById
+    getProductById,
+    groupCartItemsByProductId
 } from '../../../utilities'
 
 const MenuItems = props => {
@@ -35,31 +36,39 @@ const MenuItems = props => {
         items
     } = order_cart
 
-    return (
-        <div className="cw__menu_items">
-            <h3>Menu Items</h3>
-            { items.map((item, key) => {
+    const grouped_items = groupCartItemsByProductId( items, products )
 
-                let product = getProductById( item.product_id, products )
+    return (
+        <div className="cw__menu_items cw__menu_items_mini">
+            <h3>Menu Items</h3>
+            { grouped_items.map((group, key) => {
 
                 return (
                     <div className="cw__menu_item" key={key}>
-                        <h4>{ product.name }</h4>
-                        <span className="cw__menu_item_quantity">{ quantity } { item.quantity }</span>
-                        <br/>
-                        <span className="cw__menu_item_line_total">{ item_total } { formatCurrency(item.line_total, currency) }</span>
+                        <h4>{ group.product.name }</h4>
+                        <div className="cw__menu_item_quantity cw__menu_item_line">
+                            <span>{ quantity }:</span>
+                            <span>{ group.quantity }</span>
+                        </div>
+                        <div className="cw__menu_item_line_total cw__menu_item_line">
+                            <span>{ item_total }:</span>
+                            <span>{ formatCurrency(group.line_total, currency) }</span>
+                        </div>
                     </div>
                 )
             }) }
             <hr/>
-            <div className="cw__cart_total">
-                { subtotal_label }: { formatCurrency(subtotal, currency) }
+            <div className="cw__cart_subtotal">
+                <span>{ subtotal_label }:</span>
+                <span>{ formatCurrency(subtotal, currency) }</span>
+            </div>
+            <div className="cw__cart_tax">
+                <span>{ tax_label }:</span>
+                <span>{ formatCurrency(tax, currency) }</span>
             </div>
             <div className="cw__cart_total">
-                { tax_label }: { formatCurrency(tax, currency) }
-            </div>
-            <div className="cw__cart_total">
-                { total_label }: <span dangerouslySetInnerHTML={{__html: total}}></span>
+                <span>{ total_label }:</span>
+                <span className="html--set" dangerouslySetInnerHTML={{__html: total}}></span>
             </div>
         </div>
     )

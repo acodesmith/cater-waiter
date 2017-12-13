@@ -36,4 +36,29 @@
 .cw__modal_loading {
   z-index: 1; }
 
+.cw__cart_subtotal,
+.cw__cart_tax,
+.cw__cart_total,
+.cw__menu_item_line {
+  display: flex; }
+  .cw__cart_subtotal span,
+  .cw__cart_tax span,
+  .cw__cart_total span,
+  .cw__menu_item_line span {
+    display: block;
+    min-width: 100px; }
+  .cw__cart_subtotal span:first-child,
+  .cw__cart_tax span:first-child,
+  .cw__cart_total span:first-child,
+  .cw__menu_item_line span:first-child {
+    font-weight: bold;
+    padding-right: 0.5rem; }
+  .cw__cart_subtotal span.html--set span,
+  .cw__cart_tax span.html--set span,
+  .cw__cart_total span.html--set span,
+  .cw__menu_item_line span.html--set span {
+    display: inline;
+    min-width: 0;
+    padding-right: 0; }
+
 /*# sourceMappingURL=online-orders.css.map*/

@@ -6,7 +6,7 @@ import { addToCart } from '../../thunks'
 
 class AddProductToCart extends Component
 {
-    addToCart(values)
+    addToCart(values, closeModal)
     {
         const { items = [] } = values
 
@@ -17,8 +17,9 @@ class AddProductToCart extends Component
             }
         } = this.props
 
-        if( items.length  )
-            dispatch( addToCart( items, adding_items_to_cart ) )
+        if( items.length  ) {
+            dispatch( addToCart( items, adding_items_to_cart, closeModal ) )
+        }
     }
 
     render()
@@ -45,7 +46,7 @@ class AddProductToCart extends Component
                     labels={labels}
                     formData={formData}
                     onSubmit={(values) => {
-                        this.addToCart(values)
+                        this.addToCart(values, this.props.closeModal)
                     }}
                 />
             </div>

@@ -8,5 +8,5 @@ import numeral from 'numeral'
  * @returns {string}
  */
 export const formatCurrency = ( value, currency ) => {
-    return `${ currency }${ numeral( value ).format('0.00') }`
+    return `${ currency }${ numeral( value ).format('0,000.00') }`
 }

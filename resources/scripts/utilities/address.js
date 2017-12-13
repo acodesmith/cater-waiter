@@ -7,30 +7,28 @@ import {
 export const validateAddressRadius = (zip, max) => {
 
     return getLocationsFromZip(zip)
-                .then(data => {
+        .then(data => {
 
-                    return new Promise(
-                        function (resolve) {
+            return new Promise(
+                function (resolve) {
 
-                            let locations = extractDataFromResults( data.results )
+                    let locations = extractDataFromResults(data.results)
 
-                            console.log("locations",locations);
-                            
-                            if( ! locations.length ) {
+                    if (!locations.length) {
 
-                                return resolve({
-                                    valid: false,
-                                    location: locations
-                                })
-                            }
+                        return resolve({
+                            valid: false,
+                            location: locations
+                        })
+                    }
 
-                            let sorted_locations = _.sortBy( locations, [location => parseFloat( location.distance_num )] )
+                    let closest_location = _.sortBy(locations, [location => parseFloat(location.distance_num)]).shift()
 
-                            return resolve({
-                                valid: parseFloat( sorted_locations[0].distance_num ) <= max,
-                                location: sorted_locations[0]
-                            })
-                        }
-                    )
-                })
+                    return resolve({
+                        valid: parseFloat(closest_location.distance_num) <= max,
+                        location: closest_location
+                    })
+                }
+            )
+        })
 }

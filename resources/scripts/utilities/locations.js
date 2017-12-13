@@ -1,7 +1,18 @@
 /*global jQuery*/
 import { militaryToStandard } from '../utilities'
-import { api, ajax } from './request'
+import {
+    api,
+    ajax
+} from './request'
 
+/**
+ * First get lat/long from zip code
+ * Second get nonce for lat long request
+ * Last get list of locations based on the lat long
+ *
+ * @param zip
+ * @returns {Promise.<T>}
+ */
 export const getLocationsFromZip = zip =>
 {
     //First step we get lat long from zip code.
@@ -103,6 +114,24 @@ export const extractWindowOfTime = (location = {}, order_type) => {
     return [ "9:00", "21:00"];
 }
 
+/**
+ * Return error message
+ *
+ * @param error
+ * @param minOrderTime
+ * @param maxOrderTime
+ * @param and
+ * @returns {string}
+ */
 export const windowOfTimeError = (error, minOrderTime, maxOrderTime, and) => {
     return `${error} ${militaryToStandard( minOrderTime )} ${and} ${militaryToStandard( maxOrderTime )}`
+}
+
+/**
+ * Set WooCommerce set session tax location id
+ *
+ * @param location_id
+ */
+export const setTaxRateBasedOnLocation = location_id => {
+    return ajax('set_tax_by_location', { location_id: location_id }, 'POST', false, true)
 }

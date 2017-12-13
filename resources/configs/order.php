@@ -8,7 +8,6 @@ return [
 	'order_pickup_time'       => null,
 	'order_cart'              => Cart::cart_data(),
 	'order_checkout_url'      => wc_get_checkout_url(),
-	'order_delivery_location' => null,
 	'order_delivery_address'  => [
 		'delivery_address_city'     => null,
 		'delivery_address_line_one' => null,

@@ -10,6 +10,7 @@ export const ADD_ITEM_TO_CART           = 'ADD_ITEM_TO_CART'
 export const SHOW_ITEM_OPTIONS          = 'SHOW_ITEM_OPTIONS'
 export const HIDE_ITEM_OPTIONS          = 'HIDE_ITEM_OPTIONS'
 export const OUT_OF_RANGE_DELIVERY      = 'OUT_OF_RANGE_DELIVERY'
+export const SET_CART                   = 'SET_CART'
 
 /*
  * action types
@@ -51,4 +52,8 @@ export function hideItemOptions(data) {
 
 export function outOfRangeDelivery() {
     return { type: OUT_OF_RANGE_DELIVERY }
+}
+
+export function setCart(cart) {
+    return { type: SET_CART, data: cart }
 }

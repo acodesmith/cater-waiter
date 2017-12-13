@@ -33,10 +33,9 @@ export const loadLocations = zip_code =>
 
                 let locations = extractDataFromResults( data.results )
 
-                dispatch( setLocations( locations ) )
-                dispatch( clearLoadingState() )
-
+                return dispatch( setLocations( locations ) )
             }, error => console.error(error))
+            .then(() => dispatch( clearLoadingState() ))
     }
 }
 

@@ -10,7 +10,7 @@ const App = () => {
     return (
         <div className="cw__app_base">
             <Loading />
-            <div className="container">
+            <div className="container-fluid">
                 <div className="row">
                     <Pathway/>
                     <div className="col-md-4">

@@ -6,11 +6,17 @@ import {
     addItemToCart,
     modalLoadingToggle,
     loadingToggle,
-    outOfRangeDelivery
+    outOfRangeDelivery,
+    setCart
 } from '../constansts/'
-import { validateAddressRadius } from '../utilities'
+import {
+    validateAddressRadius,
+    getLocationFromId,
+    setTaxRateBasedOnLocation,
+    getCart
+} from '../utilities'
 
-export const addToCart = (items, loading_message) =>
+export const addToCart = (items, loading_message, closeModal) =>
 {
     return dispatch => {
 
@@ -22,6 +28,7 @@ export const addToCart = (items, loading_message) =>
                 if( data.success )
                     dispatch( addItemToCart( data.cart ) )
                     dispatch( modalLoadingToggle() )
+                    closeModal( new Event('click') )
             })
     }
 }
@@ -39,20 +46,30 @@ export const validateDeliveryRange = (values, max, loading_message) => {
         validateAddressRadius(delivery_address_zip, max)
             .then(result => {
 
-                const {
+                let {
                     valid,
                     location
                 } = result
 
-                console.log("result",result);
-
                 if( valid ) {
 
-                    values.delivery_within_range = true
+                    getLocationFromId( location.id ).then(post => {
 
-                    dispatch( loadingToggle() )
-                    dispatch( setDeliveryAddress( values, location ) )
-                    dispatch( setCurrentScreen( VIEW_SCHEDULE_ORDER ) )
+                        values.delivery_within_range = true
+                        location.post = post
+
+                        return setTaxRateBasedOnLocation( location.id )
+                    })
+                        .then(() => {
+                            return getCart()
+                        })
+                        .then(result => {
+                            return dispatch( setCart( result.cart ) )
+                        })
+                        .then(() => dispatch( setDeliveryAddress( values, location ) ))
+                        .then(() => dispatch( loadingToggle() ))
+                        .then(() => dispatch( setCurrentScreen( VIEW_SCHEDULE_ORDER ) ))
+
                 }else{
                     //Set state to display error message for out of range delivery address
                     dispatch( loadingToggle() )

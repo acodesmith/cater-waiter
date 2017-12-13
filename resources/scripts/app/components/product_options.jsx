@@ -43,6 +43,7 @@ const ProductOptions = props => {
                     formData={ form[ FORM_ADD_PRODUCT_TO_CART ] ? form[ FORM_ADD_PRODUCT_TO_CART ] : null }
                     product={product}
                     labels={labels}
+                    closeModal={close}
                     dispatch={dispatch} />
             </Modal>
         </div>
