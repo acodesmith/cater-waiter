@@ -45,9 +45,29 @@ export const getCart = () =>
     return ajax('cart', {}, 'GET', false, true)
 }
 
+/**
+ * Remove all cart items based on the product id
+ * @param product_id
+ */
 export const removeGroupedProduct = product_id =>
 {
     return ajax('remove_grouped_product', {
         product_id: product_id
     }, 'GET', false, true)
+}
+
+/**
+ * Remove cart item based on the session key
+ * @param key
+ */
+export const removeCartItem = key =>
+{
+    return ajax('remove_cart_item', {
+        key: key
+    }, 'GET', false, true)
+}
+
+export const updateCartItems = items =>
+{
+    return ajax('update_cart_items', items, 'POST', true, true)
 }

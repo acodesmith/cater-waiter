@@ -40,9 +40,14 @@ let OrderDetails = props =>
             review_order_button
         },
         order: {
-            order_type
+            order_type,
+            order_cart = {
+                items: []
+            }
         },
     } = props
+
+    const { items } = order_cart
 
     if( ! display( props ) )
         return null
@@ -58,10 +63,10 @@ let OrderDetails = props =>
                 <OrderTime {...props} />
             </section>
             <MenuItems {...props} />
-            <Button onClick={event => {
+            { ! items.length ? null : <Button onClick={event => {
                 event.preventDefault()
                 dispatch( setCurrentScreen( VIEW_CONFIRM ) )
-            }}>{ review_order_button }</Button>
+            }}>{ review_order_button }</Button> }
             <Button onClick={event => {
                 event.preventDefault()
                 clearData();

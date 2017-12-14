@@ -1,6 +1,8 @@
 import { addToCart as addToCartAPI } from '../utilities/'
+import { arrayRemove } from 'redux-form'
 import {
     VIEW_SCHEDULE_ORDER,
+    FORM_UPDATE_CART_ITEMS,
     setCurrentScreen,
     setDeliveryAddress,
     addItemToCart,
@@ -14,7 +16,9 @@ import {
     getLocationFromId,
     setTaxRateBasedOnLocation,
     getCart,
-    removeGroupedProduct as removeGroupedProductAjax
+    removeGroupedProduct as removeGroupedProductAjax,
+    removeCartItem as removeCartItemAjax,
+    updateCertItems as updateCertItemsAjax
 } from '../utilities'
 
 export const addToCart = (items, loading_message, closeModal) =>
@@ -34,8 +38,8 @@ export const addToCart = (items, loading_message, closeModal) =>
     }
 }
 
-export const validateDeliveryRange = (values, max, loading_message) => {
-
+export const validateDeliveryRange = (values, max, loading_message) =>
+{
     return dispatch => {
 
         const {
@@ -80,8 +84,8 @@ export const validateDeliveryRange = (values, max, loading_message) => {
     }
 }
 
-export const removeGroupedProduct = (product_id, loading_message, cart_updating_message) => {
-
+export const removeGroupedProduct = (product_id, loading_message, cart_updating_message) =>
+{
     return dispatch => {
 
         dispatch( loadingToggle( loading_message ) )
@@ -91,5 +95,34 @@ export const removeGroupedProduct = (product_id, loading_message, cart_updating_
             .then(() => { return getCart() })
             .then(result => { return dispatch( setCart( result.cart ) ) })
             .then(() => dispatch( loadingToggle() ))
+    }
+}
+
+export const removeCartItem = (key, index, loading_message, cart_updating_message) =>
+{
+    return dispatch => {
+
+        dispatch( modalLoadingToggle( loading_message ) )
+
+        removeCartItemAjax(key)
+            .then(() => dispatch( arrayRemove( FORM_UPDATE_CART_ITEMS, 'items', index ) ))
+            .then(() => dispatch( modalLoadingToggle( cart_updating_message ) ))
+            .then(() => { return getCart() })
+            .then(result => { return dispatch( setCart( result.cart ) ) })
+            .then(() => dispatch( modalLoadingToggle() ))
+    }
+}
+
+export const updateCartItems = (items, loading_message, cart_updating_message) =>
+{
+    return dispatch => {
+
+        dispatch( modalLoadingToggle( loading_message ) )
+
+        updateCertItemsAjax(items)
+            .then(() => dispatch( modalLoadingToggle( cart_updating_message ) ))
+            .then(() => { return getCart() })
+            .then(result => { return dispatch( setCart( result.cart ) ) })
+            .then(() => dispatch( modalLoadingToggle() ))
     }
 }

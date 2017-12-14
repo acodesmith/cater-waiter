@@ -26,7 +26,8 @@ const MenuItems = props => {
             total: total_label,
             remove,
             removing_item_from_cart,
-            updating_cart
+            updating_cart,
+            removing_item_from_cart_confirm
         },
         data: {
             products
@@ -50,6 +51,9 @@ const MenuItems = props => {
 
     const grouped_items = groupCartItemsByProductId( items, products )
 
+    if( ! items || ! items.length )
+        return null
+
     return (
         <div className="cw__menu_items cw__menu_items_mini">
             <h3>Menu Items</h3>
@@ -72,7 +76,12 @@ const MenuItems = props => {
                         }}>{ _.upperFirst(update) }</Button>
                         <Button className="btn btn-xs btn-danger" onClick={event => {
                             event.preventDefault()
-                            dispatch( removeGroupedProduct( group.product.id, removing_item_from_cart, updating_cart ) )
+
+                            const confirm_action = confirm( removing_item_from_cart_confirm )
+
+                            if( confirm_action )
+                                dispatch( removeGroupedProduct( group.product.id, removing_item_from_cart, updating_cart ) )
+
                         }}>{ _.upperFirst(remove) }</Button>
                     </div>
                 )

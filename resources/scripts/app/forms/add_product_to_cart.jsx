@@ -14,12 +14,6 @@ import { TotalRow } from './add_product_to_cart/total_row'
 
 class FormAddProductToCart extends Component
 {
-    constructor(props)
-    {
-        super(props)
-        this.removeRow = this.removeRow.bind(this)
-    }
-
     state = {
         rows: 1
     }
@@ -45,11 +39,6 @@ class FormAddProductToCart extends Component
                 quantity: 1,
             } )
         )
-    }
-
-    removeRow(index)
-    {
-        arraySplice( FORM_ADD_PRODUCT_TO_CART, 'items', index, 1 )
     }
 
     render()
@@ -78,8 +67,8 @@ class FormAddProductToCart extends Component
                             component={ProductRow}
                             variations={variations}
                             product={product}
-                            remove={this.removeRow}
                             rows={rows}
+                            labels={this.props.labels}
                         />
                     </div>
                     { rows < 2 ? null : <TotalRow formData={formData} /> }

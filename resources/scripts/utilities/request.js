@@ -53,8 +53,6 @@ export const ajax = ( action, data, method = 'POST', json_data = false, cookies 
         ).then((res) => res.json())
         .catch((err) => console.error(err))
 
-
-    console.log("json_data ? JSON.stringify( data ) : request_data",json_data ? JSON.stringify( data ) : request_data);
     /**
      * Having trouble with the fetch() api and sending cookies. :(
      * So I'm falling back to jQuery XRHRequest :)

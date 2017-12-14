@@ -29717,7 +29717,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             return console.error(err);
         });
 
-        console.log("json_data ? JSON.stringify( data ) : request_data", json_data ? (0, _stringify2.default)(data) : request_data);
         /**
          * Having trouble with the fetch() api and sending cookies. :(
          * So I'm falling back to jQuery XRHRequest :)
@@ -41317,24 +41316,31 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }, {
             key: 'render',
             value: function render() {
+                var _this2 = this;
+
                 var _props4 = this.props,
                     variations = _props4.variations,
                     product = _props4.product,
                     fields = _props4.fields,
                     _props4$mode = _props4.mode,
                     mode = _props4$mode === undefined ? _constansts.MODE_ADD : _props4$mode,
-                    remove = _props4.labels.remove;
+                    remove = _props4.remove,
+                    remove_label = _props4.labels.remove;
 
 
                 return fields.map(function (items, index) {
 
                     return variations.map(function (variation, variationIndex) {
 
-                        var attributes = variation.attributes;
-
                         return _react2.default.createElement(
                             'div',
                             { style: { clear: 'both' }, className: 'cw__variation', key: variationIndex },
+                            mode === _constansts.MODE_ADD ? null : _react2.default.createElement(_reduxForm.Field, {
+                                name: items + '.key',
+                                type: 'hidden',
+                                validate: [_utilities.required],
+                                component: _utilities.renderField
+                            }),
                             _react2.default.createElement(_reduxForm.Field, {
                                 name: items + '.variation_id',
                                 type: 'hidden',
@@ -41392,10 +41398,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                             }),
                             index < 1 && mode !== _constansts.MODE_EDIT ? null : _react2.default.createElement(
                                 'button',
-                                { className: 'option col-md-3', onClick: function onClick() {
-                                        return fields.remove(index);
+                                { className: 'option col-md-3', onClick: function onClick(event) {
+
+                                        event.preventDefault();
+
+                                        if (!remove) fields.remove(index);else remove(_this2.props.items[index], index);
                                     } },
-                                remove
+                                remove_label
                             )
                         );
                     });
@@ -71271,7 +71280,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 break;
             case _constansts.MODAL_LOADING_TOGGLE:
                 return (0, _assign2.default)({}, state, {
-                    modal_loading: !state.modal_loading,
+                    modal_loading: action.data !== null ? true : !state.modal_loading,
                     modal_loading_message: action.data
                 });
                 break;
@@ -72573,7 +72582,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             _props$labels = props.labels,
             order_details_title = _props$labels.order_details_title,
             review_order_button = _props$labels.review_order_button,
-            order_type = props.order.order_type;
+            _props$order = props.order,
+            order_type = _props$order.order_type,
+            _props$order$order_ca = _props$order.order_cart,
+            order_cart = _props$order$order_ca === undefined ? {
+            items: []
+        } : _props$order$order_ca;
+        var items = order_cart.items;
 
 
         if (!display(props)) return null;
@@ -72594,7 +72609,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 _react2.default.createElement(_order_details.OrderTime, props)
             ),
             _react2.default.createElement(_order_details.MenuItems, props),
-            _react2.default.createElement(
+            !items.length ? null : _react2.default.createElement(
                 _button.Button,
                 { onClick: function onClick(event) {
                         event.preventDefault();
@@ -72820,6 +72835,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             remove = _props$labels.remove,
             removing_item_from_cart = _props$labels.removing_item_from_cart,
             updating_cart = _props$labels.updating_cart,
+            removing_item_from_cart_confirm = _props$labels.removing_item_from_cart_confirm,
             products = props.data.products,
             _props$order$order_ca = props.order.order_cart,
             order_cart = _props$order$order_ca === undefined ? {
@@ -72835,6 +72851,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
         var grouped_items = (0, _utilities.groupCartItemsByProductId)(items, products);
+
+        if (!items || !items.length) return null;
 
         return _react2.default.createElement(
             'div',
@@ -72896,7 +72914,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         _button.Button,
                         { className: 'btn btn-xs btn-danger', onClick: function onClick(event) {
                                 event.preventDefault();
-                                dispatch((0, _thunks.removeGroupedProduct)(group.product.id, removing_item_from_cart, updating_cart));
+
+                                var confirm_action = confirm(removing_item_from_cart_confirm);
+
+                                if (confirm_action) dispatch((0, _thunks.removeGroupedProduct)(group.product.id, removing_item_from_cart, updating_cart));
                             } },
                         _lodash2.default.upperFirst(remove)
                     )
@@ -73626,7 +73647,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.removeGroupedProduct = exports.getCart = exports.groupCartItemsByProductId = exports.addToCart = undefined;
+    exports.updateCartItems = exports.removeCartItem = exports.removeGroupedProduct = exports.getCart = exports.groupCartItemsByProductId = exports.addToCart = undefined;
     var addToCart = exports.addToCart = function addToCart(items) {
         return (0, _utilities.ajax)('add_item_to_cart', items, 'POST', true, true);
     };
@@ -73666,10 +73687,28 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         return (0, _utilities.ajax)('cart', {}, 'GET', false, true);
     };
 
+    /**
+     * Remove all cart items based on the product id
+     * @param product_id
+     */
     var removeGroupedProduct = exports.removeGroupedProduct = function removeGroupedProduct(product_id) {
         return (0, _utilities.ajax)('remove_grouped_product', {
             product_id: product_id
         }, 'GET', false, true);
+    };
+
+    /**
+     * Remove cart item based on the session key
+     * @param key
+     */
+    var removeCartItem = exports.removeCartItem = function removeCartItem(key) {
+        return (0, _utilities.ajax)('remove_cart_item', {
+            key: key
+        }, 'GET', false, true);
+    };
+
+    var updateCartItems = exports.updateCartItems = function updateCartItems(items) {
+        return (0, _utilities.ajax)('update_cart_items', items, 'POST', true, true);
     };
 });
 
@@ -74503,26 +74542,26 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(6), __webpack_require__(4), __webpack_require__(6)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(6), __webpack_require__(14), __webpack_require__(4), __webpack_require__(6)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('../utilities/'), require('../constansts/'), require('../utilities'));
+        factory(exports, require('../utilities/'), require('redux-form'), require('../constansts/'), require('../utilities'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.utilities, global.constansts, global.utilities);
+        factory(mod.exports, global.utilities, global.reduxForm, global.constansts, global.utilities);
         global.orders = mod.exports;
     }
-})(this, function (exports, _utilities, _constansts, _utilities2) {
+})(this, function (exports, _utilities, _reduxForm, _constansts, _utilities2) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.removeGroupedProduct = exports.validateDeliveryRange = exports.addToCart = undefined;
+    exports.updateCartItems = exports.removeCartItem = exports.removeGroupedProduct = exports.validateDeliveryRange = exports.addToCart = undefined;
     var addToCart = exports.addToCart = function addToCart(items, loading_message, closeModal) {
         return function (dispatch) {
 
@@ -74538,7 +74577,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     };
 
     var validateDeliveryRange = exports.validateDeliveryRange = function validateDeliveryRange(values, max, loading_message) {
-
         return function (dispatch) {
             var delivery_address_zip = values.delivery_address_zip;
 
@@ -74579,7 +74617,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     };
 
     var removeGroupedProduct = exports.removeGroupedProduct = function removeGroupedProduct(product_id, loading_message, cart_updating_message) {
-
         return function (dispatch) {
 
             dispatch((0, _constansts.loadingToggle)(loading_message));
@@ -74592,6 +74629,42 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 return dispatch((0, _constansts.setCart)(result.cart));
             }).then(function () {
                 return dispatch((0, _constansts.loadingToggle)());
+            });
+        };
+    };
+
+    var removeCartItem = exports.removeCartItem = function removeCartItem(key, index, loading_message, cart_updating_message) {
+        return function (dispatch) {
+
+            dispatch((0, _constansts.modalLoadingToggle)(loading_message));
+
+            (0, _utilities2.removeCartItem)(key).then(function () {
+                return dispatch((0, _reduxForm.arrayRemove)(_constansts.FORM_UPDATE_CART_ITEMS, 'items', index));
+            }).then(function () {
+                return dispatch((0, _constansts.modalLoadingToggle)(cart_updating_message));
+            }).then(function () {
+                return (0, _utilities2.getCart)();
+            }).then(function (result) {
+                return dispatch((0, _constansts.setCart)(result.cart));
+            }).then(function () {
+                return dispatch((0, _constansts.modalLoadingToggle)());
+            });
+        };
+    };
+
+    var updateCartItems = exports.updateCartItems = function updateCartItems(items, loading_message, cart_updating_message) {
+        return function (dispatch) {
+
+            dispatch((0, _constansts.modalLoadingToggle)(loading_message));
+
+            (0, _utilities2.updateCertItems)(items).then(function () {
+                return dispatch((0, _constansts.modalLoadingToggle)(cart_updating_message));
+            }).then(function () {
+                return (0, _utilities2.getCart)();
+            }).then(function (result) {
+                return dispatch((0, _constansts.setCart)(result.cart));
+            }).then(function () {
+                return dispatch((0, _constansts.modalLoadingToggle)());
             });
         };
     };
@@ -75150,17 +75223,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var FormAddProductToCart = function (_Component) {
         (0, _inherits3.default)(FormAddProductToCart, _Component);
 
-        function FormAddProductToCart(props) {
+        function FormAddProductToCart() {
+            var _ref;
+
+            var _temp, _this, _ret;
+
             (0, _classCallCheck3.default)(this, FormAddProductToCart);
 
-            var _this = (0, _possibleConstructorReturn3.default)(this, (FormAddProductToCart.__proto__ || (0, _getPrototypeOf2.default)(FormAddProductToCart)).call(this, props));
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
 
-            _this.state = {
+            return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = FormAddProductToCart.__proto__ || (0, _getPrototypeOf2.default)(FormAddProductToCart)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
                 rows: 1
-            };
-
-            _this.removeRow = _this.removeRow.bind(_this);
-            return _this;
+            }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
         }
 
         (0, _createClass3.default)(FormAddProductToCart, [{
@@ -75181,11 +75257,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     variation_id: variations[0].variation_id,
                     quantity: 1
                 }));
-            }
-        }, {
-            key: 'removeRow',
-            value: function removeRow(index) {
-                (0, _reduxForm.arraySplice)(_constansts.FORM_ADD_PRODUCT_TO_CART, 'items', index, 1);
             }
         }, {
             key: 'render',
@@ -75219,8 +75290,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                 component: _product_row.ProductRow,
                                 variations: variations,
                                 product: product,
-                                remove: this.removeRow,
-                                rows: rows
+                                rows: rows,
+                                labels: this.props.labels
                             })
                         ),
                         rows < 2 ? null : _react2.default.createElement(_total_row.TotalRow, { formData: formData }),
@@ -76722,20 +76793,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(9), __webpack_require__(1), __webpack_require__(46), __webpack_require__(14), __webpack_require__(71), __webpack_require__(4), __webpack_require__(6), __webpack_require__(618), __webpack_require__(165)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(9), __webpack_require__(1), __webpack_require__(46), __webpack_require__(71), __webpack_require__(4), __webpack_require__(6), __webpack_require__(70), __webpack_require__(618), __webpack_require__(165)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('babel-runtime/core-js/object/assign'), require('react'), require('lodash'), require('redux-form'), require('./index'), require('../../constansts'), require('../../utilities'), require('../forms/update_cart_items'), require('../../constansts/products'));
+        factory(exports, require('babel-runtime/core-js/object/assign'), require('react'), require('lodash'), require('./index'), require('../../constansts'), require('../../utilities'), require('../../thunks'), require('../forms/update_cart_items'), require('../../constansts/products'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.assign, global.react, global.lodash, global.reduxForm, global.index, global.constansts, global.utilities, global.update_cart_items, global.products);
+        factory(mod.exports, global.assign, global.react, global.lodash, global.index, global.constansts, global.utilities, global.thunks, global.update_cart_items, global.products);
         global.update_grouped_products = mod.exports;
     }
-})(this, function (exports, _assign, _react, _lodash, _reduxForm, _index, _constansts, _utilities, _update_cart_items, _products) {
+})(this, function (exports, _assign, _react, _lodash, _index, _constansts, _utilities, _thunks, _update_cart_items, _products) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -76762,11 +76833,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             _props$data = props.data,
             products = _props$data.products,
             update_grouped_products = _props$data.update_grouped_products,
+            modal_loading = _props$data.modal_loading,
+            modal_loading_message = _props$data.modal_loading_message,
             _props$order$order_ca = props.order.order_cart.items,
             items = _props$order$order_ca === undefined ? [] : _props$order$order_ca,
             _props$labels = props.labels,
             update = _props$labels.update,
-            items_label = _props$labels.items;
+            items_label = _props$labels.items,
+            update_cart_items = _props$labels.update_cart_items,
+            updating_cart = _props$labels.updating_cart;
 
 
         var close = function close(event) {
@@ -76791,6 +76866,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             _react2.default.createElement(
                 _index.Modal,
                 {
+                    display_footer: false,
+                    loading: modal_loading,
+                    loading_message: modal_loading_message,
+                    loading_default_message: props.labels.loading,
                     heading: _lodash2.default.upperFirst(update) + ' ' + product.name + ' ' + _lodash2.default.upperFirst(items_label),
                     close: close },
                 _react2.default.createElement(_update_cart_items2.default, {
@@ -76800,7 +76879,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     variations: variations,
                     mode: _products.MODE_EDIT,
                     onSubmit: function onSubmit(values) {
-                        console.log("values", values);
+                        dispatch((0, _thunks.updateCartItems)(values, update_cart_items, updating_cart));
                     }
                 })
             )
@@ -76816,20 +76895,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(27), __webpack_require__(28), __webpack_require__(29), __webpack_require__(30), __webpack_require__(31), __webpack_require__(1), __webpack_require__(3), __webpack_require__(14), __webpack_require__(4), __webpack_require__(304), __webpack_require__(305)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(27), __webpack_require__(28), __webpack_require__(29), __webpack_require__(30), __webpack_require__(31), __webpack_require__(1), __webpack_require__(3), __webpack_require__(14), __webpack_require__(4), __webpack_require__(70), __webpack_require__(304), __webpack_require__(305)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('babel-runtime/core-js/object/get-prototype-of'), require('babel-runtime/helpers/classCallCheck'), require('babel-runtime/helpers/createClass'), require('babel-runtime/helpers/possibleConstructorReturn'), require('babel-runtime/helpers/inherits'), require('react'), require('prop-types'), require('redux-form'), require('../../constansts'), require('./add_product_to_cart/product_row'), require('./add_product_to_cart/total_row'));
+        factory(exports, require('babel-runtime/core-js/object/get-prototype-of'), require('babel-runtime/helpers/classCallCheck'), require('babel-runtime/helpers/createClass'), require('babel-runtime/helpers/possibleConstructorReturn'), require('babel-runtime/helpers/inherits'), require('react'), require('prop-types'), require('redux-form'), require('../../constansts'), require('../../thunks'), require('./add_product_to_cart/product_row'), require('./add_product_to_cart/total_row'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.getPrototypeOf, global.classCallCheck, global.createClass, global.possibleConstructorReturn, global.inherits, global.react, global.propTypes, global.reduxForm, global.constansts, global.product_row, global.total_row);
+        factory(mod.exports, global.getPrototypeOf, global.classCallCheck, global.createClass, global.possibleConstructorReturn, global.inherits, global.react, global.propTypes, global.reduxForm, global.constansts, global.thunks, global.product_row, global.total_row);
         global.update_cart_items = mod.exports;
     }
-})(this, function (exports, _getPrototypeOf, _classCallCheck2, _createClass2, _possibleConstructorReturn2, _inherits2, _react, _propTypes, _reduxForm, _constansts, _product_row, _total_row) {
+})(this, function (exports, _getPrototypeOf, _classCallCheck2, _createClass2, _possibleConstructorReturn2, _inherits2, _react, _propTypes, _reduxForm, _constansts, _thunks, _product_row, _total_row) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -76893,20 +76972,28 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             }
         }, {
             key: 'removeRow',
-            value: function removeRow(index) {
-                console.warn("remove cart ite action needed here");
+            value: function removeRow(item, index) {
+                var _props2 = this.props,
+                    dispatch = _props2.dispatch,
+                    _props2$labels = _props2.labels,
+                    removing_item_from_cart = _props2$labels.removing_item_from_cart,
+                    update_cart_items = _props2$labels.update_cart_items;
+                var key = item.key;
+
+
+                if (key) dispatch((0, _thunks.removeCartItem)(key, index, removing_item_from_cart, update_cart_items));else console.warn('Trying to remove item from cart with missing session key information.');
             }
         }, {
             key: 'render',
             value: function render() {
-                var _props2 = this.props,
-                    items = _props2.items,
-                    dispatch = _props2.dispatch,
-                    formData = _props2.formData,
-                    product = _props2.product,
-                    variations = _props2.variations,
-                    handleSubmit = _props2.handleSubmit,
-                    update_cart_items = _props2.labels.update_cart_items;
+                var _props3 = this.props,
+                    items = _props3.items,
+                    dispatch = _props3.dispatch,
+                    formData = _props3.formData,
+                    product = _props3.product,
+                    variations = _props3.variations,
+                    handleSubmit = _props3.handleSubmit,
+                    update_cart_items = _props3.labels.update_cart_items;
                 var rows = this.state.rows;
 
 

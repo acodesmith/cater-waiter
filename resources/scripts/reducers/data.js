@@ -63,7 +63,7 @@ const data = (state, action) => {
             break;
         case MODAL_LOADING_TOGGLE:
             return Object.assign( {}, state, {
-                modal_loading: ! state.modal_loading,
+                modal_loading: action.data !== null ? true : ! state.modal_loading,
                 modal_loading_message: action.data
             })
             break;

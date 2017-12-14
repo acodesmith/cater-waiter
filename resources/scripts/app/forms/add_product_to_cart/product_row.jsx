@@ -80,8 +80,9 @@ class ProductRow extends Component
             product,
             fields,
             mode = MODE_ADD,
+            remove,
             labels: {
-                remove
+                remove: remove_label
             }
         } = this.props
 
@@ -89,10 +90,14 @@ class ProductRow extends Component
 
             return variations.map((variation, variationIndex) => {
 
-                let attributes = variation.attributes;
-
                 return (
                     <div style={{clear: 'both'}} className="cw__variation" key={variationIndex}>
+                        { mode === MODE_ADD ? null : <Field
+                            name={`${items}.key`}
+                            type="hidden"
+                            validate={[ required ]}
+                            component={renderField}
+                        />}
                         <Field
                             name={`${items}.variation_id`}
                             type="hidden"
@@ -133,8 +138,16 @@ class ProductRow extends Component
                                 </div>
                             )
                         })}
-                        { index < 1 && mode !== MODE_EDIT ? null : <button className="option col-md-3" onClick={() => fields.remove(index)}>
-                            { remove }
+                        { index < 1 && mode !== MODE_EDIT ? null : <button className="option col-md-3" onClick={event => {
+
+                            event.preventDefault()
+
+                            if( ! remove )
+                                fields.remove(index)
+                            else
+                                remove(this.props.items[index], index)
+                        }}>
+                            { remove_label }
                         </button> }
                     </div>
                 )

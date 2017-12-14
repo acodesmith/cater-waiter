@@ -1,6 +1,5 @@
 import React from 'react'
 import _ from 'lodash'
-import { destroy } from 'redux-form'
 import {
     Modal
 } from './index'
@@ -11,8 +10,9 @@ import {
     getProductById,
     mapVariationAttributes
 } from '../../utilities'
+import { updateCartItems } from '../../thunks'
 import FormUpdateCartItems from '../forms/update_cart_items'
-import {MODE_EDIT} from "../../constansts/products";
+import { MODE_EDIT } from "../../constansts/products";
 
 const UpdateGroupedProducts = props => {
 
@@ -20,7 +20,9 @@ const UpdateGroupedProducts = props => {
         dispatch,
         data: {
             products,
-            update_grouped_products
+            update_grouped_products,
+            modal_loading,
+            modal_loading_message
         },
         order: {
             order_cart: {
@@ -29,7 +31,9 @@ const UpdateGroupedProducts = props => {
         },
         labels: {
             update,
-            items: items_label
+            items: items_label,
+            update_cart_items,
+            updating_cart
         }
     } = props
 
@@ -50,6 +54,10 @@ const UpdateGroupedProducts = props => {
     return (
         <div className="cw__update_grouped_products">
             <Modal
+                display_footer={false}
+                loading={modal_loading}
+                loading_message={modal_loading_message}
+                loading_default_message={props.labels.loading}
                 heading={`${_.upperFirst(update)} ${product.name} ${_.upperFirst(items_label)}`}
                 close={close}>
                 <FormUpdateCartItems
@@ -59,7 +67,7 @@ const UpdateGroupedProducts = props => {
                     variations={variations}
                     mode={MODE_EDIT}
                     onSubmit={(values) => {
-                        console.log("values",values);
+                        dispatch( updateCartItems( values, update_cart_items, updating_cart ) )
                     }}
                 />
             </Modal>
