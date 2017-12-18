@@ -9,7 +9,6 @@ module.exports = {
         "dist/admin": BASE_DIR + '/resources/scripts/admin.js',
         "dist/front-end": BASE_DIR + '/resources/scripts/front-end.js',
         "dist/online-orders": BASE_DIR + '/resources/scripts/online-orders.js',
-        "dist/woocommerce": BASE_DIR + '/resources/scripts/woocommerce.js',
     },
     output: {
         filename: '[name].js'

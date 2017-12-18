@@ -57,7 +57,7 @@ const PickupLocation = props =>
                 wrapper_class={'cw__pickup_address'}
                 />
             <Button
-                className='btn btn-link'
+                className='btn btn-xs btn-link'
                 onClick={() => dispatch( jumpToView( VIEW_SELECT_LOCATION, history ) )}>
                 { change_pickup_location }
             </Button>

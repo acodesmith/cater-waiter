@@ -31,7 +31,7 @@ const OrderType = props =>
             <div className="cw__order_alter_options">
                 <Button
                     onClick={() => dispatch( jumpToView( VIEW_SELECT_ORDER_TYPE, history ) )}
-                    className="btn-link">
+                    className="btn btn-xs btn-link">
                     { order_type === ORDER_TYPE_DELIVERY ? change_order_to_pickup : change_order_to_delivery }
                 </Button>
             </div>

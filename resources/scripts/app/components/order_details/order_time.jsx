@@ -1,16 +1,31 @@
 import React from 'react'
-import { militaryToStandard } from '../../../utilities'
+import {
+    VIEW_SCHEDULE_ORDER,
+    jumpToView
+} from '../../../constansts'
+import {
+    militaryToStandard
+} from '../../../utilities'
+import {
+    Button
+} from '../../elements/button_no_event'
 
 const OrderTime = props =>
 {
     let {
+        dispatch,
         labels: {
             pickup_time_title,
-            delivery_time_title
+            delivery_time_title,
+            change_delivery_time,
+            change_pickup_time
         },
         order: {
             order_pickup_time = {},
             order_type
+        },
+        view: {
+            history
         }
     } = props
 
@@ -24,7 +39,15 @@ const OrderTime = props =>
     return (
         <div className="cw__order_time">
             <h3>{ delivery ? delivery_time_title : pickup_time_title }</h3>
-            <span className="cw__order_date">{ order_date }</span> <span className="cw__order_time">{ militaryToStandard( order_time ) }</span>
+            <div>
+                <span className="cw__order_date">{ order_date }</span>
+                <span className="cw__order_time">{ militaryToStandard( order_time ) }</span>
+            </div>
+            <Button
+                onClick={() => dispatch( jumpToView( VIEW_SCHEDULE_ORDER, history ) )}
+                className="btn btn-xs btn-link">
+                { delivery ? change_delivery_time : change_pickup_time }
+            </Button>
         </div>
     )
 }

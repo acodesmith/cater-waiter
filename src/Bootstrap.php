@@ -41,7 +41,6 @@ class Bootstrap
         new ProductTaxonomy();
         new Cart();
         new Order();
-        new FrontEnd();
     }
 
     public function admin_scripts()

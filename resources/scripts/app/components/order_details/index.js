@@ -1,5 +1,5 @@
 export * from './delivery_location'
 export * from './menu_items'
+export * from './order_time'
 export * from './order_type'
 export * from './pickup_location'
-export * from './order_time'

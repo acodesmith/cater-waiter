@@ -74143,20 +74143,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(580), __webpack_require__(581), __webpack_require__(585), __webpack_require__(586), __webpack_require__(620)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(580), __webpack_require__(581), __webpack_require__(620), __webpack_require__(585), __webpack_require__(586)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else if (typeof exports !== "undefined") {
-    factory(exports, require('./delivery_location'), require('./menu_items'), require('./order_type'), require('./pickup_location'), require('./order_time'));
+    factory(exports, require('./delivery_location'), require('./menu_items'), require('./order_time'), require('./order_type'), require('./pickup_location'));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.delivery_location, global.menu_items, global.order_type, global.pickup_location, global.order_time);
+    factory(mod.exports, global.delivery_location, global.menu_items, global.order_time, global.order_type, global.pickup_location);
     global.index = mod.exports;
   }
-})(this, function (exports, _delivery_location, _menu_items, _order_type, _pickup_location, _order_time) {
+})(this, function (exports, _delivery_location, _menu_items, _order_time, _order_type, _pickup_location) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -74180,6 +74180,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }
     });
   });
+  Object.keys(_order_time).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function () {
+        return _order_time[key];
+      }
+    });
+  });
   Object.keys(_order_type).forEach(function (key) {
     if (key === "default" || key === "__esModule") return;
     Object.defineProperty(exports, key, {
@@ -74198,15 +74207,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }
     });
   });
-  Object.keys(_order_time).forEach(function (key) {
-    if (key === "default" || key === "__esModule") return;
-    Object.defineProperty(exports, key, {
-      enumerable: true,
-      get: function () {
-        return _order_time[key];
-      }
-    });
-  });
 });
 
 /***/ }),
@@ -74215,20 +74215,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(48), __webpack_require__(1), __webpack_require__(38), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(48), __webpack_require__(1), __webpack_require__(72), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('babel-runtime/core-js/object/keys'), require('react'), require('../../elements/button'), require('../../../constansts'));
+        factory(exports, require('babel-runtime/core-js/object/keys'), require('react'), require('../../elements/button_no_event'), require('../../../constansts'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.keys, global.react, global.button, global.constansts);
+        factory(mod.exports, global.keys, global.react, global.button_no_event, global.constansts);
         global.delivery_location = mod.exports;
     }
-})(this, function (exports, _keys, _react, _button, _constansts) {
+})(this, function (exports, _keys, _react, _button_no_event, _constansts) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -74251,7 +74251,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             _props$labels = props.labels,
             change_delivery_location = _props$labels.change_delivery_location,
             delivery_location = _props$labels.delivery_location,
-            order_delivery_address = props.order.order_delivery_address;
+            order_delivery_address = props.order.order_delivery_address,
+            history = props.view.history;
 
 
         return _react2.default.createElement(
@@ -74274,10 +74275,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 })
             ),
             _react2.default.createElement(
-                _button.Button,
-                { className: 'btn-link', onClick: function onClick(event) {
-                        event.preventDefault();
-                        dispatch((0, _constansts.setCurrentScreen)(_constansts.VIEW_DELIVERY_ADDRESS));
+                _button_no_event.Button,
+                { className: 'btn btn-xs btn-link', onClick: function onClick() {
+                        return dispatch((0, _constansts.jumpToView)(_constansts.VIEW_DELIVERY_ADDRESS, history));
                     } },
                 change_delivery_location
             )
@@ -74872,7 +74872,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         onClick: function onClick() {
                             return dispatch((0, _constansts.jumpToView)(_constansts.VIEW_SELECT_ORDER_TYPE, history));
                         },
-                        className: 'btn-link' },
+                        className: 'btn btn-xs btn-link' },
                     order_type === _constansts.ORDER_TYPE_DELIVERY ? change_order_to_pickup : change_order_to_delivery
                 )
             )
@@ -74960,7 +74960,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             _react2.default.createElement(
                 _button_no_event.Button,
                 {
-                    className: 'btn btn-link',
+                    className: 'btn btn-xs btn-link',
                     onClick: function onClick() {
                         return dispatch((0, _constansts.jumpToView)(_constansts.VIEW_SELECT_LOCATION, history));
                     } },
@@ -77344,20 +77344,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(3), __webpack_require__(5), __webpack_require__(72)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('../../../utilities'));
+        factory(exports, require('react'), require('../../../constansts'), require('../../../utilities'), require('../../elements/button_no_event'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.utilities);
+        factory(mod.exports, global.react, global.constansts, global.utilities, global.button_no_event);
         global.order_time = mod.exports;
     }
-})(this, function (exports, _react, _utilities) {
+})(this, function (exports, _react, _constansts, _utilities, _button_no_event) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -77374,13 +77374,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
 
     var OrderTime = function OrderTime(props) {
-        var _props$labels = props.labels,
+        var dispatch = props.dispatch,
+            _props$labels = props.labels,
             pickup_time_title = _props$labels.pickup_time_title,
             delivery_time_title = _props$labels.delivery_time_title,
+            change_delivery_time = _props$labels.change_delivery_time,
+            change_pickup_time = _props$labels.change_pickup_time,
             _props$order = props.order,
             _props$order$order_pi = _props$order.order_pickup_time,
             order_pickup_time = _props$order$order_pi === undefined ? {} : _props$order$order_pi,
-            order_type = _props$order.order_type;
+            order_type = _props$order.order_type,
+            history = props.view.history;
 
 
         if (!order_pickup_time) return null;
@@ -77400,15 +77404,27 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 delivery ? delivery_time_title : pickup_time_title
             ),
             _react2.default.createElement(
-                'span',
-                { className: 'cw__order_date' },
-                order_date
+                'div',
+                null,
+                _react2.default.createElement(
+                    'span',
+                    { className: 'cw__order_date' },
+                    order_date
+                ),
+                _react2.default.createElement(
+                    'span',
+                    { className: 'cw__order_time' },
+                    (0, _utilities.militaryToStandard)(order_time)
+                )
             ),
-            ' ',
             _react2.default.createElement(
-                'span',
-                { className: 'cw__order_time' },
-                (0, _utilities.militaryToStandard)(order_time)
+                _button_no_event.Button,
+                {
+                    onClick: function onClick() {
+                        return dispatch((0, _constansts.jumpToView)(_constansts.VIEW_SCHEDULE_ORDER, history));
+                    },
+                    className: 'btn btn-xs btn-link' },
+                delivery ? change_delivery_time : change_pickup_time
             )
         );
     };

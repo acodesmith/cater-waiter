@@ -1,8 +1,8 @@
 import React from 'react'
-import { Button } from '../../elements/button'
+import { Button } from '../../elements/button_no_event'
 import {
     VIEW_DELIVERY_ADDRESS,
-    setCurrentScreen
+    jumpToView
 } from '../../../constansts'
 
 const DeliveryLocation = props =>
@@ -15,6 +15,9 @@ const DeliveryLocation = props =>
         },
         order: {
             order_delivery_address
+        },
+        view: {
+            history
         }
     } = props
 
@@ -26,10 +29,7 @@ const DeliveryLocation = props =>
                     return <span className={`cw__${key}`} key={key}>{order_delivery_address[key]}</span>
                 }) }
             </div>
-            <Button className="btn-link" onClick={event => {
-                event.preventDefault()
-                dispatch( setCurrentScreen( VIEW_DELIVERY_ADDRESS ) )
-            }}>
+            <Button className="btn btn-xs btn-link" onClick={() => dispatch( jumpToView( VIEW_DELIVERY_ADDRESS, history ) )}>
                 { change_delivery_location }
             </Button>
         </div>
