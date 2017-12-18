@@ -11,6 +11,7 @@ use CaterWaiter\Admin\WC_PluginSettings;
 use CaterWaiter\Admin\WC_ProductDataTabs;
 use CaterWaiter\FrontEnd\OnlineOrders;
 use CaterWaiter\API\Bootstrap as BootstrapAPI;
+use CaterWaiter\Module\WooCommerce\FrontEnd;
 use CaterWaiter\Module\WooCommerce\ProductTaxonomy;
 
 class Bootstrap
@@ -40,6 +41,7 @@ class Bootstrap
         new ProductTaxonomy();
         new Cart();
         new Order();
+        new FrontEnd();
     }
 
     public function admin_scripts()

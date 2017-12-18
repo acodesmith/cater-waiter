@@ -1,18 +1,30 @@
 import React from 'react'
 import numeral from 'numeral'
-import { getProductById } from '../../utilities'
-import { Button } from '../elements/button'
+import _ from 'lodash'
+import { removeCartItem } from '../../thunks'
+import { Button } from '../elements/button_no_event'
+import {
+    getProductById,
+    formatCurrency
+} from '../../utilities'
 
 const Confirm = props => {
 
     const {
+        dispatch,
         labels: {
             confirm_order_title,
-            quantity,
+            continue_to_checkout_button,
             currency,
             item_total,
-            continue_to_checkout_button,
-            remove
+            remove,
+            removing_item_from_cart,
+            removing_item_from_cart_confirm,
+            subtotal: subtotal_label,
+            tax: tax_label,
+            total: total_label,
+            quantity,
+            updating_cart
         },
         data: {
             products
@@ -51,10 +63,14 @@ const Confirm = props => {
                                     <div className="col-md-3">{ quantity } { item.quantity }</div>
                                     <div className="col-md-3">{ item_total } {currency}{ numeral( item.line_total ).format('0.00') }</div>
                                     <div className="col-md-3">
-                                        <Button onClick={event => {
-                                            event.preventDefault()
-                                            console.log("remove item")
-                                        }}>{ remove }</Button>
+                                        <Button className="btn btn-sm btn-danger" onClick={() => {
+
+                                            const confirm_action = confirm( removing_item_from_cart_confirm )
+
+                                            if( confirm_action )
+                                                dispatch( removeCartItem( item.key, removing_item_from_cart, updating_cart ) )
+
+                                        }}>{ _.upperFirst(remove) }</Button>
                                     </div>
                                 </div>
                             </div>
@@ -62,11 +78,30 @@ const Confirm = props => {
                     )
                 }) }
             </div>
+            <div className="cw__cart_totals">
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="cw__cart_subtotal">
+                            <span>{ subtotal_label }:</span> <span>{ formatCurrency( subtotal, currency ) }</span>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="cw__cart_tax">
+                            <span>{ tax_label }:</span> <span>{ formatCurrency( tax, currency ) }</span>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="cw__cart_total">
+                            <span>{ total_label }:</span> <span className="html--set" dangerouslySetInnerHTML={{__html: total}}></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div className="cw__buttons">
-                <Button onClick={event => {
-                    event.preventDefault()
-                    window.location = order_checkout_url;
-                }}>{ continue_to_checkout_button }</Button>
+                <Button
+                    className="btn btn-lg pull-right"
+                    onClick={() => window.location = order_checkout_url}>
+                    { continue_to_checkout_button }</Button>
             </div>
         </div>
     )

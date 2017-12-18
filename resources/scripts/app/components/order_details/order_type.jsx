@@ -1,11 +1,10 @@
 import React from 'react'
-import { Button } from '../../elements/button'
+import { Button } from '../../elements/button_no_event'
 import {
     ORDER_TYPE_DELIVERY,
     VIEW_SELECT_ORDER_TYPE,
     jumpToView
 } from '../../../constansts'
-import { jumpToView as jumpToViewUtility } from '../../../utilities'
 
 const OrderType = props =>
 {
@@ -24,19 +23,16 @@ const OrderType = props =>
         }
     } = props
 
+
     return (
         <div className="cw__order_type">
             <h3>{ order_type_title }</h3>
             <span>{ order_type }</span>
             <div className="cw__order_alter_options">
-                <Button onClick={event => {
-                    event.preventDefault();
-
-                    let history = jumpToViewUtility( VIEW_SELECT_ORDER_TYPE, history )
-
-                    dispatch( jumpToView( VIEW_SELECT_ORDER_TYPE, history ) )
-                }} className="btn-link">
-                    { order_type === ORDER_TYPE_DELIVERY ? change_order_to_delivery : change_order_to_pickup }
+                <Button
+                    onClick={() => dispatch( jumpToView( VIEW_SELECT_ORDER_TYPE, history ) )}
+                    className="btn-link">
+                    { order_type === ORDER_TYPE_DELIVERY ? change_order_to_pickup : change_order_to_delivery }
                 </Button>
             </div>
         </div>

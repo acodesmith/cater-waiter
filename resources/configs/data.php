@@ -8,6 +8,7 @@ return [
 	'loading_message'         => null,
 	'modal_loading'           => false,
 	'modal_loading_message'   => null,
+	'location_posts'          => \CaterWaiter\Admin\Locations::all(),
 	'locations'               => [],
 	'location'                => null,
 	'products'                => $product_data['products'],

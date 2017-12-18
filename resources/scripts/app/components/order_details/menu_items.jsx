@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import { Button } from '../../elements/button'
+import { Button } from '../../elements/button_no_event'
 import {
     formatCurrency,
     groupCartItemsByProductId
@@ -70,12 +70,9 @@ const MenuItems = props => {
                             <span>{ item_total }:</span>
                             <span>{ formatCurrency(group.line_total, currency) }</span>
                         </div>
-                        <Button className="btn btn-xs btn-default" onClick={event => {
-                            event.preventDefault()
-                            dispatch( showGroupedItemsOptions( group.product.id ) )
-                        }}>{ _.upperFirst(update) }</Button>
-                        <Button className="btn btn-xs btn-danger" onClick={event => {
-                            event.preventDefault()
+                        <Button className="btn btn-xs btn-default" onClick={() => dispatch( showGroupedItemsOptions( group.product.id ) )}>
+                            { _.upperFirst(update) }</Button>
+                        <Button className="btn btn-xs btn-danger" onClick={() => {
 
                             const confirm_action = confirm( removing_item_from_cart_confirm )
 

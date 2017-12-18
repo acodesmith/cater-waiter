@@ -10,7 +10,7 @@ import {
     FORM_UPDATE_CART_ITEMS,
     MODE_EDIT
 } from '../../constansts'
-import { removeCartItem } from '../../thunks'
+import { removeCartItemInForm } from '../../thunks'
 import { ProductRow } from './add_product_to_cart/product_row'
 import { TotalRow } from './add_product_to_cart/total_row'
 
@@ -63,7 +63,7 @@ class FormUpdateCartItems extends Component
         const { key } = item
 
         if( key )
-            dispatch( removeCartItem( key, index, removing_item_from_cart, update_cart_items ) )
+            dispatch( removeCartItemInForm( key, index, removing_item_from_cart, update_cart_items ) )
         else
             console.warn('Trying to remove item from cart with missing session key information.')
     }

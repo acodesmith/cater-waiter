@@ -1,3 +1,7 @@
+import {
+    jumpToView as jumpToViewHistory
+} from '../utilities'
+
 /*
  * action values
  */
@@ -37,7 +41,7 @@ export function jumpToView(view, history) {
         type: JUMP_TO_VIEW,
         data: {
             view: view,
-            history: history
+            history: jumpToViewHistory( view, history )
         }
     }
 }

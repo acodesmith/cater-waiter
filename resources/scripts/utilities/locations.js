@@ -82,7 +82,8 @@ export const getLocationFromId = id =>
  * @param order_type
  * @returns {*}
  */
-export const extractWindowOfTime = (location = {}, order_type) => {
+export const extractWindowOfTime = (location = {}, order_type) =>
+{
 
     const { post = { post_meta } } = location
     const { post_meta = {} } = post
@@ -123,7 +124,8 @@ export const extractWindowOfTime = (location = {}, order_type) => {
  * @param and
  * @returns {string}
  */
-export const windowOfTimeError = (error, minOrderTime, maxOrderTime, and) => {
+export const windowOfTimeError = (error, minOrderTime, maxOrderTime, and) =>
+{
     return `${error} ${militaryToStandard( minOrderTime )} ${and} ${militaryToStandard( maxOrderTime )}`
 }
 
@@ -132,6 +134,21 @@ export const windowOfTimeError = (error, minOrderTime, maxOrderTime, and) => {
  *
  * @param location_id
  */
-export const setTaxRateBasedOnLocation = location_id => {
+export const setTaxRateBasedOnLocation = location_id =>
+{
     return ajax('set_tax_by_location', { location_id: location_id }, 'POST', false, true)
+}
+
+/**
+ * Return location post object based on ID
+ *
+ * @param id
+ * @param locations
+ * @returns {*}
+ */
+export const getLocationPostById = (id, locations = []) =>
+{
+    return locations.filter(location => {
+        return location.ID === +id
+    }).shift()
 }
