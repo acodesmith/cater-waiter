@@ -94,7 +94,7 @@ const MenuItems = props => {
             </div>
             <div className="cw__cart_total">
                 <span>{ total_label }:</span>
-                <span className="html--set" dangerouslySetInnerHTML={{__html: total}}></span>
+                <span>{ formatCurrency( +subtotal + +tax, currency ) }</span>
             </div>
             <hr/>
         </div>

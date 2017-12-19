@@ -82,17 +82,20 @@ const Confirm = props => {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="cw__cart_subtotal">
-                            <span>{ subtotal_label }:</span> <span>{ formatCurrency( subtotal, currency ) }</span>
+                            <span>{ subtotal_label }:</span>
+                            <span>{ formatCurrency( subtotal, currency ) }</span>
                         </div>
                     </div>
                     <div className="row">
                         <div className="cw__cart_tax">
-                            <span>{ tax_label }:</span> <span>{ formatCurrency( tax, currency ) }</span>
+                            <span>{ tax_label }:</span>
+                            <span>{ formatCurrency( tax, currency ) }</span>
                         </div>
                     </div>
                     <div className="row">
                         <div className="cw__cart_total">
-                            <span>{ total_label }:</span> <span className="html--set" dangerouslySetInnerHTML={{__html: total}}></span>
+                            <span>{ total_label }:</span>
+                            <span>{ formatCurrency( +subtotal + +tax, currency ) }</span>
                         </div>
                     </div>
                 </div>

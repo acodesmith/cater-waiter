@@ -72540,10 +72540,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         switch (order_type) {
             case 'delivery':
-                if (delivery_time_start !== "" && delivery_time_end !== "") return [delivery_time_start, delivery_time_end];
+                if (delivery_time_start && delivery_time_start !== "" && delivery_time_end && delivery_time_end !== "") return [delivery_time_start, delivery_time_end];
                 break;
             case 'pickup':
-                if (pickup_time_start !== "" && pickup_time_end !== "") return [pickup_time_start, pickup_time_end];
+                if (pickup_time_start && pickup_time_start !== "" && pickup_time_end && pickup_time_end !== "") return [pickup_time_start, pickup_time_end];
                 break;
         }
 
@@ -72570,7 +72570,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
      * @param location_id
      */
     var setTaxRateBasedOnLocation = exports.setTaxRateBasedOnLocation = function setTaxRateBasedOnLocation(location_id) {
-        return (0, _request.ajax)('set_tax_by_location', { location_id: location_id }, 'POST', false, true);
+        console.log("{ location_id: location_id }", { location_id: location_id });
+        return (0, _request.ajax)('set_tax_by_location', { location_id: location_id }, 'GET', false, true);
     };
 
     /**
@@ -74463,7 +74464,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     total_label,
                     ':'
                 ),
-                _react2.default.createElement('span', { className: 'html--set', dangerouslySetInnerHTML: { __html: total } })
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    (0, _utilities.formatCurrency)(+subtotal + +tax, currency)
+                )
             ),
             _react2.default.createElement('hr', null)
         );
@@ -74526,6 +74531,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         };
     };
 
+    /**
+     *
+     * @param location
+     * @returns {*}
+     */
     var selectLocation = exports.selectLocation = function selectLocation(location) {
         var id = location.id;
 
@@ -74555,8 +74565,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 location.pickup_time_end = pickup_time_end;
                 location.pickup_time_start = pickup_time_start;
 
-                dispatch((0, _constansts.setLocation)(location));
-                dispatch((0, _constansts.setCurrentScreen)(_constansts.VIEW_SCHEDULE_ORDER));
+                return dispatch((0, _constansts.setLocation)(location));
+            }).then(function () {
+                return (0, _utilities.setTaxRateBasedOnLocation)(id);
+            }).then(function () {
+                return dispatch((0, _constansts.setCurrentScreen)(_constansts.VIEW_SCHEDULE_ORDER));
             });
         };
     };
@@ -75788,7 +75801,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                 subtotal_label,
                                 ':'
                             ),
-                            ' ',
                             _react2.default.createElement(
                                 'span',
                                 null,
@@ -75808,7 +75820,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                 tax_label,
                                 ':'
                             ),
-                            ' ',
                             _react2.default.createElement(
                                 'span',
                                 null,
@@ -75828,8 +75839,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                 total_label,
                                 ':'
                             ),
-                            ' ',
-                            _react2.default.createElement('span', { className: 'html--set', dangerouslySetInnerHTML: { __html: total } })
+                            _react2.default.createElement(
+                                'span',
+                                null,
+                                (0, _utilities.formatCurrency)(+subtotal + +tax, currency)
+                            )
                         )
                     )
                 )
@@ -76725,8 +76739,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     locations.map(function (location) {
 
                         var location_post = (0, _utilities.getLocationPostById)(location.id, location_posts);
-
-                        console.log("location_post.post_meta", location_post.post_meta);
 
                         var _location_post$post_m = location_post.post_meta,
                             address_one = _location_post$post_m.address_one,

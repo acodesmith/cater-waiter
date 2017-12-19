@@ -96,14 +96,16 @@ export const extractWindowOfTime = (location = {}, order_type) =>
 
     switch(order_type) {
         case 'delivery':
-            if( delivery_time_start !== "" && delivery_time_end !== ""  )
+            if( delivery_time_start && delivery_time_start !== ""
+                && delivery_time_end && delivery_time_end !== ""  )
                 return [
                     delivery_time_start,
                     delivery_time_end,
                 ]
             break;
         case 'pickup':
-            if( pickup_time_start !== ""  && pickup_time_end !== ""  )
+            if( pickup_time_start && pickup_time_start !== ""
+                && pickup_time_end && pickup_time_end !== ""  )
                 return [
                     pickup_time_start,
                     pickup_time_end
@@ -136,7 +138,8 @@ export const windowOfTimeError = (error, minOrderTime, maxOrderTime, and) =>
  */
 export const setTaxRateBasedOnLocation = location_id =>
 {
-    return ajax('set_tax_by_location', { location_id: location_id }, 'POST', false, true)
+    console.log("{ location_id: location_id }",{ location_id: location_id });
+    return ajax('set_tax_by_location', { location_id: location_id }, 'GET', false, true)
 }
 
 /**

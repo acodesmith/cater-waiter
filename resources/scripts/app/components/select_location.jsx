@@ -44,8 +44,6 @@ class SelectLocation extends Component
                 { locations.map( (location) => {
 
                     let location_post = getLocationPostById( location.id, location_posts )
-
-                    console.log("location_post.post_meta",location_post.post_meta);
                     
                     const {
                         address_one,

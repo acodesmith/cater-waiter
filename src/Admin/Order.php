@@ -16,10 +16,11 @@ class Order
 
     public function set_tax_by_location()
     {
-    	\WC()->session->set( self::TAX_LOCATION_ID, $_POST['location_id'] );
+    	\WC()->session->set( self::TAX_LOCATION_ID, $_REQUEST['location_id'] );
 
     	wp_send_json([
-    		'success' => ! empty( $_POST['location_id'] )
+    		'success' => ! empty( $_REQUEST['location_id'] ),
+		    'location_id' => $_REQUEST['location_id'],
 	    ]);
     	wp_die();
     }
