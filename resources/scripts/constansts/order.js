@@ -30,10 +30,13 @@ export function setOrderTime(text) {
 }
 
 export function setDeliveryAddress(address, location) {
-    return { type: SET_DELIVERY_ADDRESS, data: {
-        address: address,
-        location: location,
-    } }
+    return {
+        type: SET_DELIVERY_ADDRESS,
+        data: {
+            address: address,
+            location: location,
+        }
+    }
 }
 
 export function addItemToCart(data) {

@@ -46,7 +46,7 @@ export const getLocationsFromZip = zip =>
  *
  * @param results
  */
-export const extractDataFromResults = results =>
+export const extractDataFromResults = (results = []) =>
 {
 
     let data = [];
@@ -138,7 +138,6 @@ export const windowOfTimeError = (error, minOrderTime, maxOrderTime, and) =>
  */
 export const setTaxRateBasedOnLocation = location_id =>
 {
-    console.log("{ location_id: location_id }",{ location_id: location_id });
     return ajax('set_tax_by_location', { location_id: location_id }, 'GET', false, true)
 }
 

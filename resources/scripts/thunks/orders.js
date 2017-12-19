@@ -1,5 +1,5 @@
-import { addToCart as addToCartAPI } from '../utilities/'
-import { arrayRemove } from 'redux-form'
+import {addToCart as addToCartAPI} from '../utilities/'
+import {arrayRemove} from 'redux-form'
 import {
     VIEW_SCHEDULE_ORDER,
     FORM_UPDATE_CART_ITEMS,
@@ -9,7 +9,8 @@ import {
     modalLoadingToggle,
     loadingToggle,
     outOfRangeDelivery,
-    setCart
+    setCart,
+    setLocation
 } from '../constansts/'
 import {
     validateAddressRadius,
@@ -30,19 +31,18 @@ import {
  * @param closeModal
  * @returns {function(*)}
  */
-export const addToCart = (items, loading_message, closeModal) =>
-{
+export const addToCart = (items, loading_message, closeModal) => {
     return dispatch => {
 
-        dispatch( modalLoadingToggle( loading_message ) )
+        dispatch(modalLoadingToggle(loading_message))
 
         addToCartAPI(items)
             .then(data => {
 
-                if( data.success )
-                    dispatch( addItemToCart( data.cart ) )
-                    dispatch( modalLoadingToggle() )
-                    closeModal( new Event('click') )
+                if (data.success)
+                    dispatch(addItemToCart(data.cart))
+                dispatch(modalLoadingToggle())
+                closeModal(new Event('click'))
             })
     }
 }
@@ -57,15 +57,14 @@ export const addToCart = (items, loading_message, closeModal) =>
  * @param loading_message
  * @returns {function(*=)}
  */
-export const validateDeliveryRange = (values, max, loading_message) =>
-{
+export const validateDeliveryRange = (values, max, loading_message) => {
     return dispatch => {
 
         const {
             delivery_address_zip
         } = values
 
-        dispatch( loadingToggle( loading_message ) )
+        dispatch(loadingToggle(loading_message))
 
         validateAddressRadius(delivery_address_zip, max)
             .then(result => {
@@ -75,26 +74,29 @@ export const validateDeliveryRange = (values, max, loading_message) =>
                     location
                 } = result
 
-                if( valid ) {
+                if ( valid ) {
 
-                    getLocationFromId( location.id ).then(post => {
+                    getLocationFromId(location.id)
+                        .then(post => {
 
-                        values.delivery_within_range = true
-                        location.post = post
+                            values.delivery_within_range = true
+                            location.post = post
 
-                        return setTaxRateBasedOnLocation( location.id )
-                    })
-                        .then(() => {
-                            return getCart()
+                            dispatch( setLocation( location ) )
+
+                            return setTaxRateBasedOnLocation(location.id)
                         })
+                        .then(() => getCart())
                         .then(result => {
-                            return dispatch( setCart( result.cart ) )
+                            dispatch( setCart( result.cart ) )
                         })
-                        .then(() => dispatch( setDeliveryAddress( values, location ) ))
-                        .then(() => dispatch( loadingToggle() ))
-                        .then(() => dispatch( setCurrentScreen( VIEW_SCHEDULE_ORDER ) ))
+                        .then(() => {
+                            dispatch( setDeliveryAddress(values, location) )
+                        })
+                        .then(() => dispatch( loadingToggle() ) )
+                        .then(() => dispatch( setCurrentScreen(VIEW_SCHEDULE_ORDER) ) )
 
-                }else{
+                } else {
                     //Set state to display error message for out of range delivery address
                     dispatch( loadingToggle() )
                     dispatch( outOfRangeDelivery() )
@@ -113,17 +115,20 @@ export const validateDeliveryRange = (values, max, loading_message) =>
  * @param cart_updating_message
  * @returns {function(*)}
  */
-export const removeGroupedProduct = (product_id, loading_message, cart_updating_message) =>
-{
+export const removeGroupedProduct = (product_id, loading_message, cart_updating_message) => {
     return dispatch => {
 
-        dispatch( loadingToggle( loading_message ) )
+        dispatch(loadingToggle(loading_message))
 
         removeGroupedProductAjax(product_id)
-            .then(() => dispatch( loadingToggle( cart_updating_message ) ))
-            .then(() => { return getCart() })
-            .then(result => { return dispatch( setCart( result.cart ) ) })
-            .then(() => dispatch( loadingToggle() ))
+            .then(() => dispatch(loadingToggle(cart_updating_message)))
+            .then(() => {
+                return getCart()
+            })
+            .then(result => {
+                return dispatch(setCart(result.cart))
+            })
+            .then(() => dispatch(loadingToggle()))
     }
 }
 
@@ -136,18 +141,21 @@ export const removeGroupedProduct = (product_id, loading_message, cart_updating_
  * @param cart_updating_message
  * @returns {function(*)}
  */
-export const removeCartItemInForm = (key, index, loading_message, cart_updating_message) =>
-{
+export const removeCartItemInForm = (key, index, loading_message, cart_updating_message) => {
     return dispatch => {
 
-        dispatch( modalLoadingToggle( loading_message ) )
+        dispatch(modalLoadingToggle(loading_message))
 
         removeCartItemAjax(key)
-            .then(() => dispatch( arrayRemove( FORM_UPDATE_CART_ITEMS, 'items', index ) ))
-            .then(() => dispatch( modalLoadingToggle( cart_updating_message ) ))
-            .then(() => { return getCart() })
-            .then(result => { return dispatch( setCart( result.cart ) ) })
-            .then(() => dispatch( modalLoadingToggle() ))
+            .then(() => dispatch(arrayRemove(FORM_UPDATE_CART_ITEMS, 'items', index)))
+            .then(() => dispatch(modalLoadingToggle(cart_updating_message)))
+            .then(() => {
+                return getCart()
+            })
+            .then(result => {
+                return dispatch(setCart(result.cart))
+            })
+            .then(() => dispatch(modalLoadingToggle()))
     }
 }
 
@@ -159,17 +167,20 @@ export const removeCartItemInForm = (key, index, loading_message, cart_updating_
  * @param cart_updating_message
  * @returns {function(*)}
  */
-export const removeCartItem = (key, loading_message, cart_updating_message) =>
-{
+export const removeCartItem = (key, loading_message, cart_updating_message) => {
     return dispatch => {
 
-        dispatch( loadingToggle( loading_message ) )
+        dispatch(loadingToggle(loading_message))
 
         removeCartItemAjax(key)
-            .then(() => dispatch( loadingToggle( cart_updating_message ) ))
-            .then(() => { return getCart() })
-            .then(result => { return dispatch( setCart( result.cart ) ) })
-            .then(() => dispatch( loadingToggle() ))
+            .then(() => dispatch(loadingToggle(cart_updating_message)))
+            .then(() => {
+                return getCart()
+            })
+            .then(result => {
+                return dispatch(setCart(result.cart))
+            })
+            .then(() => dispatch(loadingToggle()))
     }
 }
 
@@ -182,16 +193,19 @@ export const removeCartItem = (key, loading_message, cart_updating_message) =>
  * @param cart_updating_message
  * @returns {function(*)}
  */
-export const updateCartItems = (items, loading_message, cart_updating_message) =>
-{
+export const updateCartItems = (items, loading_message, cart_updating_message) => {
     return dispatch => {
 
-        dispatch( modalLoadingToggle( loading_message ) )
+        dispatch(modalLoadingToggle(loading_message))
 
         updateCertItemsAjax(items)
-            .then(() => dispatch( modalLoadingToggle( cart_updating_message ) ))
-            .then(() => { return getCart() })
-            .then(result => { return dispatch( setCart( result.cart ) ) })
-            .then(() => dispatch( modalLoadingToggle() ))
+            .then(() => dispatch(modalLoadingToggle(cart_updating_message)))
+            .then(() => {
+                return getCart()
+            })
+            .then(result => {
+                return dispatch(setCart(result.cart))
+            })
+            .then(() => dispatch(modalLoadingToggle()))
     }
 }

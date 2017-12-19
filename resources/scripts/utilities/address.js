@@ -12,15 +12,21 @@ export const validateAddressRadius = (zip, max) => {
             return new Promise(
                 function (resolve) {
 
-                    let locations = extractDataFromResults(data.results)
+                    if( ! data || ! data.results )
+                        return resolve({
+                            valid: false,
+                            location: []
+                        })
 
-                    if (!locations.length) {
+                    let locations = extractDataFromResults( data.results )
 
+                    console.log("locations",locations);
+
+                    if ( ! locations.length )
                         return resolve({
                             valid: false,
                             location: locations
                         })
-                    }
 
                     let closest_location = _.sortBy(locations, [location => parseFloat(location.distance_num)]).shift()
 

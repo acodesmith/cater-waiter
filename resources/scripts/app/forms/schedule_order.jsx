@@ -80,7 +80,7 @@ class FormScheduleOrder extends Component
             }
         } = this.props
 
-        const { handleSubmit, pristine, reset, submitting, error } = this.props
+        const { handleSubmit, error } = this.props
 
         const [ minOrderTime, maxOrderTime ] = extractWindowOfTime( location, order_type )
 

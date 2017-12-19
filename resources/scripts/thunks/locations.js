@@ -14,6 +14,7 @@ import {
     getLocationFromId,
     setTaxRateBasedOnLocation
 } from '../utilities/'
+import {loadingToggle} from "../constansts/data";
 
 /**
  * Load all the locations based off the zip code.
@@ -44,7 +45,7 @@ export const loadLocations = zip_code => {
  * @param location
  * @returns {*}
  */
-export const selectLocation = location => {
+export const selectLocation = (location, loading_message) => {
 
     const { id } = location
 
@@ -54,6 +55,8 @@ export const selectLocation = location => {
         }
 
     return dispatch => {
+
+        dispatch( loadingToggle( loading_message ) )
 
         /**
          * Extract the post meta data from the post object.
@@ -82,6 +85,7 @@ export const selectLocation = location => {
                 return dispatch(setLocation(location))
             })
             .then(() => setTaxRateBasedOnLocation( id ))
+            .then(() => dispatch( loadingToggle() ))
             .then(() => dispatch(setCurrentScreen(VIEW_SCHEDULE_ORDER)))
     }
 }

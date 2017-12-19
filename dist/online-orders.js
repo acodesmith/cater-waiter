@@ -25168,10 +25168,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
 
     function setDeliveryAddress(address, location) {
-        return { type: SET_DELIVERY_ADDRESS, data: {
+        return {
+            type: SET_DELIVERY_ADDRESS,
+            data: {
                 address: address,
                 location: location
-            } };
+            }
+        };
     }
 
     function addItemToCart(data) {
@@ -71459,15 +71462,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
             return new _promise2.default(function (resolve) {
 
+                if (!data || !data.results) return resolve({
+                    valid: false,
+                    location: []
+                });
+
                 var locations = (0, _utilities.extractDataFromResults)(data.results);
 
-                if (!locations.length) {
+                console.log("locations", locations);
 
-                    return resolve({
-                        valid: false,
-                        location: locations
-                    });
-                }
+                if (!locations.length) return resolve({
+                    valid: false,
+                    location: locations
+                });
 
                 var closest_location = _lodash2.default.sortBy(locations, [function (location) {
                     return parseFloat(location.distance_num);
@@ -72491,7 +72498,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
      *
      * @param results
      */
-    var extractDataFromResults = exports.extractDataFromResults = function extractDataFromResults(results) {
+    var extractDataFromResults = exports.extractDataFromResults = function extractDataFromResults() {
+        var results = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
 
         var data = [];
 
@@ -72570,7 +72579,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
      * @param location_id
      */
     var setTaxRateBasedOnLocation = exports.setTaxRateBasedOnLocation = function setTaxRateBasedOnLocation(location_id) {
-        console.log("{ location_id: location_id }", { location_id: location_id });
         return (0, _request.ajax)('set_tax_by_location', { location_id: location_id }, 'GET', false, true);
     };
 
@@ -74483,20 +74491,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(3), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(3), __webpack_require__(5), __webpack_require__(518)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('../constansts/'), require('../utilities/'));
+        factory(exports, require('../constansts/'), require('../utilities/'), require('../constansts/data'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.constansts, global.utilities);
+        factory(mod.exports, global.constansts, global.utilities, global.data);
         global.locations = mod.exports;
     }
-})(this, function (exports, _constansts, _utilities) {
+})(this, function (exports, _constansts, _utilities, _data) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -74536,7 +74544,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
      * @param location
      * @returns {*}
      */
-    var selectLocation = exports.selectLocation = function selectLocation(location) {
+    var selectLocation = exports.selectLocation = function selectLocation(location, loading_message) {
         var id = location.id;
 
 
@@ -74545,6 +74553,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         };
 
         return function (dispatch) {
+
+            dispatch((0, _data.loadingToggle)(loading_message));
 
             /**
              * Extract the post meta data from the post object.
@@ -74568,6 +74578,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 return dispatch((0, _constansts.setLocation)(location));
             }).then(function () {
                 return (0, _utilities.setTaxRateBasedOnLocation)(id);
+            }).then(function () {
+                return dispatch((0, _data.loadingToggle)());
             }).then(function () {
                 return dispatch((0, _constansts.setCurrentScreen)(_constansts.VIEW_SCHEDULE_ORDER));
             });
@@ -74655,13 +74667,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         values.delivery_within_range = true;
                         location.post = post;
 
+                        dispatch((0, _constansts.setLocation)(location));
+
                         return (0, _utilities2.setTaxRateBasedOnLocation)(location.id);
                     }).then(function () {
                         return (0, _utilities2.getCart)();
                     }).then(function (result) {
-                        return dispatch((0, _constansts.setCart)(result.cart));
+                        dispatch((0, _constansts.setCart)(result.cart));
                     }).then(function () {
-                        return dispatch((0, _constansts.setDeliveryAddress)(values, location));
+                        dispatch((0, _constansts.setDeliveryAddress)(values, location));
                     }).then(function () {
                         return dispatch((0, _constansts.loadingToggle)());
                     }).then(function () {
@@ -76577,9 +76591,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     and = _props$labels.and;
                 var _props2 = this.props,
                     handleSubmit = _props2.handleSubmit,
-                    pristine = _props2.pristine,
-                    reset = _props2.reset,
-                    submitting = _props2.submitting,
                     error = _props2.error;
 
                 var _extractWindowOfTime = (0, _utilities.extractWindowOfTime)(location, order_type),
@@ -76718,7 +76729,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     history = _props.history,
                     dispatch = _props.dispatch;
                 var select_pickup_location = labels.select_pickup_location,
-                    select_this_location = labels.select_this_location;
+                    select_this_location = labels.select_this_location,
+                    loading_label = labels.loading;
                 var loading = request.loading;
 
 
@@ -76765,7 +76777,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                 _button.Button,
                                 { onClick: function onClick(event) {
                                         event.preventDefault();
-                                        dispatch((0, _thunks.selectLocation)(location));
+                                        dispatch((0, _thunks.selectLocation)(location, loading_label));
                                     } },
                                 select_this_location
                             )

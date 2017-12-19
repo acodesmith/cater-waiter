@@ -31,7 +31,8 @@ class SelectLocation extends Component
 
         const {
             select_pickup_location,
-            select_this_location
+            select_this_location,
+            loading: loading_label
         } = labels
 
         const { loading } = request
@@ -67,7 +68,7 @@ class SelectLocation extends Component
                             />
                             <Button onClick={event => {
                                 event.preventDefault()
-                                dispatch( selectLocation( location ) )
+                                dispatch( selectLocation( location, loading_label ) )
                             }}>{ select_this_location }</Button>
                         </Location>
                     )
