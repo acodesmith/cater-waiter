@@ -43,6 +43,17 @@ class RestProductData extends \WC_REST_Products_Controller
             'meta_data'             => $product->get_meta_data(),
         );
 
+        if( ! empty( $data['meta_data'] ) ) {
+        	$temp = [];
+
+        	foreach( $data['meta_data'] as $meta_data ) {
+
+		        $temp[ $meta_data->key ] = $meta_data;
+	        }
+
+	        $data['meta_data'] = $temp;
+        }
+
         return $this->catering_data( $data );
     }
 

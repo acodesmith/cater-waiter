@@ -64,13 +64,47 @@ class ProductRow extends Component
             formId = FORM_ADD_PRODUCT_TO_CART
         } = this.props
 
+        const groupedByAmount = this.productGroupedByAmount()
+
+        let row_defaults = {
+            product_id: product.id,
+            variation_id: variations[0].variation_id,
+            quantity: 1,
+        }
+
+        if( groupedByAmount ) {
+            row_defaults.quantity = groupedByAmount.value
+        }
+
         dispatch(
-            arrayPush( formId, 'items', {
-                product_id: product.id,
-                variation_id: variations[0].variation_id,
-                quantity: 1,
-            } )
+            arrayPush( formId, 'items', row_defaults )
         )
+    }
+
+    productGroupedByAmount()
+    {
+        const {
+            product: {
+                meta_data: {
+                    _product_grouped_by_amount
+                }
+            }
+        } = this.props
+
+        return _product_grouped_by_amount
+    }
+
+    quantityAttrs()
+    {
+        let attrs = { min: 1 },
+            groupedByAmount = this.productGroupedByAmount()
+
+        if( groupedByAmount ) {
+            attrs.step = groupedByAmount.value
+            attrs.min  = groupedByAmount.value
+        }
+
+        return attrs
     }
 
     render()
@@ -118,7 +152,7 @@ class ProductRow extends Component
                             type="number"
                             className="col-md-3"
                             validate={[ required, minNumericValueOne ]}
-                            attr={{ min: 1 }}
+                            attr={this.quantityAttrs()}
                             component={renderField} />
                         {variation.attributes.map(attribute => {
                             return (

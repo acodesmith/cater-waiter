@@ -29,7 +29,7 @@ export const getLocationsFromZip = zip =>
                 longitude: lng,
                 distance: 100,
                 locatorNonce: nonce
-            } )
+            }, 'POST', false, true )
 
         });
 

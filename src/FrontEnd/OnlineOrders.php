@@ -18,7 +18,7 @@ class OnlineOrders {
 
 	public function online_orders( $attrs ) {
 
-		wp_enqueue_script( 'cater_waiter__online_orders_scripts', CATER_WAITER_PLUGIN_URL . 'dist/online-orders.js', [ 'jquery' ], '0.0.5', true );
+		wp_enqueue_script( 'cater_waiter__online_orders_scripts', CATER_WAITER_PLUGIN_URL . 'dist/online-orders.js', [ 'jquery' ], '0.0.7', true );
 		wp_localize_script( 'cater_waiter__online_orders_scripts', 'cw__config', Load::config( 'front_end_app.php' ) );
 
 		wp_enqueue_style( 'cater_waiter__online_order_styles', CATER_WAITER_PLUGIN_URL . 'dist/online-orders.css', [], 1 );

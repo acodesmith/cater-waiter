@@ -6,8 +6,7 @@ import {
     jumpToView
 } from '../../../constansts'
 import {
-    getLocationPostById,
-    jumpToView as jumpToViewUtility
+    getLocationPostById
 } from '../../../utilities'
 
 const PickupLocation = props =>

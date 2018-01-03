@@ -29841,8 +29841,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
          **/
         return jQuery.ajax({
             url: request.ajax.baseurl + '/?action=' + action,
-            contentType: 'application/json',
-            data: json_data ? (0, _stringify2.default)(data) : request_data,
+            data: json_data ? (0, _stringify2.default)(data) : method === 'POST' ? data : request_data,
             method: method,
             beforeSend: function beforeSend(xhr) {
 
@@ -41545,11 +41544,40 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     formId = _props3$formId === undefined ? _constansts.FORM_ADD_PRODUCT_TO_CART : _props3$formId;
 
 
-                dispatch((0, _reduxForm.arrayPush)(formId, 'items', {
+                var groupedByAmount = this.productGroupedByAmount();
+
+                var row_defaults = {
                     product_id: product.id,
                     variation_id: variations[0].variation_id,
                     quantity: 1
-                }));
+                };
+
+                if (groupedByAmount) {
+                    row_defaults.quantity = groupedByAmount.value;
+                }
+
+                dispatch((0, _reduxForm.arrayPush)(formId, 'items', row_defaults));
+            }
+        }, {
+            key: 'productGroupedByAmount',
+            value: function productGroupedByAmount() {
+                var _product_grouped_by_amount = this.props.product.meta_data._product_grouped_by_amount;
+
+
+                return _product_grouped_by_amount;
+            }
+        }, {
+            key: 'quantityAttrs',
+            value: function quantityAttrs() {
+                var attrs = { min: 1 },
+                    groupedByAmount = this.productGroupedByAmount();
+
+                if (groupedByAmount) {
+                    attrs.step = groupedByAmount.value;
+                    attrs.min = groupedByAmount.value;
+                }
+
+                return attrs;
             }
         }, {
             key: 'render',
@@ -41599,7 +41627,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                 type: 'number',
                                 className: 'col-md-3',
                                 validate: [_utilities.required, _utilities.minNumericValueOne],
-                                attr: { min: 1 },
+                                attr: _this2.quantityAttrs(),
                                 component: _utilities.renderField }),
                             variation.attributes.map(function (attribute) {
                                 return _react2.default.createElement(
@@ -72595,7 +72623,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     longitude: lng,
                     distance: 100,
                     locatorNonce: nonce
-                });
+                }, 'POST', false, true);
             });
         }).catch(function (err) {
             console.error(err);
@@ -75451,18 +75479,33 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 this.props.dispatch((0, _reduxForm.arrayRemoveAll)(_constansts.FORM_ADD_PRODUCT_TO_CART, 'items'));
             }
         }, {
-            key: 'addRow',
-            value: function addRow() {
+            key: 'rowDefaults',
+            value: function rowDefaults() {
                 var _props = this.props,
                     product = _props.product,
                     variations = _props.variations;
 
 
-                this.props.dispatch((0, _reduxForm.arrayPush)(_constansts.FORM_ADD_PRODUCT_TO_CART, 'items', {
+                var data = {
                     product_id: product.id,
                     variation_id: variations[0].variation_id,
                     quantity: 1
-                }));
+                };
+
+                var _product_grouped_by_amount = product.meta_data._product_grouped_by_amount;
+
+
+                if (_product_grouped_by_amount) {
+
+                    data.quantity = _product_grouped_by_amount.value;
+                }
+
+                return data;
+            }
+        }, {
+            key: 'addRow',
+            value: function addRow() {
+                this.props.dispatch((0, _reduxForm.arrayPush)(_constansts.FORM_ADD_PRODUCT_TO_CART, 'items', this.rowDefaults()));
             }
         }, {
             key: 'render',
@@ -76463,6 +76506,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var dispatch = props.dispatch,
             product = props.product,
             add_to_cart_title = props.labels.add_to_cart_title;
+        var _product_custom_price_label = product.meta_data._product_custom_price_label;
 
 
         return _react2.default.createElement(
@@ -76472,8 +76516,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 'h4',
                 null,
                 product.name,
-                ' ',
-                _react2.default.createElement('span', { className: 'cs__product_price', dangerouslySetInnerHTML: html(product.price_html) })
+                _product_custom_price_label ? _react2.default.createElement(
+                    'span',
+                    { className: 'cw__product_price' },
+                    _product_custom_price_label.value
+                ) : _react2.default.createElement('span', { className: 'cw__product_price', dangerouslySetInnerHTML: html(product.price_html) })
             ),
             _react2.default.createElement('div', { dangerouslySetInnerHTML: html(product.description) }),
             _react2.default.createElement(
@@ -76525,6 +76572,21 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         };
     }
 
+    function getHeading(product, currency) {
+        var _product_custom_price_label = product.meta_data._product_custom_price_label;
+
+
+        var heading = product.name;
+
+        if (_product_custom_price_label) {
+            heading = heading + ' ' + _product_custom_price_label.value;
+        } else {
+            heading = heading + ' ' + (0, _utilities.formatCurrency)(product.price, currency);
+        }
+
+        return heading;
+    }
+
     var ProductOptions = function ProductOptions(props) {
         var form = props.form,
             dispatch = props.dispatch,
@@ -76558,7 +76620,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     loading: modal_loading,
                     loading_message: modal_loading_message,
                     loading_default_message: labels.loading,
-                    heading: product.name,
+                    heading: getHeading(product, labels.currency),
                     close: close },
                 _react2.default.createElement(_index.AddProductToCart, {
                     formData: form[_constansts.FORM_ADD_PRODUCT_TO_CART] ? form[_constansts.FORM_ADD_PRODUCT_TO_CART] : null,

@@ -19,9 +19,18 @@ const Product = props => {
         }
     } = props
 
+    const {
+        meta_data: {
+            _product_custom_price_label
+        }
+    } = product
+    
     return (
         <div key={product.id}  className="cw__product">
-            <h4>{product.name} <span className="cs__product_price" dangerouslySetInnerHTML={html(product.price_html)}></span></h4>
+            <h4>{product.name}
+                { _product_custom_price_label ? <span className="cw__product_price">{ _product_custom_price_label.value }</span>
+                    : <span className="cw__product_price" dangerouslySetInnerHTML={html(product.price_html)}></span> }
+            </h4>
             <div dangerouslySetInnerHTML={html(product.description)}></div>
             <Button onClick={event => {
                 event.preventDefault()

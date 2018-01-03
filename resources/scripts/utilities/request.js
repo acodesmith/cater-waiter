@@ -92,8 +92,7 @@ export const ajax = ( action, data, method = 'POST', json_data = false, cookies 
      **/
     return jQuery.ajax({
         url: `${request.ajax.baseurl}/?action=${action}`,
-        contentType : 'application/json',
-        data: json_data ? JSON.stringify( data ) : request_data,
+        data: json_data ? JSON.stringify( data ) : method === 'POST' ? data : request_data,
         method: method,
         beforeSend: function (xhr) {
 

@@ -52,8 +52,17 @@ class WC_ProductDataTabs
 
     public function product_meta($post_id)
     {
-        // This is the case to save custom field data of checkbox. You have to do it as per your custom fields
-        $woo_checkbox = isset( $_POST['_catered_product'] ) ? 'yes' : 'no';
-        update_post_meta( $post_id, '_catered_product', $woo_checkbox );
+	    $product_grouped_allow_single = isset( $_POST['_product_grouped_allow_single'] ) ? 'yes' : 'no';
+        update_post_meta( $post_id, '_product_grouped_allow_single', $product_grouped_allow_single );
+
+	    $product_grouped_by_amount = isset( $_POST['_product_grouped_by_amount'] ) ? $_POST['_product_grouped_by_amount'] : 0;
+        update_post_meta( $post_id, '_product_grouped_by_amount', $product_grouped_by_amount );
+
+        if( isset( $_POST['_product_custom_price_label'] ) ) {
+            update_post_meta( $post_id, '_product_custom_price_label', $_POST['_product_custom_price_label'] );
+        }else{
+        	delete_post_meta( $post_id, '_product_custom_price_label' );
+        }
+
     }
 }

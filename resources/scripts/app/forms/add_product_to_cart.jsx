@@ -25,19 +25,37 @@ class FormAddProductToCart extends Component
         )
     }
 
-    addRow()
+    rowDefaults()
     {
         const {
             product,
             variations,
         } = this.props
 
+        let data = {
+            product_id: product.id,
+            variation_id: variations[0].variation_id,
+            quantity: 1,
+        }
+
+        const {
+            meta_data: {
+                _product_grouped_by_amount
+            }
+        } = product
+
+        if( _product_grouped_by_amount ) {
+
+            data.quantity  = _product_grouped_by_amount.value
+        }
+
+        return data
+    }
+
+    addRow()
+    {
         this.props.dispatch(
-            arrayPush( FORM_ADD_PRODUCT_TO_CART, 'items', {
-                product_id: product.id,
-                variation_id: variations[0].variation_id,
-                quantity: 1,
-            } )
+            arrayPush( FORM_ADD_PRODUCT_TO_CART, 'items', this.rowDefaults() )
         )
     }
 
