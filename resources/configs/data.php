@@ -2,12 +2,16 @@
 
 $product_data = \CaterWaiter\Module\WooCommerce\ProductData::get();
 
-
 return [
+	'auth' => ! AUTH_ACTIVE ? null : [
+		'user' => 'admin',
+		'password' => 'brumit'
+	],
 	'loading'                 => false,
 	'loading_message'         => null,
 	'modal_loading'           => false,
 	'modal_loading_message'   => null,
+	'notifications'           => [],
 	'location_posts'          => \CaterWaiter\Admin\Locations::all(),
 	'locations'               => [],
 	'location'                => null,
@@ -19,5 +23,5 @@ return [
 	'dates'                   => [
 		'today'     => date( 'Y-m-d', time() ),
 		'timestamp' => time()
-	]
+	],
 ];

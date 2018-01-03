@@ -15,11 +15,12 @@ class AddProductToCart extends Component
             dispatch,
             labels: {
                 adding_items_to_cart
-            }
+            },
+            order
         } = this.props
 
         if( items.length  ) {
-            dispatch( addToCart( items, adding_items_to_cart, closeModal ) )
+            dispatch( addToCart( items, adding_items_to_cart, closeModal, order ) )
         }
     }
 

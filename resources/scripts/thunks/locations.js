@@ -6,7 +6,10 @@ import {
     clearLoadingState,
     clearLocations,
     setLocations,
-    setLocation
+    setLocation,
+    clearNotification,
+    loadingToggle,
+    setError
 } from '../constansts/'
 import {
     extractDataFromResults,
@@ -14,7 +17,6 @@ import {
     getLocationFromId,
     setTaxRateBasedOnLocation
 } from '../utilities/'
-import {loadingToggle} from "../constansts/data";
 
 /**
  * Load all the locations based off the zip code.
@@ -22,19 +24,22 @@ import {loadingToggle} from "../constansts/data";
  * @param zip_code
  * @returns {function(*)}
  */
-export const loadLocations = zip_code => {
+export const loadLocations = ( zip_code, error_message ) => {
 
     return dispatch => {
 
         dispatch(setLoadingState(REQUEST_LOADING_LOCATIONS))
         dispatch(clearLocations())
+        dispatch(clearNotification('location_error'))
 
         return getLocationsFromZip(zip_code)
             .then(data => {
 
-                let locations = extractDataFromResults(data.results)
+                if( data.results )
+                    return dispatch(setLocations( extractDataFromResults(data.results) ))
 
-                return dispatch(setLocations(locations))
+                return dispatch(setError(error_message, 'location_error'))
+
             }, error => console.error(error))
             .then(() => dispatch(clearLoadingState()))
     }

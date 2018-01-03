@@ -15,7 +15,8 @@ const ProductOptions = props => {
             products,
             modal_loading,
             modal_loading_message
-        }
+        },
+        order
     } = props
 
     if( ! show_product_options )
@@ -44,6 +45,7 @@ const ProductOptions = props => {
                     product={product}
                     labels={labels}
                     closeModal={close}
+                    order={order}
                     dispatch={dispatch} />
             </Modal>
         </div>

@@ -1,7 +1,25 @@
 /*global jQuery*/
+/*global cw__config*/
 let { request } = cw__config;
 
 request.ajax.baseurl = request.ajax.baseurl.replace( request.ajax.site_url, '' )
+
+function getHeaders() {
+    const {
+        data: {
+            auth
+        }
+    } = cw__config
+
+    if( auth ) {
+        let headers = new Headers();
+        headers.append('Authorization', 'Basic ' + btoa(auth.user + ":" + auth.password))
+
+        return headers
+    }
+
+    return null
+}
 
 /**
  * Interact with the WordPress Rest API
@@ -11,12 +29,20 @@ request.ajax.baseurl = request.ajax.baseurl.replace( request.ajax.site_url, '' )
  * @param method
  */
 export const api = (action,data=null,method = 'GET') => {
+
+    let options = {
+        method: method,
+        body: data ? data : undefined,
+    }
+
+    const headers = getHeaders()
+
+    if( headers )
+        options.headers = headers
+
     return fetch(
         `${ request.api.baseurl }/${ action }`,
-        {
-            method: method,
-            body: data ? data : undefined,
-        }
+        options
     ).then((res) => res.json())
     .catch((err) => console.error(err))
 };
@@ -32,24 +58,31 @@ export const api = (action,data=null,method = 'GET') => {
  */
 export const ajax = ( action, data, method = 'POST', json_data = false, cookies = false) => {
 
-    let request_data = '';
+    let request_data = ''
 
     if( ! json_data )
         Object.keys( data ).forEach((key) => {
             request_data = `${ request_data }&${ key }=${ data[key] }`
         })
 
+    let options = {
+        method: method,
+        body: ! json_data ? request_data : JSON.stringify( data ),
+        headers: {
+            'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+        }
+    }
+
+    const headers = getHeaders()
+
+    if( headers )
+        options.headers = headers
+
     if( ! cookies )
         return fetch(
             `${request.ajax.baseurl}/?action=${action}`,
-            {
-                method: method,
-                body: ! json_data ? request_data : JSON.stringify( data ),
-                headers: {
-                    'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-                    'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-                }
-            }
+            options
         ).then((res) => res.json())
         .catch((err) => console.error(err))
 
@@ -61,6 +94,19 @@ export const ajax = ( action, data, method = 'POST', json_data = false, cookies 
         url: `${request.ajax.baseurl}/?action=${action}`,
         contentType : 'application/json',
         data: json_data ? JSON.stringify( data ) : request_data,
-        method: method
+        method: method,
+        beforeSend: function (xhr) {
+
+            if( headers ) {
+
+                const {
+                    data: {
+                        auth
+                    }
+                } = cw__config
+
+                xhr.setRequestHeader ("Authorization", "Basic " + btoa(auth.user + ":" + auth.password))
+            }
+        },
     })
 }

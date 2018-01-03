@@ -1,4 +1,8 @@
+import _ from 'lodash'
 import {
+    CLEAR_NOTIFICATION,
+    CLEAR_ALL_NOTIFICATIONS,
+    SET_NOTIFICATION,
     SET_LOCATIONS,
     SET_LOCATION,
     SET_CURRENT_SCREEN,
@@ -14,6 +18,27 @@ import {
 const data = (state, action) => {
 
     switch(action.type) {
+        case CLEAR_NOTIFICATION:
+
+            const { notifications = [] } = state
+
+            return Object.assign( {}, state, {
+                notifications: notifications.filter(n => n.id === action.data.id)
+            })
+            break;
+        case CLEAR_ALL_NOTIFICATIONS:
+            return Object.assign( {}, state, {
+                notifications: []
+            })
+            break;
+        case SET_NOTIFICATION:
+
+            state.notifications.push( action.data )
+
+            return Object.assign( {}, state, {
+                notifications: state.notifications
+            })
+            break;
         case SET_LOCATIONS:
             return Object.assign( {}, state, {
                 locations: action.locations,

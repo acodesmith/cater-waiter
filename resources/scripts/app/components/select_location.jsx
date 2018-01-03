@@ -12,7 +12,15 @@ import { Button } from '../elements/button'
 class SelectLocation extends Component
 {
     submit = (values = { zip_code }) => {
-        this.props.dispatch( loadLocations( values.zip_code ) )
+
+        const {
+            dispatch,
+            labels: {
+                pickup_out_of_range_error
+            }
+        } = this.props
+
+        dispatch( loadLocations( values.zip_code, pickup_out_of_range_error ) )
     }
 
     render()
@@ -32,7 +40,7 @@ class SelectLocation extends Component
         const {
             select_pickup_location,
             select_this_location,
-            loading: loading_label
+            loading: loading_label,
         } = labels
 
         const { loading } = request

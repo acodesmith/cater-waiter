@@ -19,7 +19,8 @@ import {
     getCart,
     removeGroupedProduct as removeGroupedProductAjax,
     removeCartItem as removeCartItemAjax,
-    updateCertItems as updateCertItemsAjax
+    updateCartItems as updateCartItemsAjax,
+    syncOrderDataToSession
 } from '../utilities'
 
 /**
@@ -29,9 +30,10 @@ import {
  * @param items
  * @param loading_message
  * @param closeModal
+ * @param order
  * @returns {function(*)}
  */
-export const addToCart = (items, loading_message, closeModal) => {
+export const addToCart = (items, loading_message, closeModal, order) => {
     return dispatch => {
 
         dispatch(modalLoadingToggle(loading_message))
@@ -41,9 +43,14 @@ export const addToCart = (items, loading_message, closeModal) => {
 
                 if (data.success)
                     dispatch(addItemToCart(data.cart))
-                dispatch(modalLoadingToggle())
-                closeModal(new Event('click'))
+
+                return syncOrderDataToSession( order )
             })
+            .then((data) => {
+                console.log("data",data);
+                dispatch(modalLoadingToggle())
+            })
+            .then(() => closeModal(new Event('click')))
     }
 }
 
@@ -198,7 +205,7 @@ export const updateCartItems = (items, loading_message, cart_updating_message) =
 
         dispatch(modalLoadingToggle(loading_message))
 
-        updateCertItemsAjax(items)
+        updateCartItemsAjax(items)
             .then(() => dispatch(modalLoadingToggle(cart_updating_message)))
             .then(() => {
                 return getCart()

@@ -55,7 +55,7 @@ class WC_PluginSettings {
 	/**
 	 * Array of settings based on the woocommerce_admin_fields function requirements.
 	 *
-	 * @return mixed|void
+	 * @return array
 	 */
 	public static function get_settings() {
 		$settings = array(

@@ -6,7 +6,8 @@ import {
     ScheduleOrder,
     DeliveryAddress,
     Cart,
-    Confirm
+    Confirm,
+    Notifications
 } from '../components/'
 import {
     VIEW_SELECT_ORDER_TYPE,
@@ -23,6 +24,10 @@ let Pathway = props =>
 {
 
     const {
+        dispatch,
+        data: {
+            notifications = []
+        },
         view: {
             current
         }
@@ -34,6 +39,7 @@ let Pathway = props =>
 
     return (
         <div className={ wrapper_class }>
+            <Notifications notifications={notifications} dispatch={dispatch} />
             {(()=>{
                 switch( current ) {
                     case VIEW_SELECT_ORDER_TYPE:

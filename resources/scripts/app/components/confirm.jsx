@@ -5,7 +5,8 @@ import { removeCartItem } from '../../thunks'
 import { Button } from '../elements/button_no_event'
 import {
     getProductById,
-    formatCurrency
+    formatCurrency,
+    mapValue
 } from '../../utilities'
 
 const Confirm = props => {
@@ -16,6 +17,7 @@ const Confirm = props => {
             confirm_order_title,
             continue_to_checkout_button,
             currency,
+            delivery_minimum_error,
             item_total,
             remove,
             removing_item_from_cart,
@@ -24,7 +26,7 @@ const Confirm = props => {
             tax: tax_label,
             total: total_label,
             quantity,
-            updating_cart
+            updating_cart,
         },
         data: {
             products
@@ -37,6 +39,9 @@ const Confirm = props => {
                 total: "",
                 items: []
             }
+        },
+        settings: {
+            delivery_minimum
         }
     } = props
 
@@ -47,9 +52,15 @@ const Confirm = props => {
         items
     } = order_cart
 
+    const order_total = +subtotal + +tax
+
+    const minimum_met = order_total >= +delivery_minimum
+
     return (
         <div className="cw__confirm">
             <h2>{ confirm_order_title }</h2>
+            { minimum_met ? null :
+                <div className="cw__error alert alert-danger">{ mapValue( delivery_minimum, delivery_minimum_error  )}</div> }
             <div className="cw__cart_items">
                 { items.map((item, key) => {
 
@@ -95,16 +106,17 @@ const Confirm = props => {
                     <div className="row">
                         <div className="cw__cart_total">
                             <span>{ total_label }:</span>
-                            <span>{ formatCurrency( +subtotal + +tax, currency ) }</span>
+                            <span>{ formatCurrency( order_total, currency ) }</span>
                         </div>
                     </div>
                 </div>
             </div>
             <div className="cw__buttons">
+                { ! minimum_met ? null :
                 <Button
                     className="btn btn-lg pull-right"
                     onClick={() => window.location = order_checkout_url}>
-                    { continue_to_checkout_button }</Button>
+                    { continue_to_checkout_button }</Button> }
             </div>
         </div>
     )
