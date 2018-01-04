@@ -4,23 +4,6 @@ let { request } = cw__config;
 
 request.ajax.baseurl = request.ajax.baseurl.replace( request.ajax.site_url, '' )
 
-function getHeaders() {
-    const {
-        data: {
-            auth
-        }
-    } = cw__config
-
-    if( auth ) {
-        let headers = new Headers();
-        headers.append('Authorization', 'Basic ' + btoa(auth.user + ":" + auth.password))
-
-        return headers
-    }
-
-    return null
-}
-
 /**
  * Interact with the WordPress Rest API
  *
@@ -34,11 +17,6 @@ export const api = (action,data=null,method = 'GET') => {
         method: method,
         body: data ? data : undefined,
     }
-
-    const headers = getHeaders()
-
-    if( headers )
-        options.headers = headers
 
     return fetch(
         `${ request.api.baseurl }/${ action }`,
@@ -74,11 +52,6 @@ export const ajax = ( action, data, method = 'POST', json_data = false, cookies 
         }
     }
 
-    const headers = getHeaders()
-
-    if( headers )
-        options.headers = headers
-
     if( ! cookies )
         return fetch(
             `${request.ajax.baseurl}/?action=${action}`,
@@ -94,18 +67,5 @@ export const ajax = ( action, data, method = 'POST', json_data = false, cookies 
         url: `${request.ajax.baseurl}/?action=${action}`,
         data: json_data ? JSON.stringify( data ) : method === 'POST' ? data : request_data,
         method: method,
-        beforeSend: function (xhr) {
-
-            if( headers ) {
-
-                const {
-                    data: {
-                        auth
-                    }
-                } = cw__config
-
-                xhr.setRequestHeader ("Authorization", "Basic " + btoa(auth.user + ":" + auth.password))
-            }
-        },
     })
 }

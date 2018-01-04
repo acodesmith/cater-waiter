@@ -155,6 +155,7 @@ class ProductRow extends Component
                             attr={this.quantityAttrs()}
                             component={renderField} />
                         {variation.attributes.map(attribute => {
+                            console.log("attribute",attribute);
                             return (
                                 <div className="option col-md-3" key={ attribute.id }>
                                     <label htmlFor={ attribute.attribute_slug }>{ attribute.name }</label>
