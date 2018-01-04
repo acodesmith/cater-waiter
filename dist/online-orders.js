@@ -41630,6 +41630,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                 attr: _this2.quantityAttrs(),
                                 component: _utilities.renderField }),
                             variation.attributes.map(function (attribute) {
+                                console.log("attribute", attribute);
                                 return _react2.default.createElement(
                                     'div',
                                     { className: 'option col-md-3', key: attribute.id },
