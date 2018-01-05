@@ -154,24 +154,22 @@ class ProductRow extends Component
                             validate={[ required, minNumericValueOne ]}
                             attr={this.quantityAttrs()}
                             component={renderField} />
-                        {variation.attributes.map(attribute => {
-                            return (
-                                <div className="option col-md-3" key={ attribute.id }>
-                                    <label htmlFor={ attribute.attribute_slug }>{ attribute.name }</label>
-                                    <Field
-                                        name={ `${items}.${attribute.attribute_slug}` }
-                                        id={ attribute.attribute_slug }
-                                        validate={[ required ]}
-                                        type="select"
-                                        component={renderField}>
-                                        <option value="">Select { attribute.name }</option>
-                                        { ! attribute.options ? null : attribute.options.map((option, key) => {
-                                            return <option key={key} value={option}>{ unescape( option ) }</option>
-                                        }) }
-                                    </Field>
-                                </div>
-                            )
-                        })}
+                        {variation.attributes.map(attribute => (
+                            <div className="option col-md-3" key={ attribute.id }>
+                                <label htmlFor={ attribute.attribute_slug }>{ attribute.name }</label>
+                                <Field
+                                    name={ `${items}.${attribute.attribute_slug}` }
+                                    id={ attribute.attribute_slug }
+                                    validate={[ required ]}
+                                    type="select"
+                                    component={renderField}>
+                                    <option value="">Select { attribute.name }</option>
+                                    { ! attribute.options ? null : attribute.options.map((option, key) => {
+                                        return <option key={key} value={option}>{ unescape( option ) }</option>
+                                    }) }
+                                </Field>
+                            </div>
+                        ))}
                         { index < 1 && mode !== MODE_EDIT ? null : <button className="option col-md-3" onClick={event => {
 
                             event.preventDefault()

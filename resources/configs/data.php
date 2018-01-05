@@ -3,10 +3,6 @@
 $product_data = \CaterWaiter\Module\WooCommerce\ProductData::get();
 
 return [
-	'auth' => ! AUTH_ACTIVE ? null : [
-		'user' => 'admin',
-		'password' => 'brumit'
-	],
 	'loading'                 => false,
 	'loading_message'         => null,
 	'modal_loading'           => false,

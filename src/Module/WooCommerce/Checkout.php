@@ -22,7 +22,8 @@ class Checkout {
 		$minimum = (float) \WC_Admin_Settings::get_option( 'wc_settings_cater_waiter_delivery_minimum' );
 
 		if( is_cart() ) {
-			var_dump( json_decode( \WC()->session->get( Order::ORDER_INFO ) ) );
+			//var_dump( json_decode( \WC()->session->get( Order::ORDER_INFO ) ) );
+			//var_dump( json_decode( \WC()->session->get( Order::TAX_LOCATION_ID ) ) );
 		}
 
 		if ( WC()->cart->total < $minimum ) {
