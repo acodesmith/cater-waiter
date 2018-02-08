@@ -41759,97 +41759,61 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(8), __webpack_require__(1), __webpack_require__(320), __webpack_require__(10), __webpack_require__(333), __webpack_require__(104), __webpack_require__(111), __webpack_require__(576)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(320), __webpack_require__(10), __webpack_require__(629), __webpack_require__(630), __webpack_require__(576)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else if (typeof exports !== "undefined") {
-    factory(exports, require('babel-runtime/core-js/object/assign'), require('react'), require('react-dom'), require('react-redux'), require('../configs/store'), require('../constansts/local_storage'), require('../utilities/local_storage'), require('./app'));
-  } else {
-    var mod = {
-      exports: {}
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('react-dom'), require('react-redux'), require('./store'), require('../utilities/taxes'), require('./app'));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.reactDom, global.reactRedux, global.store, global.taxes, global.app);
+        global.index = mod.exports;
+    }
+})(this, function (exports, _react, _reactDom, _reactRedux, _store, _taxes, _app) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = _interopRequireDefault(_react);
+
+    var _app2 = _interopRequireDefault(_app);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    /*global cw__config*/
+
+    var state = _store.store.getState();
+
+    var _state$order = state.order,
+        order = _state$order === undefined ? { order_location: order_location } : _state$order,
+        _order$order_location = order.order_location,
+        order_location = _order$order_location === undefined ? { id: id } : _order$order_location;
+
+
+    (0, _taxes.set_tax_session)(order_location.id);
+
+    /**
+     * Run the main application.
+     */
+    var runApp = function runApp() {
+        window.app = (0, _reactDom.render)(_react2.default.createElement(
+            _reactRedux.Provider,
+            { store: _store.store },
+            _react2.default.createElement(_app2.default, null)
+        ), document.getElementById('cater_waiter__react_base'));
     };
-    factory(mod.exports, global.assign, global.react, global.reactDom, global.reactRedux, global.store, global.local_storage, global.local_storage, global.app);
-    global.index = mod.exports;
-  }
-})(this, function (exports, _assign, _react, _reactDom, _reactRedux, _store, _local_storage, _local_storage2, _app) {
-  'use strict';
 
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  var _assign2 = _interopRequireDefault(_assign);
-
-  var _react2 = _interopRequireDefault(_react);
-
-  var _store2 = _interopRequireDefault(_store);
-
-  var _app2 = _interopRequireDefault(_app);
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  /**
-   * Retrieve the locally stored data to rehydrate the redux application.
-   * Only use part of the locally stored data in case labels or settings
-   * have changed.
-   *
-   * @type {*}
-   */
-  var locally_stored_data = (0, _assign2.default)({}, cw__config, (0, _local_storage2.retrieve)(_local_storage.LOCAL_STORAGE_KEY));
-
-  /**
-   * Always pull most recent labels, products and cart data
-   */
-  /*global cw__config*/
-
-  locally_stored_data.labels = cw__config.labels;
-  locally_stored_data.data = locally_stored_data.data ? locally_stored_data.data : {};
-  locally_stored_data.data.products = cw__config.data.products;
-  locally_stored_data.data.location_posts = cw__config.data.location_posts;
-  locally_stored_data.data.grouped_products = cw__config.data.grouped_products;
-  locally_stored_data.data.catering_categories = cw__config.data.catering_categories;
-  locally_stored_data.settings = cw__config.settings;
-  locally_stored_data.order = locally_stored_data.order ? locally_stored_data.order : {};
-  locally_stored_data.order.order_cart = cw__config.order.order_cart;
-
-  /**
-   * In case someone is stuck in a loading state after a failed request
-   * clear loading state
-   */
-  locally_stored_data.data.loading = false;
-  locally_stored_data.data.modal_loading = false;
-
-  /**
-   * Create the Redux Store
-   */
-  var store = (0, _store2.default)(locally_stored_data);
-
-  /**
-   * Subscribe to Redux changes then write
-   * state to the localStorage
-   */
-  store.subscribe(function () {
-    (0, _local_storage2.storeLocal)(_local_storage.LOCAL_STORAGE_KEY, store.getState());
-  });
-
-  /**
-   * Run the main application.
-   */
-  var runApp = function runApp() {
-    window.app = (0, _reactDom.render)(_react2.default.createElement(
-      _reactRedux.Provider,
-      { store: store },
-      _react2.default.createElement(_app2.default, null)
-    ), document.getElementById('cater_waiter__react_base'));
-  };
-
-  exports.default = runApp;
+    exports.default = runApp;
 });
 
 /***/ }),
@@ -77850,6 +77814,130 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 625 */,
+/* 626 */,
+/* 627 */,
+/* 628 */,
+/* 629 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(8), __webpack_require__(333), __webpack_require__(104), __webpack_require__(111)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else if (typeof exports !== "undefined") {
+    factory(exports, require('babel-runtime/core-js/object/assign'), require('../configs/store'), require('../constansts/local_storage'), require('../utilities/local_storage'));
+  } else {
+    var mod = {
+      exports: {}
+    };
+    factory(mod.exports, global.assign, global.store, global.local_storage, global.local_storage);
+    global.store = mod.exports;
+  }
+})(this, function (exports, _assign, _store, _local_storage, _local_storage2) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.store = undefined;
+
+  var _assign2 = _interopRequireDefault(_assign);
+
+  var _store2 = _interopRequireDefault(_store);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  /**
+   * Retrieve the locally stored data to rehydrate the redux application.
+   * Only use part of the locally stored data in case labels or settings
+   * have changed.
+   *
+   * @type {*}
+   */
+  var locally_stored_data = (0, _assign2.default)({}, cw__config, (0, _local_storage2.retrieve)(_local_storage.LOCAL_STORAGE_KEY));
+
+  /**
+   * Always pull most recent labels, products and cart data
+   */
+  /*global cw__config*/
+
+  locally_stored_data.labels = cw__config.labels;
+  locally_stored_data.data = locally_stored_data.data ? locally_stored_data.data : {};
+  locally_stored_data.data.products = cw__config.data.products;
+  locally_stored_data.data.location_posts = cw__config.data.location_posts;
+  locally_stored_data.data.grouped_products = cw__config.data.grouped_products;
+  locally_stored_data.data.catering_categories = cw__config.data.catering_categories;
+  locally_stored_data.settings = cw__config.settings;
+  locally_stored_data.order = locally_stored_data.order ? locally_stored_data.order : {};
+  locally_stored_data.order.order_cart = cw__config.order.order_cart;
+
+  /**
+   * In case someone is stuck in a loading state after a failed request
+   * clear loading state
+   */
+  locally_stored_data.data.loading = false;
+  locally_stored_data.data.modal_loading = false;
+
+  /**
+   * Create the Redux Store
+   */
+  var store = (0, _store2.default)(locally_stored_data);
+
+  /**
+   * Subscribe to Redux changes then write
+   * state to the localStorage
+   */
+  store.subscribe(function () {
+    (0, _local_storage2.storeLocal)(_local_storage.LOCAL_STORAGE_KEY, store.getState());
+  });
+
+  exports.store = store;
+});
+
+/***/ }),
+/* 630 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(185)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('./request'));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.request);
+        global.taxes = mod.exports;
+    }
+})(this, function (exports, _request) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.set_tax_session = undefined;
+    var set_tax_session = exports.set_tax_session = function set_tax_session(location_id) {
+
+        (0, _request.ajax)('set_tax_by_location', { location_id: location_id }, 'POST', false, true).then(function (data) {
+            if (!data.success) {
+                console.error(data.error);
+            }
+        });
+    };
+});
 
 /***/ })
 /******/ ]);
