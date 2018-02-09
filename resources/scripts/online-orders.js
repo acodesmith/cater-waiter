@@ -6,7 +6,7 @@ import '../styles/front_end.scss'
 
 jQuery(function(){
 
-    let cw_water_count = 0;
+    let cw__watcher_count = 0;
 
     let cw__config_watcher = setInterval( function() {
 
@@ -17,10 +17,10 @@ jQuery(function(){
             runApp();
         }
 
-        cw_water_count++;
+        cw__watcher_count++;
 
         // In case something goes wrong, kill the config watcher
-        if( cw_water_count > 100 )
+        if( cw__watcher_count > 100 )
             clearInterval( cw__config_watcher );
 
     }, 300 );

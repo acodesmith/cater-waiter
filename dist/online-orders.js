@@ -29743,14 +29743,29 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     };
 
     /**
+     * Map the Product Attribute to the Product Variation Attribute.
+     * Needed to correctly build custom add to cart form data.
+     *
+     * Ad Hoc attributes are built on the fly being stored in the terms table.
+     * Standard attributes are stored in the term table and have a 1 to 1 matching pattern.
+     * For example attribute_pa_shirt-color
+     *
      * @param variationAttrs
      * @param productAttrs
      * @returns {Array}
      */
     var mapVariationAttributes = exports.mapVariationAttributes = function mapVariationAttributes(variationAttrs, productAttrs) {
         return (0, _keys2.default)(variationAttrs).map(function (key) {
+
             return productAttrs.filter(function (productAttr) {
-                return productAttr.attribute_slug === key;
+
+                var semanticCheck = productAttr.attribute_slug === key,
+                    attributeName = key.split(/_(.+)/)[1],
+                    regexPattern = "(^attribute_)(.*)(" + attributeName + ")",
+                    regex = new RegExp(regexPattern, "g"),
+                    adHocAttributeCheck = regex.test(productAttr.attribute_slug);
+
+                return semanticCheck || adHocAttributeCheck;
             }).shift();
         });
     };
@@ -41549,7 +41564,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 return fields.map(function (items, index) {
 
                     return variations.map(function (variation, variationIndex) {
-
                         return _react2.default.createElement(
                             'div',
                             { style: { clear: 'both' }, className: 'cw__variation', key: variationIndex },
@@ -41584,7 +41598,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                             variation.attributes.map(function (attribute) {
                                 return _react2.default.createElement(
                                     'div',
-                                    { className: 'option col-md-3', key: attribute.id },
+                                    { className: 'option col-md-3', key: attribute.attribute_slug },
                                     _react2.default.createElement(
                                         'label',
                                         { htmlFor: attribute.attribute_slug },
@@ -41735,7 +41749,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     jQuery(function () {
 
-        var cw_water_count = 0;
+        var cw__watcher_count = 0;
 
         var cw__config_watcher = setInterval(function () {
 
@@ -41746,10 +41760,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 (0, _index2.default)();
             }
 
-            cw_water_count++;
+            cw__watcher_count++;
 
             // In case something goes wrong, kill the config watcher
-            if (cw_water_count > 100) clearInterval(cw__config_watcher);
+            if (cw__watcher_count > 100) clearInterval(cw__config_watcher);
         }, 300);
     });
 });
@@ -41794,13 +41808,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     var state = _store.store.getState();
 
-    var _state$order = state.order,
-        order = _state$order === undefined ? { order_location: order_location } : _state$order,
+    var order = state.order,
         _order$order_location = order.order_location,
         order_location = _order$order_location === undefined ? { id: id } : _order$order_location;
 
 
-    (0, _taxes.set_tax_session)(order_location.id);
+    if (order_location) (0, _taxes.set_tax_session)(order_location.id);
 
     /**
      * Run the main application.

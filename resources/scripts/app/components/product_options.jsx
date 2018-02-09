@@ -53,8 +53,6 @@ const ProductOptions = props => {
         dispatch( destroy( FORM_ADD_PRODUCT_TO_CART ) )
     }
 
-
-
     return (
         <div className="cw__product_options">
             <Modal

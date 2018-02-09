@@ -38,7 +38,7 @@ class AddProductToCart extends Component
             return Object.assign({}, variation, {
                 attributes: mapVariationAttributes( variation.attributes, product.attributes )
             })
-        });
+        })
 
         return (
             <div className="cw__add_product_to_cart">

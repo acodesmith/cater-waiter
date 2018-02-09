@@ -9,10 +9,11 @@ import App from './app'
 
 const state = store.getState()
 
-const { order = { order_location } } = state
+const { order } = state
     , { order_location = { id } } = order
 
-set_tax_session( order_location.id )
+if( order_location )
+    set_tax_session( order_location.id )
 
 /**
  * Run the main application.
