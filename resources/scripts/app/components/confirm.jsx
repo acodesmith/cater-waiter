@@ -14,6 +14,8 @@ const Confirm = props => {
     const {
         dispatch,
         labels: {
+            are_you_a_tax_exempt_organization,
+            cart_item,
             confirm_order_title,
             continue_to_checkout_button,
             currency,
@@ -62,6 +64,15 @@ const Confirm = props => {
             { minimum_met ? null :
                 <div className="cw__error alert alert-danger">{ mapValue( delivery_minimum, delivery_minimum_error  )}</div> }
             <div className="cw__cart_items">
+                <div className="cw__cart_items_labels">
+                    <div className="container-fluid">
+                        <div className="row">
+                            <div className="col-md-8 col-sm-4">{ cart_item }</div>
+                            <div className="col-md-2 col-sm-4 text-center">{ quantity }</div>
+                            <div className="col-md-2 col-sm-4 text-right">{ item_total }</div>
+                        </div>
+                    </div>
+                </div>
                 { items.map((item, key) => {
 
                     let product = getProductById( item.product_id, products )
@@ -70,47 +81,74 @@ const Confirm = props => {
                         <div key={key} className="cw__cart_item">
                             <div className="container-fluid">
                                 <div className="row">
-                                    <div className="col-md-3">{ product.name }</div>
-                                    <div className="col-md-3">{ quantity } { item.quantity }</div>
-                                    <div className="col-md-3">{ item_total } {currency}{ numeral( item.line_total ).format('0.00') }</div>
-                                    <div className="col-md-3">
-                                        <Button className="btn btn-sm btn-danger" onClick={() => {
+                                    <div className="col-md-8 col-sm-4">
+                                        <strong className="cw__product_name">
+                                            { product.name }
+                                        </strong>
 
-                                            const confirm_action = confirm( removing_item_from_cart_confirm )
-
-                                            if( confirm_action )
-                                                dispatch( removeCartItem( item.key, removing_item_from_cart, updating_cart ) )
-
-                                        }}>{ _.upperFirst(remove) }</Button>
+                                            { product.attributes.map((attr, key) => {
+                                                if( typeof item.variation[ attr.attribute_slug ] !== 'undefined' ) {
+                                                    return (
+                                                        <div key={key} className="cw__product_attributes">
+                                                            <span className='cw__product_attribute_name'>{attr.name}:</span>
+                                                            <span className='cw__product_attribute_value' dangerouslySetInnerHTML={{__html: item.variation[ attr.attribute_slug ]}}></span>
+                                                        </div>
+                                                    )
+                                                }
+                                            }) }
                                     </div>
+                                    <div className="col-md-2 col-sm-4 text-center">{ item.quantity }</div>
+                                    <div className="col-md-2 col-sm-4 text-right">{currency}{ numeral( item.line_total ).format('0.00') }</div>
+                                    {/*<div className="col-md-3">*/}
+                                        {/*<Button className="btn btn-sm btn-danger" onClick={() => {*/}
+
+                                            {/*const confirm_action = confirm( removing_item_from_cart_confirm )*/}
+
+                                            {/*if( confirm_action )*/}
+                                                {/*dispatch( removeCartItem( item.key, removing_item_from_cart, updating_cart ) )*/}
+
+                                        {/*}}>{ _.upperFirst(remove) }</Button>*/}
+                                    {/*</div>*/}
                                 </div>
                             </div>
                         </div>
                     )
                 }) }
             </div>
-            <div className="cw__cart_totals">
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="cw__cart_subtotal">
-                            <span>{ subtotal_label }:</span>
-                            <span>{ formatCurrency( subtotal, currency ) }</span>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="cw__cart_tax">
-                            <span>{ tax_label }:</span>
-                            <span>{ formatCurrency( tax, currency ) }</span>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="cw__cart_total">
-                            <span>{ total_label }:</span>
-                            <span>{ formatCurrency( order_total, currency ) }</span>
+            <hr/>
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-md-offset-8 col-md-4">
+                        <div className="cw__cart_totals">
+                            <div className="cw__cart_subtotal">
+                                <div className="container-fluid">
+                                    <div className="row">
+                                        <span className='col-sm-6 text-right'>{ subtotal_label }:</span>
+                                        <span className='col-sm-6 text-right'>{ formatCurrency( subtotal, currency ) }</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="cw__cart_tax">
+                                <div className="container-fluid">
+                                    <div className="row">
+                                        <span className='col-sm-6 text-right'>{ tax_label }:</span>
+                                        <span className='col-sm-6 text-right'>{ formatCurrency( tax, currency ) }</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="cw__cart_total">
+                                <div className="container-fluid">
+                                    <div className="row">
+                                        <span className='col-sm-6 text-right'>{ total_label }:</span>
+                                        <span className='col-sm-6 text-right'>{ formatCurrency( order_total, currency ) }</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <hr/>
             <div className="cw__buttons">
                 { ! minimum_met ? null :
                 <Button

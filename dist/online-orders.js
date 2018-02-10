@@ -76039,6 +76039,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var Confirm = function Confirm(props) {
         var dispatch = props.dispatch,
             _props$labels = props.labels,
+            are_you_a_tax_exempt_organization = _props$labels.are_you_a_tax_exempt_organization,
+            cart_item = _props$labels.cart_item,
             confirm_order_title = _props$labels.confirm_order_title,
             continue_to_checkout_button = _props$labels.continue_to_checkout_button,
             currency = _props$labels.currency,
@@ -76089,6 +76091,33 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             _react2.default.createElement(
                 'div',
                 { className: 'cw__cart_items' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'cw__cart_items_labels' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'container-fluid' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'row' },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'col-md-8 col-sm-4' },
+                                cart_item
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'col-md-2 col-sm-4 text-center' },
+                                quantity
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'col-md-2 col-sm-4 text-right' },
+                                item_total
+                            )
+                        )
+                    )
+                ),
                 items.map(function (item, key) {
 
                     var product = (0, _utilities.getProductById)(item.product_id, products);
@@ -76104,108 +76133,131 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                 { className: 'row' },
                                 _react2.default.createElement(
                                     'div',
-                                    { className: 'col-md-3' },
-                                    product.name
+                                    { className: 'col-md-8 col-sm-4' },
+                                    _react2.default.createElement(
+                                        'strong',
+                                        { className: 'cw__product_name' },
+                                        product.name
+                                    ),
+                                    product.attributes.map(function (attr, key) {
+                                        if (typeof item.variation[attr.attribute_slug] !== 'undefined') {
+                                            return _react2.default.createElement(
+                                                'div',
+                                                { key: key, className: 'cw__product_attributes' },
+                                                _react2.default.createElement(
+                                                    'span',
+                                                    { className: 'cw__product_attribute_name' },
+                                                    attr.name,
+                                                    ':'
+                                                ),
+                                                _react2.default.createElement('span', { className: 'cw__product_attribute_value', dangerouslySetInnerHTML: { __html: item.variation[attr.attribute_slug] } })
+                                            );
+                                        }
+                                    })
                                 ),
                                 _react2.default.createElement(
                                     'div',
-                                    { className: 'col-md-3' },
-                                    quantity,
-                                    ' ',
+                                    { className: 'col-md-2 col-sm-4 text-center' },
                                     item.quantity
                                 ),
                                 _react2.default.createElement(
                                     'div',
-                                    { className: 'col-md-3' },
-                                    item_total,
-                                    ' ',
+                                    { className: 'col-md-2 col-sm-4 text-right' },
                                     currency,
                                     (0, _numeral2.default)(item.line_total).format('0.00')
-                                ),
-                                _react2.default.createElement(
-                                    'div',
-                                    { className: 'col-md-3' },
-                                    _react2.default.createElement(
-                                        _button_no_event.Button,
-                                        { className: 'btn btn-sm btn-danger', onClick: function onClick() {
-
-                                                var confirm_action = confirm(removing_item_from_cart_confirm);
-
-                                                if (confirm_action) dispatch((0, _thunks.removeCartItem)(item.key, removing_item_from_cart, updating_cart));
-                                            } },
-                                        _lodash2.default.upperFirst(remove)
-                                    )
                                 )
                             )
                         )
                     );
                 })
             ),
+            _react2.default.createElement('hr', null),
             _react2.default.createElement(
                 'div',
-                { className: 'cw__cart_totals' },
+                { className: 'container-fluid' },
                 _react2.default.createElement(
                     'div',
-                    { className: 'container-fluid' },
+                    { className: 'row' },
                     _react2.default.createElement(
                         'div',
-                        { className: 'row' },
+                        { className: 'col-md-offset-8 col-md-4' },
                         _react2.default.createElement(
                             'div',
-                            { className: 'cw__cart_subtotal' },
+                            { className: 'cw__cart_totals' },
                             _react2.default.createElement(
-                                'span',
-                                null,
-                                subtotal_label,
-                                ':'
+                                'div',
+                                { className: 'cw__cart_subtotal' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'container-fluid' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'row' },
+                                        _react2.default.createElement(
+                                            'span',
+                                            { className: 'col-sm-6 text-right' },
+                                            subtotal_label,
+                                            ':'
+                                        ),
+                                        _react2.default.createElement(
+                                            'span',
+                                            { className: 'col-sm-6 text-right' },
+                                            (0, _utilities.formatCurrency)(subtotal, currency)
+                                        )
+                                    )
+                                )
                             ),
                             _react2.default.createElement(
-                                'span',
-                                null,
-                                (0, _utilities.formatCurrency)(subtotal, currency)
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'row' },
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'cw__cart_tax' },
-                            _react2.default.createElement(
-                                'span',
-                                null,
-                                tax_label,
-                                ':'
+                                'div',
+                                { className: 'cw__cart_tax' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'container-fluid' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'row' },
+                                        _react2.default.createElement(
+                                            'span',
+                                            { className: 'col-sm-6 text-right' },
+                                            tax_label,
+                                            ':'
+                                        ),
+                                        _react2.default.createElement(
+                                            'span',
+                                            { className: 'col-sm-6 text-right' },
+                                            (0, _utilities.formatCurrency)(tax, currency)
+                                        )
+                                    )
+                                )
                             ),
                             _react2.default.createElement(
-                                'span',
-                                null,
-                                (0, _utilities.formatCurrency)(tax, currency)
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'row' },
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'cw__cart_total' },
-                            _react2.default.createElement(
-                                'span',
-                                null,
-                                total_label,
-                                ':'
-                            ),
-                            _react2.default.createElement(
-                                'span',
-                                null,
-                                (0, _utilities.formatCurrency)(order_total, currency)
+                                'div',
+                                { className: 'cw__cart_total' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'container-fluid' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'row' },
+                                        _react2.default.createElement(
+                                            'span',
+                                            { className: 'col-sm-6 text-right' },
+                                            total_label,
+                                            ':'
+                                        ),
+                                        _react2.default.createElement(
+                                            'span',
+                                            { className: 'col-sm-6 text-right' },
+                                            (0, _utilities.formatCurrency)(order_total, currency)
+                                        )
+                                    )
+                                )
                             )
                         )
                     )
                 )
             ),
+            _react2.default.createElement('hr', null),
             _react2.default.createElement(
                 'div',
                 { className: 'cw__buttons' },

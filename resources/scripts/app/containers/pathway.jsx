@@ -15,9 +15,7 @@ import {
     VIEW_DELIVERY_ADDRESS,
     VIEW_SCHEDULE_ORDER,
     VIEW_CART,
-    VIEW_CONFIRM,
-    VIEW_CHECKOUT,
-    VIEW_COMPLETE
+    VIEW_CONFIRM
 } from '../../constansts/'
 
 let Pathway = props =>
