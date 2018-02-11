@@ -29743,14 +29743,29 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     };
 
     /**
+     * Map the Product Attribute to the Product Variation Attribute.
+     * Needed to correctly build custom add to cart form data.
+     *
+     * Ad Hoc attributes are built on the fly being stored in the terms table.
+     * Standard attributes are stored in the term table and have a 1 to 1 matching pattern.
+     * For example attribute_pa_shirt-color
+     *
      * @param variationAttrs
      * @param productAttrs
      * @returns {Array}
      */
     var mapVariationAttributes = exports.mapVariationAttributes = function mapVariationAttributes(variationAttrs, productAttrs) {
         return (0, _keys2.default)(variationAttrs).map(function (key) {
+
             return productAttrs.filter(function (productAttr) {
-                return productAttr.attribute_slug === key;
+
+                var semanticCheck = productAttr.attribute_slug === key,
+                    attributeName = key.split(/_(.+)/)[1],
+                    regexPattern = "(^attribute_)(.*)(" + attributeName + ")",
+                    regex = new RegExp(regexPattern, "g"),
+                    adHocAttributeCheck = regex.test(productAttr.attribute_slug);
+
+                return semanticCheck || adHocAttributeCheck;
             }).shift();
         });
     };
@@ -29861,7 +29876,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         /**
          * Having trouble with the fetch() api and sending cookies. :(
-         * So I'm falling back to jQuery XRHRequest :)
+         * So I'm falling back to jQuery XHR :)
          **/
         return jQuery.ajax({
             url: request.ajax.baseurl + '/?action=' + action,
@@ -41549,7 +41564,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 return fields.map(function (items, index) {
 
                     return variations.map(function (variation, variationIndex) {
-
                         return _react2.default.createElement(
                             'div',
                             { style: { clear: 'both' }, className: 'cw__variation', key: variationIndex },
@@ -41582,10 +41596,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                 attr: _this2.quantityAttrs(),
                                 component: _utilities.renderField }),
                             variation.attributes.map(function (attribute) {
-                                console.log("attribute", attribute);
                                 return _react2.default.createElement(
                                     'div',
-                                    { className: 'option col-md-3', key: attribute.id },
+                                    { className: 'option col-md-3', key: attribute.attribute_slug },
                                     _react2.default.createElement(
                                         'label',
                                         { htmlFor: attribute.attribute_slug },
@@ -41736,7 +41749,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     jQuery(function () {
 
-        var cw_water_count = 0;
+        var cw__watcher_count = 0;
 
         var cw__config_watcher = setInterval(function () {
 
@@ -41747,10 +41760,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 (0, _index2.default)();
             }
 
-            cw_water_count++;
+            cw__watcher_count++;
 
             // In case something goes wrong, kill the config watcher
-            if (cw_water_count > 100) clearInterval(cw__config_watcher);
+            if (cw__watcher_count > 100) clearInterval(cw__config_watcher);
         }, 300);
     });
 });
@@ -41760,97 +41773,60 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(8), __webpack_require__(1), __webpack_require__(320), __webpack_require__(10), __webpack_require__(333), __webpack_require__(104), __webpack_require__(111), __webpack_require__(576)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(320), __webpack_require__(10), __webpack_require__(629), __webpack_require__(630), __webpack_require__(576)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else if (typeof exports !== "undefined") {
-    factory(exports, require('babel-runtime/core-js/object/assign'), require('react'), require('react-dom'), require('react-redux'), require('../configs/store'), require('../constansts/local_storage'), require('../utilities/local_storage'), require('./app'));
-  } else {
-    var mod = {
-      exports: {}
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('react-dom'), require('react-redux'), require('./store'), require('../utilities/taxes'), require('./app'));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.reactDom, global.reactRedux, global.store, global.taxes, global.app);
+        global.index = mod.exports;
+    }
+})(this, function (exports, _react, _reactDom, _reactRedux, _store, _taxes, _app) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = _interopRequireDefault(_react);
+
+    var _app2 = _interopRequireDefault(_app);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    /*global cw__config*/
+
+    var state = _store.store.getState();
+
+    var order = state.order,
+        _order$order_location = order.order_location,
+        order_location = _order$order_location === undefined ? { id: id } : _order$order_location;
+
+
+    if (order_location) (0, _taxes.set_tax_session)(order_location.id);
+
+    /**
+     * Run the main application.
+     */
+    var runApp = function runApp() {
+        window.app = (0, _reactDom.render)(_react2.default.createElement(
+            _reactRedux.Provider,
+            { store: _store.store },
+            _react2.default.createElement(_app2.default, null)
+        ), document.getElementById('cater_waiter__react_base'));
     };
-    factory(mod.exports, global.assign, global.react, global.reactDom, global.reactRedux, global.store, global.local_storage, global.local_storage, global.app);
-    global.index = mod.exports;
-  }
-})(this, function (exports, _assign, _react, _reactDom, _reactRedux, _store, _local_storage, _local_storage2, _app) {
-  'use strict';
 
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  var _assign2 = _interopRequireDefault(_assign);
-
-  var _react2 = _interopRequireDefault(_react);
-
-  var _store2 = _interopRequireDefault(_store);
-
-  var _app2 = _interopRequireDefault(_app);
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  /**
-   * Retrieve the locally stored data to rehydrate the redux application.
-   * Only use part of the locally stored data in case labels or settings
-   * have changed.
-   *
-   * @type {*}
-   */
-  var locally_stored_data = (0, _assign2.default)({}, cw__config, (0, _local_storage2.retrieve)(_local_storage.LOCAL_STORAGE_KEY));
-
-  /**
-   * Always pull most recent labels, products and cart data
-   */
-  /*global cw__config*/
-
-  locally_stored_data.labels = cw__config.labels;
-  locally_stored_data.data = locally_stored_data.data ? locally_stored_data.data : {};
-  locally_stored_data.data.products = cw__config.data.products;
-  locally_stored_data.data.location_posts = cw__config.data.location_posts;
-  locally_stored_data.data.grouped_products = cw__config.data.grouped_products;
-  locally_stored_data.data.catering_categories = cw__config.data.catering_categories;
-  locally_stored_data.settings = cw__config.settings;
-  locally_stored_data.order = locally_stored_data.order ? locally_stored_data.order : {};
-  locally_stored_data.order.order_cart = cw__config.order.order_cart;
-
-  /**
-   * In case someone is stuck in a loading state after a failed request
-   * clear loading state
-   */
-  locally_stored_data.data.loading = false;
-  locally_stored_data.data.modal_loading = false;
-
-  /**
-   * Create the Redux Store
-   */
-  var store = (0, _store2.default)(locally_stored_data);
-
-  /**
-   * Subscribe to Redux changes then write
-   * state to the localStorage
-   */
-  store.subscribe(function () {
-    (0, _local_storage2.storeLocal)(_local_storage.LOCAL_STORAGE_KEY, store.getState());
-  });
-
-  /**
-   * Run the main application.
-   */
-  var runApp = function runApp() {
-    window.app = (0, _reactDom.render)(_react2.default.createElement(
-      _reactRedux.Provider,
-      { store: store },
-      _react2.default.createElement(_app2.default, null)
-    ), document.getElementById('cater_waiter__react_base'));
-  };
-
-  exports.default = runApp;
+    exports.default = runApp;
 });
 
 /***/ }),
@@ -76027,20 +76003,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(178), __webpack_require__(20), __webpack_require__(28), __webpack_require__(27), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(178), __webpack_require__(20), __webpack_require__(28), __webpack_require__(27), __webpack_require__(5), __webpack_require__(636)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('numeral'), require('lodash'), require('../../thunks'), require('../elements/button_no_event'), require('../../utilities'));
+        factory(exports, require('react'), require('numeral'), require('lodash'), require('../../thunks'), require('../elements/button_no_event'), require('../../utilities'), require('./tax_free_prompt'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.numeral, global.lodash, global.thunks, global.button_no_event, global.utilities);
+        factory(mod.exports, global.react, global.numeral, global.lodash, global.thunks, global.button_no_event, global.utilities, global.tax_free_prompt);
         global.confirm = mod.exports;
     }
-})(this, function (exports, _react, _numeral, _lodash, _thunks, _button_no_event, _utilities) {
+})(this, function (exports, _react, _numeral, _lodash, _thunks, _button_no_event, _utilities, _tax_free_prompt) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -76063,6 +76039,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var Confirm = function Confirm(props) {
         var dispatch = props.dispatch,
             _props$labels = props.labels,
+            are_you_a_tax_exempt_organization = _props$labels.are_you_a_tax_exempt_organization,
+            cart_item = _props$labels.cart_item,
             confirm_order_title = _props$labels.confirm_order_title,
             continue_to_checkout_button = _props$labels.continue_to_checkout_button,
             currency = _props$labels.currency,
@@ -76086,7 +76064,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             total: "",
             items: []
         } : _props$order$order_ca,
-            delivery_minimum = props.settings.delivery_minimum;
+            _props$settings = props.settings,
+            delivery_minimum = _props$settings.delivery_minimum,
+            tax_free_prompt = _props$settings.tax_free_prompt;
         var subtotal = order_cart.subtotal,
             tax = order_cart.tax,
             total = order_cart.total,
@@ -76113,6 +76093,33 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             _react2.default.createElement(
                 'div',
                 { className: 'cw__cart_items' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'cw__cart_items_labels' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'container-fluid' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'row' },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'col-md-8 col-sm-4' },
+                                cart_item
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'col-md-2 col-sm-4 text-center' },
+                                quantity
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'col-md-2 col-sm-4 text-right' },
+                                item_total
+                            )
+                        )
+                    )
+                ),
                 items.map(function (item, key) {
 
                     var product = (0, _utilities.getProductById)(item.product_id, products);
@@ -76128,108 +76135,136 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                 { className: 'row' },
                                 _react2.default.createElement(
                                     'div',
-                                    { className: 'col-md-3' },
-                                    product.name
+                                    { className: 'col-md-8 col-sm-4' },
+                                    _react2.default.createElement(
+                                        'strong',
+                                        { className: 'cw__product_name' },
+                                        product.name
+                                    ),
+                                    product.attributes.map(function (attr, key) {
+                                        if (typeof item.variation[attr.attribute_slug] !== 'undefined') {
+                                            return _react2.default.createElement(
+                                                'div',
+                                                { key: key, className: 'cw__product_attributes' },
+                                                _react2.default.createElement(
+                                                    'span',
+                                                    { className: 'cw__product_attribute_name' },
+                                                    attr.name,
+                                                    ':'
+                                                ),
+                                                _react2.default.createElement('span', { className: 'cw__product_attribute_value', dangerouslySetInnerHTML: { __html: item.variation[attr.attribute_slug] } })
+                                            );
+                                        }
+                                    })
                                 ),
                                 _react2.default.createElement(
                                     'div',
-                                    { className: 'col-md-3' },
-                                    quantity,
-                                    ' ',
+                                    { className: 'col-md-2 col-sm-4 text-center' },
                                     item.quantity
                                 ),
                                 _react2.default.createElement(
                                     'div',
-                                    { className: 'col-md-3' },
-                                    item_total,
-                                    ' ',
+                                    { className: 'col-md-2 col-sm-4 text-right' },
                                     currency,
                                     (0, _numeral2.default)(item.line_total).format('0.00')
-                                ),
-                                _react2.default.createElement(
-                                    'div',
-                                    { className: 'col-md-3' },
-                                    _react2.default.createElement(
-                                        _button_no_event.Button,
-                                        { className: 'btn btn-sm btn-danger', onClick: function onClick() {
-
-                                                var confirm_action = confirm(removing_item_from_cart_confirm);
-
-                                                if (confirm_action) dispatch((0, _thunks.removeCartItem)(item.key, removing_item_from_cart, updating_cart));
-                                            } },
-                                        _lodash2.default.upperFirst(remove)
-                                    )
                                 )
                             )
                         )
                     );
                 })
             ),
+            _react2.default.createElement('hr', null),
             _react2.default.createElement(
                 'div',
-                { className: 'cw__cart_totals' },
+                { className: 'container-fluid' },
                 _react2.default.createElement(
                     'div',
-                    { className: 'container-fluid' },
+                    { className: 'row' },
                     _react2.default.createElement(
                         'div',
-                        { className: 'row' },
+                        { className: 'col-md-offset-8 col-md-4' },
                         _react2.default.createElement(
                             'div',
-                            { className: 'cw__cart_subtotal' },
+                            { className: 'cw__cart_totals' },
                             _react2.default.createElement(
-                                'span',
-                                null,
-                                subtotal_label,
-                                ':'
+                                'div',
+                                { className: 'cw__cart_subtotal' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'container-fluid' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'row' },
+                                        _react2.default.createElement(
+                                            'span',
+                                            { className: 'col-sm-6 text-right' },
+                                            subtotal_label,
+                                            ':'
+                                        ),
+                                        _react2.default.createElement(
+                                            'span',
+                                            { className: 'col-sm-6 text-right' },
+                                            (0, _utilities.formatCurrency)(subtotal, currency)
+                                        )
+                                    )
+                                )
                             ),
                             _react2.default.createElement(
-                                'span',
-                                null,
-                                (0, _utilities.formatCurrency)(subtotal, currency)
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'row' },
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'cw__cart_tax' },
-                            _react2.default.createElement(
-                                'span',
-                                null,
-                                tax_label,
-                                ':'
+                                'div',
+                                { className: 'cw__cart_tax' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'container-fluid' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'row' },
+                                        _react2.default.createElement(
+                                            'span',
+                                            { className: 'col-sm-6 text-right' },
+                                            tax_label,
+                                            ':'
+                                        ),
+                                        _react2.default.createElement(
+                                            'span',
+                                            { className: 'col-sm-6 text-right' },
+                                            (0, _utilities.formatCurrency)(tax, currency)
+                                        )
+                                    )
+                                )
                             ),
                             _react2.default.createElement(
-                                'span',
-                                null,
-                                (0, _utilities.formatCurrency)(tax, currency)
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'row' },
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'cw__cart_total' },
-                            _react2.default.createElement(
-                                'span',
-                                null,
-                                total_label,
-                                ':'
-                            ),
-                            _react2.default.createElement(
-                                'span',
-                                null,
-                                (0, _utilities.formatCurrency)(order_total, currency)
+                                'div',
+                                { className: 'cw__cart_total' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'container-fluid' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'row' },
+                                        _react2.default.createElement(
+                                            'span',
+                                            { className: 'col-sm-6 text-right' },
+                                            total_label,
+                                            ':'
+                                        ),
+                                        _react2.default.createElement(
+                                            'span',
+                                            { className: 'col-sm-6 text-right' },
+                                            (0, _utilities.formatCurrency)(order_total, currency)
+                                        )
+                                    )
+                                )
                             )
                         )
                     )
                 )
             ),
+            _react2.default.createElement('hr', null),
+            _react2.default.createElement(_tax_free_prompt.TaxFreePrompt, {
+                label: are_you_a_tax_exempt_organization,
+                prompt: tax_free_prompt
+            }),
+            _react2.default.createElement('hr', null),
             _react2.default.createElement(
                 'div',
                 { className: 'cw__buttons' },
@@ -77851,6 +77886,249 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 625 */,
+/* 626 */,
+/* 627 */,
+/* 628 */,
+/* 629 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(8), __webpack_require__(333), __webpack_require__(104), __webpack_require__(111)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else if (typeof exports !== "undefined") {
+    factory(exports, require('babel-runtime/core-js/object/assign'), require('../configs/store'), require('../constansts/local_storage'), require('../utilities/local_storage'));
+  } else {
+    var mod = {
+      exports: {}
+    };
+    factory(mod.exports, global.assign, global.store, global.local_storage, global.local_storage);
+    global.store = mod.exports;
+  }
+})(this, function (exports, _assign, _store, _local_storage, _local_storage2) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.store = undefined;
+
+  var _assign2 = _interopRequireDefault(_assign);
+
+  var _store2 = _interopRequireDefault(_store);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  /**
+   * Retrieve the locally stored data to rehydrate the redux application.
+   * Only use part of the locally stored data in case labels or settings
+   * have changed.
+   *
+   * @type {*}
+   */
+  var locally_stored_data = (0, _assign2.default)({}, cw__config, (0, _local_storage2.retrieve)(_local_storage.LOCAL_STORAGE_KEY));
+
+  /**
+   * Always pull most recent labels, products and cart data
+   */
+  /*global cw__config*/
+
+  locally_stored_data.labels = cw__config.labels;
+  locally_stored_data.data = locally_stored_data.data ? locally_stored_data.data : {};
+  locally_stored_data.data.products = cw__config.data.products;
+  locally_stored_data.data.location_posts = cw__config.data.location_posts;
+  locally_stored_data.data.grouped_products = cw__config.data.grouped_products;
+  locally_stored_data.data.catering_categories = cw__config.data.catering_categories;
+  locally_stored_data.settings = cw__config.settings;
+  locally_stored_data.order = locally_stored_data.order ? locally_stored_data.order : {};
+  locally_stored_data.order.order_cart = cw__config.order.order_cart;
+
+  /**
+   * In case someone is stuck in a loading state after a failed request
+   * clear loading state
+   */
+  locally_stored_data.data.loading = false;
+  locally_stored_data.data.modal_loading = false;
+
+  /**
+   * Create the Redux Store
+   */
+  var store = (0, _store2.default)(locally_stored_data);
+
+  /**
+   * Subscribe to Redux changes then write
+   * state to the localStorage
+   */
+  store.subscribe(function () {
+    (0, _local_storage2.storeLocal)(_local_storage.LOCAL_STORAGE_KEY, store.getState());
+  });
+
+  exports.store = store;
+});
+
+/***/ }),
+/* 630 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(185)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('./request'));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.request);
+        global.taxes = mod.exports;
+    }
+})(this, function (exports, _request) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.set_tax_session = undefined;
+    var set_tax_session = exports.set_tax_session = function set_tax_session(location_id) {
+
+        (0, _request.ajax)('set_tax_by_location', { location_id: location_id }, 'POST', false, true).then(function (data) {
+            if (!data.success) {
+                console.error(data.error);
+            }
+        });
+    };
+});
+
+/***/ }),
+/* 631 */,
+/* 632 */,
+/* 633 */,
+/* 634 */,
+/* 635 */,
+/* 636 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(29), __webpack_require__(30), __webpack_require__(31), __webpack_require__(32), __webpack_require__(33), __webpack_require__(1), __webpack_require__(4)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('babel-runtime/core-js/object/get-prototype-of'), require('babel-runtime/helpers/classCallCheck'), require('babel-runtime/helpers/createClass'), require('babel-runtime/helpers/possibleConstructorReturn'), require('babel-runtime/helpers/inherits'), require('react'), require('prop-types'));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.getPrototypeOf, global.classCallCheck, global.createClass, global.possibleConstructorReturn, global.inherits, global.react, global.propTypes);
+        global.tax_free_prompt = mod.exports;
+    }
+})(this, function (exports, _getPrototypeOf, _classCallCheck2, _createClass2, _possibleConstructorReturn2, _inherits2, _react, _propTypes) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.TaxFreePrompt = undefined;
+
+    var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+    var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+    var _createClass3 = _interopRequireDefault(_createClass2);
+
+    var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+    var _inherits3 = _interopRequireDefault(_inherits2);
+
+    var _react2 = _interopRequireDefault(_react);
+
+    var _propTypes2 = _interopRequireDefault(_propTypes);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    var TaxFreePrompt = function (_Component) {
+        (0, _inherits3.default)(TaxFreePrompt, _Component);
+
+        function TaxFreePrompt() {
+            var _ref;
+
+            var _temp, _this, _ret;
+
+            (0, _classCallCheck3.default)(this, TaxFreePrompt);
+
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
+
+            return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = TaxFreePrompt.__proto__ || (0, _getPrototypeOf2.default)(TaxFreePrompt)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+                active: false
+            }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
+        }
+
+        (0, _createClass3.default)(TaxFreePrompt, [{
+            key: 'render',
+            value: function render() {
+                var _this2 = this;
+
+                var _props = this.props,
+                    label = _props.label,
+                    prompt = _props.prompt,
+                    active = this.state.active;
+
+
+                return _react2.default.createElement(
+                    'div',
+                    { className: 'cw__tax_exempt_prompt' },
+                    _react2.default.createElement(
+                        'label',
+                        { htmlFor: 'tax-free-prompt' },
+                        label,
+                        _react2.default.createElement('input', {
+                            type: 'checkbox',
+                            name: 'tax-free-prompt',
+                            id: 'tax-free-prompt',
+                            onClick: function onClick(event) {
+                                _this2.setState({
+                                    active: event.target.checked
+                                });
+                            }
+                        })
+                    ),
+                    !active ? null : _react2.default.createElement(
+                        'div',
+                        { className: 'cw__tax_exempt_prompt_content' },
+                        _react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: prompt } })
+                    )
+                );
+            }
+        }]);
+        return TaxFreePrompt;
+    }(_react.Component);
+
+    TaxFreePrompt.propTypes = {
+        label: _propTypes2.default.string.isRequired,
+        prompt: _propTypes2.default.string.isRequired
+    };
+
+    exports.TaxFreePrompt = TaxFreePrompt;
+});
 
 /***/ })
 /******/ ]);

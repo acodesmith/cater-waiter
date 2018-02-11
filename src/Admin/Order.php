@@ -21,12 +21,22 @@ class Order
 
     public function set_tax_by_location()
     {
-    	\WC()->session->set( self::TAX_LOCATION_ID, $_REQUEST['location_id'] );
+    	$session = \WC()->session;
 
-    	wp_send_json([
-    		'success' => ! empty( $_REQUEST['location_id'] ),
-		    'location_id' => $_REQUEST['location_id'],
-	    ]);
+    	if( $session ) {
+		    \WC()->session->set( self::TAX_LOCATION_ID, $_REQUEST['location_id'] );
+
+		    wp_send_json([
+			    'success' => ! empty( $_REQUEST['location_id'] ),
+			    'location_id' => $_REQUEST['location_id'],
+		    ]);
+	    }else{
+		    wp_send_json([
+			    'success' => false,
+			    'error' => 'WC Session not running.',
+		    ]);
+	    }
+
     	wp_die();
     }
 

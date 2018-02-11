@@ -11,7 +11,7 @@ request.ajax.baseurl = request.ajax.baseurl.replace( request.ajax.site_url, '' )
  * @param data
  * @param method
  */
-export const api = (action,data=null,method = 'GET') => {
+export const api = (action, data=null, method = 'GET') => {
 
     let options = {
         method: method,
@@ -61,7 +61,7 @@ export const ajax = ( action, data, method = 'POST', json_data = false, cookies 
 
     /**
      * Having trouble with the fetch() api and sending cookies. :(
-     * So I'm falling back to jQuery XRHRequest :)
+     * So I'm falling back to jQuery XHR :)
      **/
     return jQuery.ajax({
         url: `${request.ajax.baseurl}/?action=${action}`,

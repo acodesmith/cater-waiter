@@ -122,71 +122,65 @@ class ProductRow extends Component
 
         return fields.map((items, index) => {
 
-            return variations.map((variation, variationIndex) => {
+            return variations.map((variation, variationIndex) => (
+                <div style={{clear: 'both'}} className="cw__variation" key={variationIndex}>
+                    { mode === MODE_ADD ? null : <Field
+                        name={`${items}.key`}
+                        type="hidden"
+                        validate={[ required ]}
+                        component={renderField}
+                    />}
+                    <Field
+                        name={`${items}.variation_id`}
+                        type="hidden"
+                        value={variation.variation_id}
+                        validate={[ required ]}
+                        component={renderField}
+                    />
+                    <Field
+                        name={`${items}.product_id`}
+                        type="hidden"
+                        value={product.id}
+                        validate={[ required ]}
+                        component={renderField}
+                    />
+                    <Field
+                        name={`${items}.quantity`}
+                        label="Quantity"
+                        type="number"
+                        className="col-md-3"
+                        validate={[ required, minNumericValueOne ]}
+                        attr={this.quantityAttrs()}
+                        component={renderField} />
+                    {variation.attributes.map(attribute => (
+                        <div className="option col-md-3" key={ attribute.attribute_slug }>
+                            <label htmlFor={ attribute.attribute_slug }>{ attribute.name }</label>
+                            <Field
+                                name={ `${items}.${attribute.attribute_slug}` }
+                                id={ attribute.attribute_slug }
+                                validate={[ required ]}
+                                type="select"
+                                component={renderField}>
+                                <option value="">Select { attribute.name }</option>
+                                { ! attribute.options ? null : attribute.options.map((option, key) => (
+                                    <option key={key} value={option}>{ unescape( option ) }</option>
+                                )) }
+                            </Field>
+                        </div>
+                    ))}
+                    { index < 1 && mode !== MODE_EDIT ? null : <button className="option col-md-3" onClick={event => {
 
-                return (
-                    <div style={{clear: 'both'}} className="cw__variation" key={variationIndex}>
-                        { mode === MODE_ADD ? null : <Field
-                            name={`${items}.key`}
-                            type="hidden"
-                            validate={[ required ]}
-                            component={renderField}
-                        />}
-                        <Field
-                            name={`${items}.variation_id`}
-                            type="hidden"
-                            value={variation.variation_id}
-                            validate={[ required ]}
-                            component={renderField}
-                        />
-                        <Field
-                            name={`${items}.product_id`}
-                            type="hidden"
-                            value={product.id}
-                            validate={[ required ]}
-                            component={renderField}
-                        />
-                        <Field
-                            name={`${items}.quantity`}
-                            label="Quantity"
-                            type="number"
-                            className="col-md-3"
-                            validate={[ required, minNumericValueOne ]}
-                            attr={this.quantityAttrs()}
-                            component={renderField} />
-                        {variation.attributes.map(attribute => {
-                            console.log("attribute",attribute);
-                            return (
-                                <div className="option col-md-3" key={ attribute.id }>
-                                    <label htmlFor={ attribute.attribute_slug }>{ attribute.name }</label>
-                                    <Field
-                                        name={ `${items}.${attribute.attribute_slug}` }
-                                        id={ attribute.attribute_slug }
-                                        validate={[ required ]}
-                                        type="select"
-                                        component={renderField}>
-                                        <option value="">Select { attribute.name }</option>
-                                        { ! attribute.options ? null : attribute.options.map((option, key) => {
-                                            return <option key={key} value={option}>{ unescape( option ) }</option>
-                                        }) }
-                                    </Field>
-                                </div>
-                            )
-                        })}
-                        { index < 1 && mode !== MODE_EDIT ? null : <button className="option col-md-3" onClick={event => {
+                        event.preventDefault()
 
-                            event.preventDefault()
-
-                            if( ! remove )
-                                fields.remove(index)
-                            else
-                                remove(this.props.items[index], index)
-                        }}>
-                            { remove_label }
-                        </button> }
-                    </div>
-                )
-            })
+                        if( ! remove )
+                            fields.remove(index)
+                        else
+                            remove(this.props.items[index], index)
+                    }}>
+                        { remove_label }
+                    </button> }
+                </div>
+            ))
         })
     }
 }
