@@ -114,6 +114,12 @@ class WC_PluginSettings {
 				'desc' => __( 'Need to build lat/long values for radius based searching.', 'cater_waiter' ),
 				'id'   => 'wc_settings_cater_waiter_google_maps_api_key',
 			),
+			'tax_free_prompt' => array(
+				'name' => __( 'Tax Free Prompt', 'cater_waiter' ),
+				'type' => 'textarea',
+				'desc' => __( 'Text appearing when a user selects "Are you a tax-exempt organization?"', 'cater_waiter' ),
+				'id'   => 'wc_settings_woofranchise_tax_free_prompt',
+			),
 			'section_end'                      => array(
 				'type' => 'sectionend',
 				'id'   => 'wc_settings_cater_waiter_section_end'

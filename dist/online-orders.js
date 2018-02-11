@@ -76003,20 +76003,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(178), __webpack_require__(20), __webpack_require__(28), __webpack_require__(27), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(178), __webpack_require__(20), __webpack_require__(28), __webpack_require__(27), __webpack_require__(5), __webpack_require__(636)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('numeral'), require('lodash'), require('../../thunks'), require('../elements/button_no_event'), require('../../utilities'));
+        factory(exports, require('react'), require('numeral'), require('lodash'), require('../../thunks'), require('../elements/button_no_event'), require('../../utilities'), require('./tax_free_prompt'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.numeral, global.lodash, global.thunks, global.button_no_event, global.utilities);
+        factory(mod.exports, global.react, global.numeral, global.lodash, global.thunks, global.button_no_event, global.utilities, global.tax_free_prompt);
         global.confirm = mod.exports;
     }
-})(this, function (exports, _react, _numeral, _lodash, _thunks, _button_no_event, _utilities) {
+})(this, function (exports, _react, _numeral, _lodash, _thunks, _button_no_event, _utilities, _tax_free_prompt) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -76064,7 +76064,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             total: "",
             items: []
         } : _props$order$order_ca,
-            delivery_minimum = props.settings.delivery_minimum;
+            _props$settings = props.settings,
+            delivery_minimum = _props$settings.delivery_minimum,
+            tax_free_prompt = _props$settings.tax_free_prompt;
         var subtotal = order_cart.subtotal,
             tax = order_cart.tax,
             total = order_cart.total,
@@ -76257,6 +76259,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     )
                 )
             ),
+            _react2.default.createElement('hr', null),
+            _react2.default.createElement(_tax_free_prompt.TaxFreePrompt, {
+                label: are_you_a_tax_exempt_organization,
+                prompt: tax_free_prompt
+            }),
             _react2.default.createElement('hr', null),
             _react2.default.createElement(
                 'div',
@@ -78002,6 +78009,125 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             }
         });
     };
+});
+
+/***/ }),
+/* 631 */,
+/* 632 */,
+/* 633 */,
+/* 634 */,
+/* 635 */,
+/* 636 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(29), __webpack_require__(30), __webpack_require__(31), __webpack_require__(32), __webpack_require__(33), __webpack_require__(1), __webpack_require__(4)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('babel-runtime/core-js/object/get-prototype-of'), require('babel-runtime/helpers/classCallCheck'), require('babel-runtime/helpers/createClass'), require('babel-runtime/helpers/possibleConstructorReturn'), require('babel-runtime/helpers/inherits'), require('react'), require('prop-types'));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.getPrototypeOf, global.classCallCheck, global.createClass, global.possibleConstructorReturn, global.inherits, global.react, global.propTypes);
+        global.tax_free_prompt = mod.exports;
+    }
+})(this, function (exports, _getPrototypeOf, _classCallCheck2, _createClass2, _possibleConstructorReturn2, _inherits2, _react, _propTypes) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.TaxFreePrompt = undefined;
+
+    var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+    var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+    var _createClass3 = _interopRequireDefault(_createClass2);
+
+    var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+    var _inherits3 = _interopRequireDefault(_inherits2);
+
+    var _react2 = _interopRequireDefault(_react);
+
+    var _propTypes2 = _interopRequireDefault(_propTypes);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    var TaxFreePrompt = function (_Component) {
+        (0, _inherits3.default)(TaxFreePrompt, _Component);
+
+        function TaxFreePrompt() {
+            var _ref;
+
+            var _temp, _this, _ret;
+
+            (0, _classCallCheck3.default)(this, TaxFreePrompt);
+
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
+
+            return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = TaxFreePrompt.__proto__ || (0, _getPrototypeOf2.default)(TaxFreePrompt)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+                active: false
+            }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
+        }
+
+        (0, _createClass3.default)(TaxFreePrompt, [{
+            key: 'render',
+            value: function render() {
+                var _this2 = this;
+
+                var _props = this.props,
+                    label = _props.label,
+                    prompt = _props.prompt,
+                    active = this.state.active;
+
+
+                return _react2.default.createElement(
+                    'div',
+                    { className: 'cw__tax_exempt_prompt' },
+                    _react2.default.createElement(
+                        'label',
+                        { htmlFor: 'tax-free-prompt' },
+                        label,
+                        _react2.default.createElement('input', {
+                            type: 'checkbox',
+                            name: 'tax-free-prompt',
+                            id: 'tax-free-prompt',
+                            onClick: function onClick(event) {
+                                _this2.setState({
+                                    active: event.target.checked
+                                });
+                            }
+                        })
+                    ),
+                    !active ? null : _react2.default.createElement(
+                        'div',
+                        { className: 'cw__tax_exempt_prompt_content' },
+                        _react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: prompt } })
+                    )
+                );
+            }
+        }]);
+        return TaxFreePrompt;
+    }(_react.Component);
+
+    TaxFreePrompt.propTypes = {
+        label: _propTypes2.default.string.isRequired,
+        prompt: _propTypes2.default.string.isRequired
+    };
+
+    exports.TaxFreePrompt = TaxFreePrompt;
 });
 
 /***/ })

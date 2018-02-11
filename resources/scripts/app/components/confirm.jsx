@@ -8,6 +8,7 @@ import {
     formatCurrency,
     mapValue
 } from '../../utilities'
+import { TaxFreePrompt } from "./tax_free_prompt"
 
 const Confirm = props => {
 
@@ -43,7 +44,8 @@ const Confirm = props => {
             }
         },
         settings: {
-            delivery_minimum
+            delivery_minimum,
+            tax_free_prompt
         }
     } = props
 
@@ -148,6 +150,11 @@ const Confirm = props => {
                     </div>
                 </div>
             </div>
+            <hr/>
+            <TaxFreePrompt
+                label={are_you_a_tax_exempt_organization}
+                prompt={tax_free_prompt}
+            />
             <hr/>
             <div className="cw__buttons">
                 { ! minimum_met ? null :
