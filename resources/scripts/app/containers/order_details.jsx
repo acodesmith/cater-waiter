@@ -1,9 +1,11 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
+import { IconHelp } from "../elements/icon_help"
 import {
     ORDER_TYPE_PICKUP,
     VIEW_CONFIRM,
-    setCurrentScreen
+    setCurrentScreen,
+    showHelpInfo
 } from '../../constansts/'
 import {
     OrderType,
@@ -31,6 +33,18 @@ const clearData = () => {
     window.location.reload()
 }
 
+const HelpTrigger = ({ dispatch }) => (
+    <button 
+        className='cw__help_info_trigger'
+        onClick={event => {
+            event.preventDefault()
+            dispatch( showHelpInfo() )
+        }}
+    >
+        <IconHelp/>
+    </button>
+)
+
 let OrderDetails = props =>
 {
     let {
@@ -55,7 +69,7 @@ let OrderDetails = props =>
     return (
         <div className="cw__order_details">
             <section>
-                <header>{ order_details_title }</header>
+                <header>{ order_details_title } <HelpTrigger dispatch={dispatch} /></header>
                 <OrderType {...props} />
                 { order_type === ORDER_TYPE_PICKUP ?
                     <PickupLocation {...props} /> :

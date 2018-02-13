@@ -1,6 +1,7 @@
 import React from 'react'
 import {
     BackButton,
+    HelpInfo,
     Loading,
     OrderDetails,
     Pathway,
@@ -10,6 +11,7 @@ const App = () => {
     return (
         <div className="cw__app_base">
             <Loading />
+            <HelpInfo/>
             <div className="container-fluid">
                 <div className="row">
                     <Pathway/>

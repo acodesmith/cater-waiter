@@ -73,6 +73,17 @@
 .cw__delivery_address form .cw__form_button {
   margin-top: 2rem; }
 
+.cw__order_details .cw__delivery_address {
+  text-align: left; }
+  .cw__order_details .cw__delivery_address span {
+    display: inline-block;
+    padding-right: 0.5rem; }
+  .cw__order_details .cw__delivery_address span.cw__delivery_within_range {
+    display: none; }
+  .cw__order_details .cw__delivery_address span.cw__delivery_address_line_one,
+  .cw__order_details .cw__delivery_address span.cw__delivery_address_line_two {
+    display: block; }
+
 /**
  * Main Loading Section
  */
@@ -149,6 +160,12 @@
     margin-top: 1rem;
     padding: 0.75rem;
     width: 100%; }
+
+#cater_waiter__react_base .cw__order_details button.cw__help_info_trigger {
+  float: right;
+  height: 30px;
+  margin: 0;
+  max-width: 30px; }
 
 #cater_waiter__react_base .cw__order_details section button {
   background: #e9e6e6;

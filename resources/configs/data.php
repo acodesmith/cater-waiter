@@ -3,6 +3,7 @@
 $product_data = \CaterWaiter\Module\WooCommerce\ProductData::get();
 
 return [
+	'help_info'               => false,
 	'loading'                 => false,
 	'loading_message'         => null,
 	'modal_loading'           => false,

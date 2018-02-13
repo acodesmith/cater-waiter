@@ -12,7 +12,9 @@ import {
     LOADING_TOGGLE,
     MODAL_LOADING_TOGGLE,
     SHOW_GROUPED_ITEMS_OPTIONS,
-    HIDE_GROUPED_ITEMS_OPTIONS
+    HIDE_GROUPED_ITEMS_OPTIONS,
+    SHOW_HELP_INFO,
+    HIDE_HELP_INFO
 } from '../constansts/'
 
 const data = (state, action) => {
@@ -92,6 +94,14 @@ const data = (state, action) => {
                 modal_loading_message: action.data
             })
             break;
+        case SHOW_HELP_INFO:
+            return Object.assign( {}, state, {
+                help_info: true
+            })
+        case HIDE_HELP_INFO:
+            return Object.assign( {}, state, {
+                help_info: false
+            })
     }
 
     return Object.assign({}, state)

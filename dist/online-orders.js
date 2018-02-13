@@ -71546,6 +71546,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     modal_loading_message: action.data
                 });
                 break;
+            case _constansts.SHOW_HELP_INFO:
+                return (0, _assign2.default)({}, state, {
+                    help_info: true
+                });
+            case _constansts.HIDE_HELP_INFO:
+                return (0, _assign2.default)({}, state, {
+                    help_info: false
+                });
         }
 
         return (0, _assign2.default)({}, state);
@@ -71579,7 +71587,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.HIDE_GROUPED_ITEMS_OPTIONS = exports.SHOW_GROUPED_ITEMS_OPTIONS = exports.HIDE_ITEM_OPTIONS = exports.SHOW_ITEM_OPTIONS = exports.MODAL_LOADING_TOGGLE = exports.LOADING_TOGGLE = exports.CLEAR_ALL_NOTIFICATIONS = exports.CLEAR_NOTIFICATION = exports.SET_NOTIFICATION = undefined;
+    exports.HIDE_HELP_INFO = exports.SHOW_HELP_INFO = exports.HIDE_GROUPED_ITEMS_OPTIONS = exports.SHOW_GROUPED_ITEMS_OPTIONS = exports.HIDE_ITEM_OPTIONS = exports.SHOW_ITEM_OPTIONS = exports.MODAL_LOADING_TOGGLE = exports.LOADING_TOGGLE = exports.CLEAR_ALL_NOTIFICATIONS = exports.CLEAR_NOTIFICATION = exports.SET_NOTIFICATION = undefined;
     exports.setError = setError;
     exports.setNotification = setNotification;
     exports.clearNotification = clearNotification;
@@ -71590,6 +71598,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     exports.hideItemOptions = hideItemOptions;
     exports.showGroupedItemsOptions = showGroupedItemsOptions;
     exports.hideGroupedItemsOptions = hideGroupedItemsOptions;
+    exports.showHelpInfo = showHelpInfo;
+    exports.hideHelpInfo = hideHelpInfo;
 
 
     /*
@@ -71605,6 +71615,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var HIDE_ITEM_OPTIONS = exports.HIDE_ITEM_OPTIONS = 'HIDE_ITEM_OPTIONS';
     var SHOW_GROUPED_ITEMS_OPTIONS = exports.SHOW_GROUPED_ITEMS_OPTIONS = 'SHOW_GROUPED_ITEMS_OPTIONS';
     var HIDE_GROUPED_ITEMS_OPTIONS = exports.HIDE_GROUPED_ITEMS_OPTIONS = 'HIDE_GROUPED_ITEMS_OPTIONS';
+    var SHOW_HELP_INFO = exports.SHOW_HELP_INFO = 'SHOW_HELP_INFO';
+    var HIDE_HELP_INFO = exports.HIDE_HELP_INFO = 'HIDE_HELP_INFO';
     /*
      * action creators
      */
@@ -71655,6 +71667,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     function hideGroupedItemsOptions() {
         return { type: HIDE_GROUPED_ITEMS_OPTIONS };
+    }
+
+    function showHelpInfo() {
+        return { type: SHOW_HELP_INFO };
+    }
+
+    function hideHelpInfo() {
+        return { type: HIDE_HELP_INFO };
     }
 });
 
@@ -74167,6 +74187,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             'div',
             { className: 'cw__app_base' },
             _react2.default.createElement(_containers.Loading, null),
+            _react2.default.createElement(_containers.HelpInfo, null),
             _react2.default.createElement(
                 'div',
                 { className: 'container-fluid' },
@@ -74202,20 +74223,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(580), __webpack_require__(581), __webpack_require__(582), __webpack_require__(626)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(580), __webpack_require__(633), __webpack_require__(581), __webpack_require__(582), __webpack_require__(626)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else if (typeof exports !== "undefined") {
-    factory(exports, require('./back_button'), require('./loading'), require('./order_details'), require('./pathway'));
+    factory(exports, require('./back_button'), require('./help_info'), require('./loading'), require('./order_details'), require('./pathway'));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.back_button, global.loading, global.order_details, global.pathway);
+    factory(mod.exports, global.back_button, global.help_info, global.loading, global.order_details, global.pathway);
     global.index = mod.exports;
   }
-})(this, function (exports, _back_button, _loading, _order_details, _pathway) {
+})(this, function (exports, _back_button, _help_info, _loading, _order_details, _pathway) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -74227,6 +74248,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       enumerable: true,
       get: function () {
         return _back_button[key];
+      }
+    });
+  });
+  Object.keys(_help_info).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function () {
+        return _help_info[key];
       }
     });
   });
@@ -74403,20 +74433,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(10), __webpack_require__(3), __webpack_require__(583), __webpack_require__(49), __webpack_require__(104), __webpack_require__(111)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(10), __webpack_require__(632), __webpack_require__(3), __webpack_require__(583), __webpack_require__(49), __webpack_require__(104), __webpack_require__(111)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('react-redux'), require('../../constansts/'), require('../components/order_details/'), require('../elements/button'), require('../../constansts/local_storage'), require('../../utilities/local_storage'));
+        factory(exports, require('react'), require('react-redux'), require('../elements/icon_help'), require('../../constansts/'), require('../components/order_details/'), require('../elements/button'), require('../../constansts/local_storage'), require('../../utilities/local_storage'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.reactRedux, global.constansts, global.order_details, global.button, global.local_storage, global.local_storage);
+        factory(mod.exports, global.react, global.reactRedux, global.icon_help, global.constansts, global.order_details, global.button, global.local_storage, global.local_storage);
         global.order_details = mod.exports;
     }
-})(this, function (exports, _react, _reactRedux, _constansts, _order_details, _button, _local_storage, _local_storage2) {
+})(this, function (exports, _react, _reactRedux, _icon_help, _constansts, _order_details, _button, _local_storage, _local_storage2) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -74448,6 +74478,21 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         window.location.reload();
     };
 
+    var HelpTrigger = function HelpTrigger(_ref) {
+        var dispatch = _ref.dispatch;
+        return _react2.default.createElement(
+            'button',
+            {
+                className: 'cw__help_info_trigger',
+                onClick: function onClick(event) {
+                    event.preventDefault();
+                    dispatch((0, _constansts.showHelpInfo)());
+                }
+            },
+            _react2.default.createElement(_icon_help.IconHelp, null)
+        );
+    };
+
     var OrderDetails = function OrderDetails(props) {
         var dispatch = props.dispatch,
             _props$labels = props.labels,
@@ -74473,7 +74518,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 _react2.default.createElement(
                     'header',
                     null,
-                    order_details_title
+                    order_details_title,
+                    ' ',
+                    _react2.default.createElement(HelpTrigger, { dispatch: dispatch })
                 ),
                 _react2.default.createElement(_order_details.OrderType, props),
                 order_type === _constansts.ORDER_TYPE_PICKUP ? _react2.default.createElement(_order_details.PickupLocation, props) : _react2.default.createElement(_order_details.DeliveryLocation, props),
@@ -75288,20 +75335,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(32), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(20), __webpack_require__(32), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('../../elements/button_no_event'), require('../../../constansts'));
+        factory(exports, require('react'), require('lodash'), require('../../elements/button_no_event'), require('../../../constansts'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.button_no_event, global.constansts);
+        factory(mod.exports, global.react, global.lodash, global.button_no_event, global.constansts);
         global.order_type = mod.exports;
     }
-})(this, function (exports, _react, _button_no_event, _constansts) {
+})(this, function (exports, _react, _lodash, _button_no_event, _constansts) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -75310,6 +75357,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     exports.OrderType = undefined;
 
     var _react2 = _interopRequireDefault(_react);
+
+    var _lodash2 = _interopRequireDefault(_lodash);
 
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
@@ -75338,7 +75387,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             _react2.default.createElement(
                 'span',
                 null,
-                order_type
+                _lodash2.default.startCase(order_type)
             ),
             _react2.default.createElement(
                 'div',
@@ -76100,11 +76149,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         return _react2.default.createElement(
             'div',
             { className: 'cw__cart' },
-            _react2.default.createElement(
-                'h1',
-                null,
-                catering_menu_title
-            ),
             !update_grouped_products ? null : _react2.default.createElement(_index.UpdateGroupedProducts, props),
             !show_product_options ? null : _react2.default.createElement(_index.ProductOptions, props),
             !catering_categories.length ? null : catering_categories.map(function (category) {
@@ -78157,6 +78201,120 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 628 */,
+/* 629 */,
+/* 630 */,
+/* 631 */,
+/* 632 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require("react"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react);
+        global.icon_help = mod.exports;
+    }
+})(this, function (exports, _react) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.IconHelp = undefined;
+
+    var _react2 = _interopRequireDefault(_react);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    var IconHelp = function IconHelp(props) {
+        return _react2.default.createElement(
+            "span",
+            { className: "cw__icon_help" },
+            _react2.default.createElement(
+                "svg",
+                { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 92 92" },
+                _react2.default.createElement("path", { d: "M45.386.004C19.983.344-.333 21.215.005 46.619c.34 25.393 21.209 45.715 46.611 45.377 25.398-.342 45.718-21.213 45.38-46.615-.34-25.395-21.21-45.716-46.61-45.377zM45.25 74l-.254-.004c-3.912-.116-6.67-2.998-6.559-6.852.109-3.788 2.934-6.538 6.717-6.538l.227.004c4.021.119 6.748 2.972 6.635 6.937C51.904 71.346 49.123 74 45.25 74zm16.455-32.659c-.92 1.307-2.943 2.93-5.492 4.916l-2.807 1.938c-1.541 1.198-2.471 2.325-2.82 3.434-.275.873-.41 1.104-.434 2.88l-.004.451H39.43l.031-.907c.131-3.728.223-5.921 1.768-7.733 2.424-2.846 7.771-6.289 7.998-6.435.766-.577 1.412-1.234 1.893-1.936 1.125-1.551 1.623-2.772 1.623-3.972a7.74 7.74 0 0 0-1.471-4.576c-.939-1.323-2.723-1.993-5.303-1.993-2.559 0-4.311.812-5.359 2.478-1.078 1.713-1.623 3.512-1.623 5.35v.457H27.936l.02-.477c.285-6.769 2.701-11.643 7.178-14.487C37.947 18.918 41.447 18 45.531 18c5.346 0 9.859 1.299 13.412 3.861 3.6 2.596 5.426 6.484 5.426 11.556 0 2.837-.896 5.502-2.664 7.924z", fill: "#030104" })
+            )
+        );
+    };
+
+    exports.IconHelp = IconHelp;
+});
+
+/***/ }),
+/* 633 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(10), __webpack_require__(39), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('react-redux'), require('../components/'), require('../../constansts/'));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.reactRedux, global.components, global.constansts);
+        global.help_info = mod.exports;
+    }
+})(this, function (exports, _react, _reactRedux, _components, _constansts) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.HelpInfo = undefined;
+
+    var _react2 = _interopRequireDefault(_react);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    var HelpInfo = function HelpInfo(_ref) {
+        var dispatch = _ref.dispatch,
+            help_info = _ref.data.help_info,
+            need_help = _ref.labels.need_help;
+
+        return !help_info ? null : _react2.default.createElement(
+            'div',
+            { className: 'cw__help_info' },
+            _react2.default.createElement(_components.Modal, {
+                heading: need_help,
+                close: function close(event) {
+                    event.preventDefault();
+                    dispatch((0, _constansts.hideHelpInfo)());
+                }
+            })
+        );
+    };
+
+    exports.HelpInfo = HelpInfo = (0, _reactRedux.connect)(function (state) {
+        return state;
+    })(HelpInfo);
+
+    exports.HelpInfo = HelpInfo;
+});
 
 /***/ })
 /******/ ]);

@@ -1,5 +1,12 @@
 #cater_waiter__react_base .cw__order_details {
 
+  button.cw__help_info_trigger {
+    float: right;
+    height: 30px;
+    margin: 0;
+    max-width: 30px;
+  }
+
   section button {
     background: #e9e6e6;
     border-radius: 0;
