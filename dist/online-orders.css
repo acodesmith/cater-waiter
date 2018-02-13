@@ -12,6 +12,11 @@
   padding: 1rem;
   text-align: left; }
 
+#cater_waiter__react_base .modal {
+  background: rgba(0, 0, 0, 0.8); }
+  #cater_waiter__react_base .modal .modal-dialog {
+    margin-top: 10vh; }
+
 .cw__cart_items_labels {
   border-bottom: 1px solid #eee;
   font-weight: bold;
@@ -43,23 +48,27 @@
 .cw__delivery_address {
   text-align: center; }
 
-.cw__delivery_address form .cw__form_field {
+.cw__delivery_outside_of_range {
   max-width: 600px;
   margin: auto; }
+
+.cw__delivery_address form .cw__form_field {
+  max-width: 600px;
+  margin: 0.5rem auto 1rem; }
   .cw__delivery_address form .cw__form_field input,
   .cw__delivery_address form .cw__form_field label {
     float: left;
     text-align: left;
     width: 100%; }
   .cw__delivery_address form .cw__form_field label {
-    padding: 1rem 1rem 0.5rem; }
+    padding: 1rem 0.5rem 0.25rem; }
   .cw__delivery_address form .cw__form_field .cw__field_error {
     float: left;
     margin-bottom: 1rem;
     width: 100%; }
 
 .cw__form_field.cw__delivery_address_address_line_two {
-  margin-left: 20%; }
+  margin-top: 1rem; }
 
 .cw__delivery_address form .cw__form_button {
   margin-top: 2rem; }
@@ -124,6 +133,33 @@
     display: inline;
     min-width: 0;
     padding-right: 0; }
+
+#cater_waiter__react_base .cw__menu_item {
+  background: #e9e6e666;
+  padding: 1rem;
+  margin-bottom: 2rem; }
+  #cater_waiter__react_base .cw__menu_item:nth-child(2n) {
+    background: white; }
+  #cater_waiter__react_base .cw__menu_item button.btn {
+    background: #e9e6e6;
+    border-radius: 0;
+    border: none;
+    color: gray;
+    font-size: 1rem;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    width: 100%; }
+
+#cater_waiter__react_base .cw__order_details section button {
+  background: #e9e6e6;
+  border-radius: 0;
+  color: gray;
+  display: block;
+  font-size: 1rem;
+  margin-top: 2rem;
+  max-width: 100%;
+  padding: 0.75rem;
+  width: 100%; }
 
 .cw__schedule_order {
   text-align: center; }

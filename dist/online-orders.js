@@ -71743,8 +71743,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
                 var locations = (0, _utilities.extractDataFromResults)(data.results);
 
-                console.log("locations", locations);
-
                 if (!locations.length) return resolve({
                     valid: false,
                     location: locations
@@ -74628,7 +74626,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         return _react2.default.createElement(
             'div',
-            { className: 'cw__deliver_location' },
+            { className: 'cw__delivery_location' },
             _react2.default.createElement(
                 'h3',
                 null,
@@ -74781,16 +74779,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                 return dispatch((0, _constansts.showGroupedItemsOptions)(group.product.id));
                             } },
                         _lodash2.default.upperFirst(update)
-                    ),
-                    _react2.default.createElement(
-                        _button_no_event.Button,
-                        { className: 'btn btn-xs btn-danger', onClick: function onClick() {
-
-                                var confirm_action = confirm(removing_item_from_cart_confirm);
-
-                                if (confirm_action) dispatch((0, _thunks.removeGroupedProduct)(group.product.id, removing_item_from_cart, updating_cart));
-                            } },
-                        _lodash2.default.upperFirst(remove)
                     )
                 );
             }),
@@ -74999,7 +74987,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
                 return (0, _utilities2.syncOrderDataToSession)(order);
             }).then(function (data) {
-                console.log("data", data);
                 dispatch((0, _constansts.modalLoadingToggle)());
             }).then(function () {
                 return closeModal(new Event('click'));
@@ -76590,12 +76577,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             labels = props.labels,
             _props$order = props.order,
             order = _props$order === undefined ? {} : _props$order,
-            delivery_max_range = props.settings.delivery_max_range;
+            _props$settings = props.settings,
+            delivery_max_range = _props$settings.delivery_max_range,
+            delivery_outside_of_range = _props$settings.delivery_outside_of_range;
         var _order$order_delivery = order.order_delivery_address,
-            order_delivery_address = _order$order_delivery === undefined ? {} : _order$order_delivery;
-        var delivery_within_range = order_delivery_address.delivery_within_range;
-        var delivery_address_validating = labels.delivery_address_validating,
-            delivery_out_of_range = labels.delivery_out_of_range;
+            order_delivery_address = _order$order_delivery === undefined ? {} : _order$order_delivery,
+            delivery_within_range = order_delivery_address.delivery_within_range,
+            delivery_address_validating = labels.delivery_address_validating;
 
 
         return _react2.default.createElement(
@@ -76606,7 +76594,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 null,
                 'Delivery Address'
             ),
-            delivery_within_range === false ? delivery_out_of_range : null,
+            delivery_within_range === false ? _react2.default.createElement('div', { className: 'cw__delivery_outside_of_range cw__alert cw__alert_warning alert alert-warning', dangerouslySetInnerHTML: { __html: delivery_outside_of_range } }) : null,
             _react2.default.createElement(_delivery_address2.default, (0, _extends3.default)({ labels: labels }, { onSubmit: function onSubmit(values) {
                     dispatch((0, _thunks.validateDeliveryRange)(values, delivery_max_range, delivery_address_validating));
                 } }))
@@ -76673,13 +76661,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     component: _utilities.renderField,
                     type: 'text',
                     label: 'Address',
-                    className: 'cw__delivery_address_address_line_one',
+                    className: 'cw__delivery_address_address_line_one clearfix',
                     validate: [_utilities.required]
                 }),
                 _react2.default.createElement(_reduxForm.Field, {
                     name: 'delivery_address_line_two',
                     placeholder: 'Address Line Two',
-                    className: 'cw__delivery_address_address_line_two',
+                    className: 'cw__delivery_address_address_line_two clearfix',
                     component: _utilities.renderField,
                     type: 'text'
                 }),
@@ -76688,6 +76676,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     component: _utilities.renderField,
                     type: 'text',
                     label: 'City',
+                    className: 'clearfix',
                     validate: [_utilities.required]
                 }),
                 _react2.default.createElement(_reduxForm.Field, {
@@ -76695,6 +76684,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     component: _utilities.renderField,
                     type: 'text',
                     label: 'State',
+                    className: 'clearfix',
                     validate: [_utilities.required]
                 }),
                 _react2.default.createElement(_reduxForm.Field, {
@@ -76702,6 +76692,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     component: _utilities.renderField,
                     type: 'text',
                     label: 'Zip',
+                    className: 'clearfix',
                     validate: [_utilities.required]
                 })
             ),

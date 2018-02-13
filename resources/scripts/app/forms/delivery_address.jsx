@@ -23,13 +23,13 @@ const FormDeliverAddress = props =>
                     component={renderField}
                     type="text"
                     label={'Address'}
-                    className='cw__delivery_address_address_line_one'
+                    className='cw__delivery_address_address_line_one clearfix'
                     validate={[ required ]}
                 />
                 <Field
                     name="delivery_address_line_two"
                     placeholder={'Address Line Two'}
-                    className='cw__delivery_address_address_line_two'
+                    className='cw__delivery_address_address_line_two clearfix'
                     component={renderField}
                     type="text"
                 />
@@ -38,6 +38,7 @@ const FormDeliverAddress = props =>
                     component={renderField}
                     type="text"
                     label={'City'}
+                    className='clearfix'
                     validate={[ required ]}
                 />
                 <Field
@@ -45,6 +46,7 @@ const FormDeliverAddress = props =>
                     component={renderField}
                     type="text"
                     label={'State'}
+                    className='clearfix'
                     validate={[ required ]}
                 />
                 <Field
@@ -52,6 +54,7 @@ const FormDeliverAddress = props =>
                     component={renderField}
                     type="text"
                     label={'Zip'}
+                    className='clearfix'
                     validate={[ required ]}
                 />
             </div>

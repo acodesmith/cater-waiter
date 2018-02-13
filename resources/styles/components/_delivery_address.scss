@@ -2,9 +2,14 @@
   text-align: center;
 }
 
-.cw__delivery_address form .cw__form_field {
+.cw__delivery_outside_of_range {
   max-width: 600px;
   margin: auto;
+}
+
+.cw__delivery_address form .cw__form_field {
+  max-width: 600px;
+  margin: 0.5rem auto 1rem;
 
   input,
   label {
@@ -14,7 +19,7 @@
   }
 
   label {
-    padding: 1rem 1rem 0.5rem;
+    padding: 1rem 0.5rem 0.25rem;
   }
 
   .cw__field_error {
@@ -25,7 +30,7 @@
 }
 
 .cw__form_field.cw__delivery_address_address_line_two {
-  margin-left: 20%;
+  margin-top: 1rem;
 }
 
 .cw__delivery_address form .cw__form_button {

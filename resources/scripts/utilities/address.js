@@ -20,8 +20,6 @@ export const validateAddressRadius = (zip, max) => {
 
                     let locations = extractDataFromResults( data.results )
 
-                    console.log("locations",locations);
-
                     if ( ! locations.length )
                         return resolve({
                             valid: false,
