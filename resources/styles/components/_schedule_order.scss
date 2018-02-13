@@ -1,0 +1,22 @@
+.cw__schedule_order {
+  text-align: center;
+}
+
+.cw__order_schedule_field {
+  padding: 1rem;
+
+  label,
+  .cw__field_hint {
+    display: block;
+  }
+
+  .cw__field_hint {
+    color: $secondary-font-color;
+    margin-top: 0.5rem;
+  }
+}
+
+.cw__schedule_order button[type='submit'] {
+  margin-top: 2rem;
+}
+

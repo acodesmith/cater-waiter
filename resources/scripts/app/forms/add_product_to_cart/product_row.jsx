@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import { Field } from 'redux-form'
+import { Field, change } from 'redux-form'
 import unescape from 'unescape'
 import { arrayPush, arrayRemoveAll } from 'redux-form'
 import {
@@ -107,6 +107,18 @@ class ProductRow extends Component
         return attrs
     }
 
+    setVariationId(itemIndex, newValue, attribute)
+    {
+        const { variations, dispatch } = this.props
+
+        const newVariation = variations.filter(variation => {
+            return typeof variation.attributeValue[ attribute ] !== 'undefined' && variation.attributeValue[ attribute ] === newValue.toLowerCase()
+        })
+
+        if( newVariation.length )
+            dispatch( change( FORM_ADD_PRODUCT_TO_CART, `items[${itemIndex}].variation_id`, newVariation[0].variation_id) )
+    }
+
     render()
     {
         let {
@@ -122,7 +134,8 @@ class ProductRow extends Component
 
         return fields.map((items, index) => {
 
-            return variations.map((variation, variationIndex) => (
+            //Don't list all variations. Variations IDs are set based on the attribute values.
+            return [ variations[0] ].map((variation, variationIndex) => (
                 <div style={{clear: 'both'}} className="cw__variation" key={variationIndex}>
                     { mode === MODE_ADD ? null : <Field
                         name={`${items}.key`}
@@ -133,7 +146,6 @@ class ProductRow extends Component
                     <Field
                         name={`${items}.variation_id`}
                         type="hidden"
-                        value={variation.variation_id}
                         validate={[ required ]}
                         component={renderField}
                     />
@@ -160,7 +172,11 @@ class ProductRow extends Component
                                 id={ attribute.attribute_slug }
                                 validate={[ required ]}
                                 type="select"
-                                component={renderField}>
+                                component={renderField}
+                                onChange={(e, newValue) => {
+                                    this.setVariationId(index, newValue, attribute.attribute_slug)
+                                }}
+                            >
                                 <option value="">Select { attribute.name }</option>
                                 { ! attribute.options ? null : attribute.options.map((option, key) => (
                                     <option key={key} value={option}>{ unescape( option ) }</option>

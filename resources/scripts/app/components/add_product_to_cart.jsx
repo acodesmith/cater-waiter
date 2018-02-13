@@ -36,7 +36,8 @@ class AddProductToCart extends Component
 
         variations = variations.map(variation => {
             return Object.assign({}, variation, {
-                attributes: mapVariationAttributes( variation.attributes, product.attributes )
+                attributes: mapVariationAttributes( variation.attributes, product.attributes ),
+                attributeValue: variation.attributes,
             })
         })
 

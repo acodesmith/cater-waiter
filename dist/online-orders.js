@@ -41547,23 +41547,38 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 return attrs;
             }
         }, {
+            key: 'setVariationId',
+            value: function setVariationId(itemIndex, newValue, attribute) {
+                var _props4 = this.props,
+                    variations = _props4.variations,
+                    dispatch = _props4.dispatch;
+
+
+                var newVariation = variations.filter(function (variation) {
+                    return typeof variation.attributeValue[attribute] !== 'undefined' && variation.attributeValue[attribute] === newValue.toLowerCase();
+                });
+
+                if (newVariation.length) dispatch((0, _reduxForm.change)(_constansts.FORM_ADD_PRODUCT_TO_CART, 'items[' + itemIndex + '].variation_id', newVariation[0].variation_id));
+            }
+        }, {
             key: 'render',
             value: function render() {
                 var _this2 = this;
 
-                var _props4 = this.props,
-                    variations = _props4.variations,
-                    product = _props4.product,
-                    fields = _props4.fields,
-                    _props4$mode = _props4.mode,
-                    mode = _props4$mode === undefined ? _constansts.MODE_ADD : _props4$mode,
-                    remove = _props4.remove,
-                    remove_label = _props4.labels.remove;
+                var _props5 = this.props,
+                    variations = _props5.variations,
+                    product = _props5.product,
+                    fields = _props5.fields,
+                    _props5$mode = _props5.mode,
+                    mode = _props5$mode === undefined ? _constansts.MODE_ADD : _props5$mode,
+                    remove = _props5.remove,
+                    remove_label = _props5.labels.remove;
 
 
                 return fields.map(function (items, index) {
 
-                    return variations.map(function (variation, variationIndex) {
+                    //Don't list all variations. Variations IDs are set based on the attribute values.
+                    return [variations[0]].map(function (variation, variationIndex) {
                         return _react2.default.createElement(
                             'div',
                             { style: { clear: 'both' }, className: 'cw__variation', key: variationIndex },
@@ -41576,7 +41591,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                             _react2.default.createElement(_reduxForm.Field, {
                                 name: items + '.variation_id',
                                 type: 'hidden',
-                                value: variation.variation_id,
                                 validate: [_utilities.required],
                                 component: _utilities.renderField
                             }),
@@ -41611,7 +41625,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                             id: attribute.attribute_slug,
                                             validate: [_utilities.required],
                                             type: 'select',
-                                            component: _utilities.renderField },
+                                            component: _utilities.renderField,
+                                            onChange: function onChange(e, newValue) {
+                                                _this2.setVariationId(index, newValue, attribute.attribute_slug);
+                                            }
+                                        },
                                         _react2.default.createElement(
                                             'option',
                                             { value: '' },
@@ -72580,7 +72598,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             label = _ref.label,
             type = _ref.type,
             placeholder = _ref.placeholder,
-            className = _ref.className,
+            hint = _ref.hint,
+            _ref$className = _ref.className,
+            className = _ref$className === undefined ? '' : _ref$className,
             children = _ref.children,
             _ref$attr = _ref.attr,
             attr = _ref$attr === undefined ? {} : _ref$attr,
@@ -72590,45 +72610,46 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             warning = _ref$meta.warning;
         return _react2.default.createElement(
             'div',
-            { className: className },
+            { className: 'cw__form_field ' + className },
             !label ? null : _react2.default.createElement(
                 'label',
                 null,
                 label
             ),
-            _react2.default.createElement(
-                'div',
-                null,
-                function () {
-                    switch (type) {
-                        case 'textarea':
-                            return _react2.default.createElement(
-                                'textarea',
-                                (0, _extends3.default)({}, input, attr),
-                                children ? children : placeholder
-                            );
-                            break;
-                        case 'select':
-                            return _react2.default.createElement(
-                                'select',
-                                (0, _extends3.default)({}, input, attr),
-                                children
-                            );
-                            break;
-                        default:
-                            return _react2.default.createElement('input', (0, _extends3.default)({}, input, attr, { placeholder: placeholder, type: type }));
-                    }
-                }(),
-                touched && (error && _react2.default.createElement(
-                    'span',
-                    { className: 'cw__field_error' },
-                    error
-                ) || warning && _react2.default.createElement(
-                    'span',
-                    { className: 'cw__field_warning' },
-                    warning
-                ))
-            )
+            function () {
+                switch (type) {
+                    case 'textarea':
+                        return _react2.default.createElement(
+                            'textarea',
+                            (0, _extends3.default)({}, input, attr),
+                            children ? children : placeholder
+                        );
+                        break;
+                    case 'select':
+                        return _react2.default.createElement(
+                            'select',
+                            (0, _extends3.default)({}, input, attr),
+                            children
+                        );
+                        break;
+                    default:
+                        return _react2.default.createElement('input', (0, _extends3.default)({}, input, attr, { placeholder: placeholder, type: type }));
+                }
+            }(),
+            !hint ? null : _react2.default.createElement(
+                'span',
+                { className: 'cw__field_hint' },
+                hint
+            ),
+            touched && (error && _react2.default.createElement(
+                'span',
+                { className: 'cw__field_error' },
+                error
+            ) || warning && _react2.default.createElement(
+                'span',
+                { className: 'cw__field_warning' },
+                warning
+            ))
         );
     };
 });
@@ -75525,7 +75546,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
                 variations = variations.map(function (variation) {
                     return (0, _assign2.default)({}, variation, {
-                        attributes: (0, _utilities.mapVariationAttributes)(variation.attributes, product.attributes)
+                        attributes: (0, _utilities.mapVariationAttributes)(variation.attributes, product.attributes),
+                        attributeValue: variation.attributes
                     });
                 });
 
@@ -75737,7 +75759,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                 variations: variations,
                                 product: product,
                                 rows: rows,
-                                labels: this.props.labels
+                                labels: this.props.labels,
+                                formData: formData
                             })
                         ),
                         rows < 2 ? null : _react2.default.createElement(_total_row.TotalRow, { formData: formData }),
@@ -77241,6 +77264,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     order_type = _props.order_type,
                     location = _props.location,
                     _props$labels = _props.labels,
+                    delivery_date_label = _props$labels.delivery_date_label,
+                    delivery_time_of_day_label = _props$labels.delivery_time_of_day_label,
+                    pickup_date_label = _props$labels.pickup_date_label,
+                    pickup_time_of_day_label = _props$labels.pickup_time_of_day_label,
                     label_date_prompt = _props$labels.label_date_prompt,
                     label_time_prompt = _props$labels.label_time_prompt,
                     button_continue = _props$labels.button_continue,
@@ -77271,6 +77298,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         placeholder: label_date_prompt,
                         component: _utilities.renderField,
                         type: 'date',
+                        className: 'cw__order_schedule_field cw__order_schedule_date',
+                        label: order_type === _constansts.ORDER_TYPE_PICKUP ? pickup_date_label : delivery_date_label,
+                        hint: 'Format Example: 01/01/2020',
                         validate: [_utilities.required, function (value) {
                             return hoursInAdvanced(hours_in_advance, today, value, (0, _utilities.mapValue)(hours_in_advance, hours_in_advance_error));
                         }]
@@ -77280,6 +77310,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         placeholder: label_time_prompt,
                         component: _utilities.renderField,
                         type: 'time',
+                        className: 'cw__order_schedule_field cw__order_schedule_time_of_day',
+                        label: order_type === _constansts.ORDER_TYPE_PICKUP ? pickup_time_of_day_label : delivery_time_of_day_label,
+                        hint: 'Format Example: 10:00 AM',
                         validate: [_utilities.required, function (value) {
                             return windowOfTime(minOrderTime, maxOrderTime, value, windowOfTimeErrorMessage);
                         }]

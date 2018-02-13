@@ -4,8 +4,7 @@ import {
     FieldArray,
     reduxForm,
     arrayPush,
-    arrayRemoveAll,
-    arraySplice
+    arrayRemoveAll
 } from 'redux-form'
 import { FORM_ADD_PRODUCT_TO_CART } from '../../constansts'
 import { ProductRow } from './add_product_to_cart/product_row'
@@ -87,6 +86,7 @@ class FormAddProductToCart extends Component
                             product={product}
                             rows={rows}
                             labels={this.props.labels}
+                            formData={formData}
                         />
                     </div>
                     { rows < 2 ? null : <TotalRow formData={formData} /> }

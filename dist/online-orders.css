@@ -92,4 +92,19 @@
     min-width: 0;
     padding-right: 0; }
 
+.cw__schedule_order {
+  text-align: center; }
+
+.cw__order_schedule_field {
+  padding: 1rem; }
+  .cw__order_schedule_field label,
+  .cw__order_schedule_field .cw__field_hint {
+    display: block; }
+  .cw__order_schedule_field .cw__field_hint {
+    color: #7a7a7a;
+    margin-top: 0.5rem; }
+
+.cw__schedule_order button[type='submit'] {
+  margin-top: 2rem; }
+
 /*# sourceMappingURL=online-orders.css.map*/
