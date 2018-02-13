@@ -4,6 +4,14 @@
 .container-fluid {
   width: 100%; }
 
+.cw__field_error {
+  background: #ff00001a;
+  color: #6f0e12;
+  display: block;
+  font-weight: bold;
+  padding: 1rem;
+  text-align: left; }
+
 .cw__cart_items_labels {
   border-bottom: 1px solid #eee;
   font-weight: bold;
@@ -31,6 +39,30 @@
 .cw__cart_tax .row .col-sm-6:nth-child(2),
 .cw__cart_total .row .col-sm-6:nth-child(2) {
   padding-right: 0; }
+
+.cw__delivery_address {
+  text-align: center; }
+
+.cw__delivery_address form .cw__form_field {
+  max-width: 600px;
+  margin: auto; }
+  .cw__delivery_address form .cw__form_field input,
+  .cw__delivery_address form .cw__form_field label {
+    float: left;
+    text-align: left;
+    width: 100%; }
+  .cw__delivery_address form .cw__form_field label {
+    padding: 1rem 1rem 0.5rem; }
+  .cw__delivery_address form .cw__form_field .cw__field_error {
+    float: left;
+    margin-bottom: 1rem;
+    width: 100%; }
+
+.cw__form_field.cw__delivery_address_address_line_two {
+  margin-left: 20%; }
+
+.cw__delivery_address form .cw__form_button {
+  margin-top: 2rem; }
 
 /**
  * Main Loading Section
@@ -83,7 +115,8 @@
   .cw__cart_total span:first-child,
   .cw__menu_item_line span:first-child {
     font-weight: bold;
-    padding-right: 0.5rem; }
+    padding-right: 1rem;
+    text-align: right; }
   .cw__cart_subtotal span.html--set span,
   .cw__cart_tax span.html--set span,
   .cw__cart_total span.html--set span,

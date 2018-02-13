@@ -91,6 +91,12 @@ class WC_PluginSettings {
 					'step' => '1'
 				]
 			),
+			'delivery_outside_of_range'         => array(
+				'name'              => __( 'Delivery Outside of Range Prompt', 'cater_waiter' ),
+				'type'              => 'textarea',
+				'desc'              => __( 'Message displays when a delivery address is outside of range.', 'cater_waiter' ),
+				'id'                => 'wc_settings_cater_waiter_delivery_outside_of_range',
+			),
 			'hours_in_advance'                 => array(
 				'name'              => __( 'Hours In Advance', 'cater_waiter' ),
 				'type'              => 'number',

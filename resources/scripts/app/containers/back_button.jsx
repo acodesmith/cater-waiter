@@ -10,10 +10,13 @@ let BackButton = props => {
     if( ! display )
         return null
 
-    return <Button onClick={event => {
-        event.preventDefault()
-        props.dispatch( backToPreviousScreen() )
-    }}>{ props.children }</Button>
+    return <Button
+        className='cw__button_back'
+        onClick={event => {
+            event.preventDefault()
+            props.dispatch( backToPreviousScreen() )
+        }}
+    >{ props.children }</Button>
 }
 
 BackButton = connect(

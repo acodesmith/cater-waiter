@@ -1,0 +1,33 @@
+.cw__delivery_address {
+  text-align: center;
+}
+
+.cw__delivery_address form .cw__form_field {
+  max-width: 600px;
+  margin: auto;
+
+  input,
+  label {
+    float: left;
+    text-align: left;
+    width: 100%;
+  }
+
+  label {
+    padding: 1rem 1rem 0.5rem;
+  }
+
+  .cw__field_error {
+    float: left;
+    margin-bottom: 1rem;
+    width:100%;
+  }
+}
+
+.cw__form_field.cw__delivery_address_address_line_two {
+  margin-left: 20%;
+}
+
+.cw__delivery_address form .cw__form_button {
+  margin-top: 2rem;
+}

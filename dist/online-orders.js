@@ -25280,7 +25280,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.JUMP_TO_VIEW = exports.BACK_TO_PREVIOUS_SCREEN = exports.SET_CURRENT_SCREEN = exports.VIEW_COMPLETE = exports.VIEW_CHECKOUT = exports.VIEW_CONFIRM = exports.VIEW_CART = exports.VIEW_SCHEDULE_ORDER = exports.VIEW_SELECT_LOCATION = exports.VIEW_DELIVERY_ADDRESS = exports.VIEW_SELECT_ORDER_TYPE = undefined;
+    exports.JUMP_TO_VIEW = exports.BACK_TO_PREVIOUS_SCREEN = exports.SET_CURRENT_SCREEN = exports.VIEW_CONFIRM = exports.VIEW_CART = exports.VIEW_SCHEDULE_ORDER = exports.VIEW_SELECT_LOCATION = exports.VIEW_DELIVERY_ADDRESS = exports.VIEW_SELECT_ORDER_TYPE = undefined;
     exports.setCurrentScreen = setCurrentScreen;
     exports.backToPreviousScreen = backToPreviousScreen;
     exports.jumpToView = jumpToView;
@@ -25296,8 +25296,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var VIEW_SCHEDULE_ORDER = exports.VIEW_SCHEDULE_ORDER = 'schedule_order';
     var VIEW_CART = exports.VIEW_CART = 'cart';
     var VIEW_CONFIRM = exports.VIEW_CONFIRM = 'confirm';
-    var VIEW_CHECKOUT = exports.VIEW_CHECKOUT = 'checkout';
-    var VIEW_COMPLETE = exports.VIEW_COMPLETE = 'complete';
+    // export const VIEW_CHECKOUT                  = 'checkout'
+    // export const VIEW_COMPLETE                  = 'complete'
 
     /*
      * action types
@@ -74060,6 +74060,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         switch (action.type) {
             case _view.SET_CURRENT_SCREEN:
 
+                if (!state.history) state.history = [];
+
                 state.history.push(state.current);
 
                 return (0, _assign2.default)({}, state, {
@@ -74302,10 +74304,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         return _react2.default.createElement(
             _button.Button,
-            { onClick: function onClick(event) {
+            {
+                className: 'cw__button_back',
+                onClick: function onClick(event) {
                     event.preventDefault();
                     props.dispatch((0, _constansts.backToPreviousScreen)());
-                } },
+                }
+            },
             props.children
         );
     };
@@ -76595,7 +76600,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         return _react2.default.createElement(
             'div',
-            { className: 'cw__deliver_address' },
+            { className: 'cw__delivery_address' },
             _react2.default.createElement(
                 'h1',
                 null,
@@ -76659,46 +76664,56 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 { className: 'cw__alert cw__alert_error' },
                 error
             ) : null,
-            _react2.default.createElement(_reduxForm.Field, {
-                name: 'delivery_address_line_one',
-                placeholder: 'Address Line One',
-                component: _utilities.renderField,
-                type: 'text',
-                label: 'Address',
-                validate: [_utilities.required]
-            }),
-            _react2.default.createElement(_reduxForm.Field, {
-                name: 'delivery_address_line_two',
-                placeholder: 'Address Line Two',
-                component: _utilities.renderField,
-                type: 'text'
-            }),
-            _react2.default.createElement(_reduxForm.Field, {
-                name: 'delivery_address_city',
-                component: _utilities.renderField,
-                type: 'text',
-                label: 'City',
-                validate: [_utilities.required]
-            }),
-            _react2.default.createElement(_reduxForm.Field, {
-                name: 'delivery_address_state',
-                component: _utilities.renderField,
-                type: 'text',
-                label: 'State',
-                validate: [_utilities.required]
-            }),
-            _react2.default.createElement(_reduxForm.Field, {
-                name: 'delivery_address_zip',
-                component: _utilities.renderField,
-                type: 'text',
-                label: 'Zip',
-                validate: [_utilities.required]
-            }),
             _react2.default.createElement(
-                'button',
-                {
-                    type: 'submit' },
-                button_continue
+                'div',
+                { className: 'clearfix' },
+                _react2.default.createElement(_reduxForm.Field, {
+                    name: 'delivery_address_line_one',
+                    placeholder: 'Address Line One',
+                    component: _utilities.renderField,
+                    type: 'text',
+                    label: 'Address',
+                    className: 'cw__delivery_address_address_line_one',
+                    validate: [_utilities.required]
+                }),
+                _react2.default.createElement(_reduxForm.Field, {
+                    name: 'delivery_address_line_two',
+                    placeholder: 'Address Line Two',
+                    className: 'cw__delivery_address_address_line_two',
+                    component: _utilities.renderField,
+                    type: 'text'
+                }),
+                _react2.default.createElement(_reduxForm.Field, {
+                    name: 'delivery_address_city',
+                    component: _utilities.renderField,
+                    type: 'text',
+                    label: 'City',
+                    validate: [_utilities.required]
+                }),
+                _react2.default.createElement(_reduxForm.Field, {
+                    name: 'delivery_address_state',
+                    component: _utilities.renderField,
+                    type: 'text',
+                    label: 'State',
+                    validate: [_utilities.required]
+                }),
+                _react2.default.createElement(_reduxForm.Field, {
+                    name: 'delivery_address_zip',
+                    component: _utilities.renderField,
+                    type: 'text',
+                    label: 'Zip',
+                    validate: [_utilities.required]
+                })
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: 'cw__form_button' },
+                _react2.default.createElement(
+                    'button',
+                    {
+                        type: 'submit' },
+                    button_continue
+                )
             )
         );
     };
@@ -77108,9 +77123,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             value: function render() {
                 var _props = this.props,
                     labels = _props.labels,
-                    _props$order = _props.order,
-                    order_type = _props$order.order_type,
-                    order_pickup_time = _props$order.order_pickup_time,
+                    order_type = _props.order.order_type,
                     settings_hours_in_advance = _props.settings.hours_in_advance,
                     _props$data = _props.data,
                     location = _props$data.location,

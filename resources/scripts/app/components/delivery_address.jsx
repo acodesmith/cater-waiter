@@ -21,7 +21,7 @@ const DeliveryAddress = props =>
     } = labels
 
     return (
-        <div className="cw__deliver_address">
+        <div className="cw__delivery_address">
             <h1>Delivery Address</h1>
             { delivery_within_range === false ? delivery_out_of_range : null }
             <FormDeliveryAddress {...{labels}} onSubmit={values => {

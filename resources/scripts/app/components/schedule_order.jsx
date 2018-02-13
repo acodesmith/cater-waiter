@@ -25,8 +25,7 @@ class ScheduleOrder extends Component
         const {
             labels,
             order: {
-                order_type,
-                order_pickup_time
+                order_type
             },
             settings: {
                 hours_in_advance: settings_hours_in_advance
