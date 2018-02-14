@@ -128,7 +128,7 @@ class Order {
 				$order_location_meta = get_post_meta( $order_location->ID );
 
 				echo "<h3>$label</h3>";
-				echo "$order_location->post_title<br />";
+				echo "<strong>$order_location->post_title</strong><br />";
 				echo $order_location_meta['wf_address_one'][0] . "<br />";
 				echo $order_location_meta['wf_city'][0] . ", " . $order_location_meta['wf_state'][0] . " " . $order_location_meta['wf_zip'][0];
 			}

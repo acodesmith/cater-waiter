@@ -33,19 +33,23 @@ class FormAddProductToCart extends Component
 
         let data = {
             product_id: product.id,
-            variation_id: variations[0].variation_id,
+            variation_id: variations.length ? variations[0].variation_id : null,
             quantity: 1,
         }
 
         const {
             meta_data: {
-                _product_grouped_by_amount
+                _product_grouped_by_amount,
+                _minimum_amount
             }
         } = product
 
         if( _product_grouped_by_amount ) {
-
             data.quantity  = _product_grouped_by_amount.value
+        }
+
+        if( _minimum_amount ) {
+            data.quantity  = _minimum_amount.value
         }
 
         return data
@@ -93,14 +97,14 @@ class FormAddProductToCart extends Component
                     <div className="row">
                         <div className="col-sm-12">
                             <hr/>
-                            <button
+                            { ! variations.length ? null : <button
                                 className="pull-left"
                                 type="button"
                                 onClick={() => {
                                     this.addRow()
                                 }}>
                                 { add_more_button } +
-                            </button>
+                            </button> }
                             <button
                                 className="pull-right"
                                 type="submit" >

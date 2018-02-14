@@ -41494,7 +41494,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 items.map(function (item) {
                     dispatch((0, _reduxForm.arrayPush)(formId, 'items', (0, _assign2.default)({}, {
                         product_id: product.id,
-                        variation_id: variations[0].variation_id,
+                        variation_id: variations.length ? variations[0].variation_id : null,
                         quantity: item.quantity,
                         key: item.key
                     }, item.variation)));
@@ -41509,40 +41509,43 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     variations = _props3.variations,
                     _props3$formId = _props3.formId,
                     formId = _props3$formId === undefined ? _constansts.FORM_ADD_PRODUCT_TO_CART : _props3$formId;
+                var _product$meta_data = product.meta_data,
+                    _minimum_amount = _product$meta_data._minimum_amount,
+                    _product_grouped_by_amount = _product$meta_data._product_grouped_by_amount;
 
-
-                var groupedByAmount = this.productGroupedByAmount();
 
                 var row_defaults = {
                     product_id: product.id,
-                    variation_id: variations[0].variation_id,
+                    variation_id: variations.length ? variations[0].variation_id : null,
                     quantity: 1
                 };
 
-                if (groupedByAmount) {
-                    row_defaults.quantity = groupedByAmount.value;
+                if (_product_grouped_by_amount) {
+                    row_defaults.quantity = _product_grouped_by_amount.value;
+                }
+
+                if (_minimum_amount) {
+                    row_defaults.quantity = _minimum_amount.value;
                 }
 
                 dispatch((0, _reduxForm.arrayPush)(formId, 'items', row_defaults));
             }
         }, {
-            key: 'productGroupedByAmount',
-            value: function productGroupedByAmount() {
-                var _product_grouped_by_amount = this.props.product.meta_data._product_grouped_by_amount;
-
-
-                return _product_grouped_by_amount;
-            }
-        }, {
             key: 'quantityAttrs',
             value: function quantityAttrs() {
-                var attrs = { min: 1 },
-                    groupedByAmount = this.productGroupedByAmount();
+                var _props$product$meta_d = this.props.product.meta_data,
+                    _minimum_amount = _props$product$meta_d._minimum_amount,
+                    _product_grouped_by_amount = _props$product$meta_d._product_grouped_by_amount;
 
-                if (groupedByAmount) {
-                    attrs.step = groupedByAmount.value;
-                    attrs.min = groupedByAmount.value;
+
+                var attrs = { min: 1 };
+
+                if (_product_grouped_by_amount) {
+                    attrs.step = _product_grouped_by_amount.value;
+                    attrs.min = _product_grouped_by_amount.value;
                 }
+
+                if (_minimum_amount) attrs.min = _minimum_amount.value;
 
                 return attrs;
             }
@@ -41575,89 +41578,88 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     remove_label = _props5.labels.remove;
 
 
+                //Don't list all variations. Variations IDs are set based on the attribute values.
+                var variation = variations.length ? variations[0] : null;
+
                 return fields.map(function (items, index) {
 
-                    //Don't list all variations. Variations IDs are set based on the attribute values.
-                    return [variations[0]].map(function (variation, variationIndex) {
-                        return _react2.default.createElement(
-                            'div',
-                            { style: { clear: 'both' }, className: 'cw__variation', key: variationIndex },
-                            mode === _constansts.MODE_ADD ? null : _react2.default.createElement(_reduxForm.Field, {
-                                name: items + '.key',
-                                type: 'hidden',
-                                validate: [_utilities.required],
-                                component: _utilities.renderField
-                            }),
-                            _react2.default.createElement(_reduxForm.Field, {
-                                name: items + '.variation_id',
-                                type: 'hidden',
-                                validate: [_utilities.required],
-                                component: _utilities.renderField
-                            }),
-                            _react2.default.createElement(_reduxForm.Field, {
-                                name: items + '.product_id',
-                                type: 'hidden',
-                                value: product.id,
-                                validate: [_utilities.required],
-                                component: _utilities.renderField
-                            }),
-                            _react2.default.createElement(_reduxForm.Field, {
-                                name: items + '.quantity',
-                                label: 'Quantity',
-                                type: 'number',
-                                className: 'col-md-3',
-                                validate: [_utilities.required, _utilities.minNumericValueOne],
-                                attr: _this2.quantityAttrs(),
-                                component: _utilities.renderField }),
-                            variation.attributes.map(function (attribute) {
-                                return _react2.default.createElement(
-                                    'div',
-                                    { className: 'option col-md-3', key: attribute.attribute_slug },
+                    return _react2.default.createElement(
+                        'div',
+                        { style: { clear: 'both' }, className: 'cw__variation', key: index },
+                        mode === _constansts.MODE_ADD ? null : _react2.default.createElement(_reduxForm.Field, {
+                            name: items + '.key',
+                            type: 'hidden',
+                            validate: [_utilities.required],
+                            component: _utilities.renderField
+                        }),
+                        _react2.default.createElement(_reduxForm.Field, {
+                            name: items + '.variation_id',
+                            type: 'hidden',
+                            component: _utilities.renderField
+                        }),
+                        _react2.default.createElement(_reduxForm.Field, {
+                            name: items + '.product_id',
+                            type: 'hidden',
+                            value: product.id,
+                            validate: [_utilities.required],
+                            component: _utilities.renderField
+                        }),
+                        _react2.default.createElement(_reduxForm.Field, {
+                            name: items + '.quantity',
+                            label: 'Quantity',
+                            type: 'number',
+                            className: 'col-md-3',
+                            validate: [_utilities.required, _utilities.minNumericValueOne],
+                            attr: _this2.quantityAttrs(),
+                            component: _utilities.renderField }),
+                        !variation ? null : variation.attributes.map(function (attribute) {
+                            return _react2.default.createElement(
+                                'div',
+                                { className: 'option col-md-3', key: attribute.attribute_slug },
+                                _react2.default.createElement(
+                                    'label',
+                                    { htmlFor: attribute.attribute_slug },
+                                    attribute.name
+                                ),
+                                _react2.default.createElement(
+                                    _reduxForm.Field,
+                                    {
+                                        name: items + '.' + attribute.attribute_slug,
+                                        id: attribute.attribute_slug,
+                                        validate: [_utilities.required],
+                                        type: 'select',
+                                        component: _utilities.renderField,
+                                        onChange: function onChange(e, newValue) {
+                                            _this2.setVariationId(index, newValue, attribute.attribute_slug);
+                                        }
+                                    },
                                     _react2.default.createElement(
-                                        'label',
-                                        { htmlFor: attribute.attribute_slug },
+                                        'option',
+                                        { value: '' },
+                                        'Select ',
                                         attribute.name
                                     ),
-                                    _react2.default.createElement(
-                                        _reduxForm.Field,
-                                        {
-                                            name: items + '.' + attribute.attribute_slug,
-                                            id: attribute.attribute_slug,
-                                            validate: [_utilities.required],
-                                            type: 'select',
-                                            component: _utilities.renderField,
-                                            onChange: function onChange(e, newValue) {
-                                                _this2.setVariationId(index, newValue, attribute.attribute_slug);
-                                            }
-                                        },
-                                        _react2.default.createElement(
+                                    !attribute.options ? null : attribute.options.map(function (option, key) {
+                                        return _react2.default.createElement(
                                             'option',
-                                            { value: '' },
-                                            'Select ',
-                                            attribute.name
-                                        ),
-                                        !attribute.options ? null : attribute.options.map(function (option, key) {
-                                            return _react2.default.createElement(
-                                                'option',
-                                                { key: key, value: option },
-                                                (0, _unescape2.default)(option)
-                                            );
-                                        })
-                                    )
-                                );
-                            }),
-                            index < 1 && mode !== _constansts.MODE_EDIT ? null : _react2.default.createElement(
-                                'button',
-                                { className: 'option col-md-3', onClick: function onClick(event) {
+                                            { key: key, value: option },
+                                            (0, _unescape2.default)(option)
+                                        );
+                                    })
+                                )
+                            );
+                        }),
+                        index < 1 && mode !== _constansts.MODE_EDIT ? null : _react2.default.createElement(
+                            'button',
+                            { className: 'option col-md-3', onClick: function onClick(event) {
 
-                                        event.preventDefault();
+                                    event.preventDefault();
 
-                                        if (!remove) fields.remove(index);else remove(_this2.props.items[index], index);
-                                    } },
-                                remove_label
-                            )
-                        );
-                    });
+                                    if (!remove) fields.remove(index);else remove(_this2.props.items[index], index);
+                                } },
+                            remove_label
+                        )
+                    );
                 });
             }
         }]);
@@ -75732,16 +75734,21 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
                 var data = {
                     product_id: product.id,
-                    variation_id: variations[0].variation_id,
+                    variation_id: variations.length ? variations[0].variation_id : null,
                     quantity: 1
                 };
 
-                var _product_grouped_by_amount = product.meta_data._product_grouped_by_amount;
+                var _product$meta_data = product.meta_data,
+                    _product_grouped_by_amount = _product$meta_data._product_grouped_by_amount,
+                    _minimum_amount = _product$meta_data._minimum_amount;
 
 
                 if (_product_grouped_by_amount) {
-
                     data.quantity = _product_grouped_by_amount.value;
+                }
+
+                if (_minimum_amount) {
+                    data.quantity = _minimum_amount.value;
                 }
 
                 return data;
@@ -75796,7 +75803,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                 'div',
                                 { className: 'col-sm-12' },
                                 _react2.default.createElement('hr', null),
-                                _react2.default.createElement(
+                                !variations.length ? null : _react2.default.createElement(
                                     'button',
                                     {
                                         className: 'pull-left',
@@ -77696,20 +77703,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(8), __webpack_require__(1), __webpack_require__(20), __webpack_require__(39), __webpack_require__(3), __webpack_require__(5), __webpack_require__(33), __webpack_require__(624), __webpack_require__(106)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(8), __webpack_require__(21), __webpack_require__(22), __webpack_require__(23), __webpack_require__(24), __webpack_require__(25), __webpack_require__(1), __webpack_require__(20), __webpack_require__(39), __webpack_require__(3), __webpack_require__(5), __webpack_require__(33), __webpack_require__(624), __webpack_require__(106)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('babel-runtime/core-js/object/assign'), require('react'), require('lodash'), require('./index'), require('../../constansts'), require('../../utilities'), require('../../thunks'), require('../forms/update_cart_items'), require('../../constansts/products'));
+        factory(exports, require('babel-runtime/core-js/object/assign'), require('babel-runtime/core-js/object/get-prototype-of'), require('babel-runtime/helpers/classCallCheck'), require('babel-runtime/helpers/createClass'), require('babel-runtime/helpers/possibleConstructorReturn'), require('babel-runtime/helpers/inherits'), require('react'), require('lodash'), require('./index'), require('../../constansts'), require('../../utilities'), require('../../thunks'), require('../forms/update_cart_items'), require('../../constansts/products'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.assign, global.react, global.lodash, global.index, global.constansts, global.utilities, global.thunks, global.update_cart_items, global.products);
+        factory(mod.exports, global.assign, global.getPrototypeOf, global.classCallCheck, global.createClass, global.possibleConstructorReturn, global.inherits, global.react, global.lodash, global.index, global.constansts, global.utilities, global.thunks, global.update_cart_items, global.products);
         global.update_grouped_products = mod.exports;
     }
-})(this, function (exports, _assign, _react, _lodash, _index, _constansts, _utilities, _thunks, _update_cart_items, _products) {
+})(this, function (exports, _assign, _getPrototypeOf, _classCallCheck2, _createClass2, _possibleConstructorReturn2, _inherits2, _react, _lodash, _index, _constansts, _utilities, _thunks, _update_cart_items, _products) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -77718,6 +77725,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     exports.UpdateGroupedProducts = undefined;
 
     var _assign2 = _interopRequireDefault(_assign);
+
+    var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+    var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+    var _createClass3 = _interopRequireDefault(_createClass2);
+
+    var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+    var _inherits3 = _interopRequireDefault(_inherits2);
 
     var _react2 = _interopRequireDefault(_react);
 
@@ -77731,63 +77748,87 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         };
     }
 
-    var UpdateGroupedProducts = function UpdateGroupedProducts(props) {
-        var dispatch = props.dispatch,
-            _props$data = props.data,
-            products = _props$data.products,
-            update_grouped_products = _props$data.update_grouped_products,
-            modal_loading = _props$data.modal_loading,
-            modal_loading_message = _props$data.modal_loading_message,
-            _props$order$order_ca = props.order.order_cart.items,
-            items = _props$order$order_ca === undefined ? [] : _props$order$order_ca,
-            _props$labels = props.labels,
-            update = _props$labels.update,
-            items_label = _props$labels.items,
-            update_cart_items = _props$labels.update_cart_items,
-            updating_cart = _props$labels.updating_cart;
+    var UpdateGroupedProducts = function (_Component) {
+        (0, _inherits3.default)(UpdateGroupedProducts, _Component);
+
+        function UpdateGroupedProducts() {
+            (0, _classCallCheck3.default)(this, UpdateGroupedProducts);
+            return (0, _possibleConstructorReturn3.default)(this, (UpdateGroupedProducts.__proto__ || (0, _getPrototypeOf2.default)(UpdateGroupedProducts)).apply(this, arguments));
+        }
+
+        (0, _createClass3.default)(UpdateGroupedProducts, [{
+            key: 'componentWillReceiveProps',
+            value: function componentWillReceiveProps(nextProps) {
+                var dispatch = nextProps.dispatch,
+                    _nextProps$order$orde = nextProps.order.order_cart.items,
+                    items = _nextProps$order$orde === undefined ? [] : _nextProps$order$orde;
 
 
-        var close = function close(event) {
-            event.preventDefault();
-            dispatch((0, _constansts.hideGroupedItemsOptions)());
-        };
+                if (!items.length) dispatch((0, _constansts.hideGroupedItemsOptions)());
+            }
+        }, {
+            key: 'render',
+            value: function render() {
+                var _props = this.props,
+                    dispatch = _props.dispatch,
+                    _props$data = _props.data,
+                    products = _props$data.products,
+                    update_grouped_products = _props$data.update_grouped_products,
+                    modal_loading = _props$data.modal_loading,
+                    modal_loading_message = _props$data.modal_loading_message,
+                    _props$order$order_ca = _props.order.order_cart.items,
+                    items = _props$order$order_ca === undefined ? [] : _props$order$order_ca,
+                    _props$labels = _props.labels,
+                    update = _props$labels.update,
+                    items_label = _props$labels.items,
+                    update_cart_items = _props$labels.update_cart_items,
+                    updating_cart = _props$labels.updating_cart;
 
-        var isPartOfGroup = function isPartOfGroup(item) {
-            return item.product_id === update_grouped_products;
-        },
-            product = (0, _utilities.getProductById)(update_grouped_products, products);
 
-        var variations = product.variations.map(function (variation) {
-            return (0, _assign2.default)({}, variation, {
-                attributes: (0, _utilities.mapVariationAttributes)(variation.attributes, product.attributes)
-            });
-        });
+                var close = function close(event) {
+                    event.preventDefault();
+                    dispatch((0, _constansts.hideGroupedItemsOptions)());
+                };
 
-        return _react2.default.createElement(
-            'div',
-            { className: 'cw__update_grouped_products' },
-            _react2.default.createElement(
-                _index.Modal,
-                {
-                    display_footer: false,
-                    loading: modal_loading,
-                    loading_message: modal_loading_message,
-                    loading_default_message: props.labels.loading,
-                    heading: _lodash2.default.upperFirst(update) + ' ' + product.name + ' ' + _lodash2.default.upperFirst(items_label),
-                    close: close },
-                _react2.default.createElement(_update_cart_items2.default, {
-                    labels: props.labels,
-                    items: items.filter(isPartOfGroup),
-                    product: product,
-                    variations: variations,
-                    mode: _products.MODE_EDIT,
-                    onSubmit: function onSubmit(values) {
-                        dispatch((0, _thunks.updateCartItems)(values, update_cart_items, updating_cart));
-                    }
-                })
-            )
-        );
-    };
+                var isPartOfGroup = function isPartOfGroup(item) {
+                    return item.product_id === update_grouped_products;
+                },
+                    product = (0, _utilities.getProductById)(update_grouped_products, products);
+
+                var variations = product.variations.map(function (variation) {
+                    return (0, _assign2.default)({}, variation, {
+                        attributes: (0, _utilities.mapVariationAttributes)(variation.attributes, product.attributes)
+                    });
+                });
+
+                return _react2.default.createElement(
+                    'div',
+                    { className: 'cw__update_grouped_products' },
+                    _react2.default.createElement(
+                        _index.Modal,
+                        {
+                            display_footer: false,
+                            loading: modal_loading,
+                            loading_message: modal_loading_message,
+                            loading_default_message: this.props.labels.loading,
+                            heading: _lodash2.default.upperFirst(update) + ' ' + product.name + ' ' + _lodash2.default.upperFirst(items_label),
+                            close: close },
+                        _react2.default.createElement(_update_cart_items2.default, {
+                            labels: this.props.labels,
+                            items: items.filter(isPartOfGroup),
+                            product: product,
+                            variations: variations,
+                            mode: _products.MODE_EDIT,
+                            onSubmit: function onSubmit(values) {
+                                dispatch((0, _thunks.updateCartItems)(values, update_cart_items, updating_cart));
+                            }
+                        })
+                    )
+                );
+            }
+        }]);
+        return UpdateGroupedProducts;
+    }(_react.Component);
 
     exports.UpdateGroupedProducts = UpdateGroupedProducts;
 });
@@ -77841,17 +77882,30 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var FormUpdateCartItems = function (_Component) {
         (0, _inherits3.default)(FormUpdateCartItems, _Component);
 
-        function FormUpdateCartItems(props) {
+        function FormUpdateCartItems() {
+            var _ref;
+
+            var _temp, _this, _ret;
+
             (0, _classCallCheck3.default)(this, FormUpdateCartItems);
 
-            var _this = (0, _possibleConstructorReturn3.default)(this, (FormUpdateCartItems.__proto__ || (0, _getPrototypeOf2.default)(FormUpdateCartItems)).call(this, props));
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
 
-            _this.state = {
+            return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = FormUpdateCartItems.__proto__ || (0, _getPrototypeOf2.default)(FormUpdateCartItems)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
                 rows: 1
-            };
+            }, _this.removeRow = function (item, index) {
+                var _this$props = _this.props,
+                    dispatch = _this$props.dispatch,
+                    _this$props$labels = _this$props.labels,
+                    removing_item_from_cart = _this$props$labels.removing_item_from_cart,
+                    update_cart_items = _this$props$labels.update_cart_items;
+                var key = item.key;
 
-            _this.removeRow = _this.removeRow.bind(_this);
-            return _this;
+
+                if (key) dispatch((0, _thunks.removeCartItemInForm)(key, index, removing_item_from_cart, update_cart_items));else console.warn('Trying to remove item from cart with missing session key information.');
+            }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
         }
 
         (0, _createClass3.default)(FormUpdateCartItems, [{
@@ -77874,29 +77928,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 }));
             }
         }, {
-            key: 'removeRow',
-            value: function removeRow(item, index) {
-                var _props2 = this.props,
-                    dispatch = _props2.dispatch,
-                    _props2$labels = _props2.labels,
-                    removing_item_from_cart = _props2$labels.removing_item_from_cart,
-                    update_cart_items = _props2$labels.update_cart_items;
-                var key = item.key;
-
-
-                if (key) dispatch((0, _thunks.removeCartItemInForm)(key, index, removing_item_from_cart, update_cart_items));else console.warn('Trying to remove item from cart with missing session key information.');
-            }
-        }, {
             key: 'render',
             value: function render() {
-                var _props3 = this.props,
-                    items = _props3.items,
-                    dispatch = _props3.dispatch,
-                    formData = _props3.formData,
-                    product = _props3.product,
-                    variations = _props3.variations,
-                    handleSubmit = _props3.handleSubmit,
-                    update_cart_items = _props3.labels.update_cart_items;
+                var _props2 = this.props,
+                    items = _props2.items,
+                    dispatch = _props2.dispatch,
+                    formData = _props2.formData,
+                    product = _props2.product,
+                    variations = _props2.variations,
+                    handleSubmit = _props2.handleSubmit,
+                    update_cart_items = _props2.labels.update_cart_items;
                 var rows = this.state.rows;
 
 

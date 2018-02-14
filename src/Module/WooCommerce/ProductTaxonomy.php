@@ -151,7 +151,7 @@ class ProductTaxonomy
             <tr class="form-field form-required term-name-wrap">
                 <th scope="row">
                     <label for="<?= self::CATERING_CATEGORY_DISPLAY_NAME_NAMESPACE; ?>">
-                        <?php _e( 'Display Name in Menu?', 'cater_waiter' ); ?>
+                        <?php _e( 'Hide Name in Menu?', 'cater_waiter' ); ?>
                     </label>
                 </th>
                 <td>

@@ -17,12 +17,6 @@ import { TotalRow } from './add_product_to_cart/total_row'
 
 class FormUpdateCartItems extends Component
 {
-    constructor(props)
-    {
-        super(props)
-        this.removeRow = this.removeRow.bind(this)
-    }
-
     state = {
         rows: 1
     }
@@ -50,7 +44,7 @@ class FormUpdateCartItems extends Component
         )
     }
 
-    removeRow(item, index)
+    removeRow = (item, index) =>
     {
         const {
             dispatch,

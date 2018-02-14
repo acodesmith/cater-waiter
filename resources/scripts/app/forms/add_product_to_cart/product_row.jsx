@@ -47,7 +47,7 @@ class ProductRow extends Component
             dispatch(
                 arrayPush( formId, 'items', Object.assign({}, {
                     product_id: product.id,
-                    variation_id: variations[0].variation_id,
+                    variation_id: variations.length ? variations[0].variation_id : null,
                     quantity: item.quantity,
                     key: item.key
                 }, item.variation) )
@@ -64,45 +64,50 @@ class ProductRow extends Component
             formId = FORM_ADD_PRODUCT_TO_CART
         } = this.props
 
-        const groupedByAmount = this.productGroupedByAmount()
+        const {
+            meta_data: {
+                _minimum_amount,
+                _product_grouped_by_amount
+            }
+        } = product
 
         let row_defaults = {
             product_id: product.id,
-            variation_id: variations[0].variation_id,
+            variation_id: variations.length ? variations[0].variation_id : null,
             quantity: 1,
         }
 
-        if( groupedByAmount ) {
-            row_defaults.quantity = groupedByAmount.value
+        if( _product_grouped_by_amount ) {
+            row_defaults.quantity = _product_grouped_by_amount.value
         }
 
-        dispatch(
-            arrayPush( formId, 'items', row_defaults )
-        )
+        if( _minimum_amount ) {
+            row_defaults.quantity = _minimum_amount.value
+        }
+
+        dispatch( arrayPush( formId, 'items', row_defaults ) )
     }
 
-    productGroupedByAmount()
+    quantityAttrs()
     {
         const {
             product: {
                 meta_data: {
+                    _minimum_amount,
                     _product_grouped_by_amount
                 }
             }
         } = this.props
 
-        return _product_grouped_by_amount
-    }
+        let attrs = { min: 1 }
 
-    quantityAttrs()
-    {
-        let attrs = { min: 1 },
-            groupedByAmount = this.productGroupedByAmount()
-
-        if( groupedByAmount ) {
-            attrs.step = groupedByAmount.value
-            attrs.min  = groupedByAmount.value
+        if( _product_grouped_by_amount ) {
+            attrs.step = _product_grouped_by_amount.value
+            attrs.min  = _product_grouped_by_amount.value
         }
+
+        if( _minimum_amount )
+            attrs.min  = _minimum_amount.value
 
         return attrs
     }
@@ -121,7 +126,7 @@ class ProductRow extends Component
 
     render()
     {
-        let {
+        const {
             variations,
             product,
             fields,
@@ -132,11 +137,13 @@ class ProductRow extends Component
             }
         } = this.props
 
+        //Don't list all variations. Variations IDs are set based on the attribute values.
+        const variation = variations.length ? variations[0] : null
+
         return fields.map((items, index) => {
 
-            //Don't list all variations. Variations IDs are set based on the attribute values.
-            return [ variations[0] ].map((variation, variationIndex) => (
-                <div style={{clear: 'both'}} className="cw__variation" key={variationIndex}>
+            return (
+                <div style={{clear: 'both'}} className="cw__variation" key={index}>
                     { mode === MODE_ADD ? null : <Field
                         name={`${items}.key`}
                         type="hidden"
@@ -146,7 +153,6 @@ class ProductRow extends Component
                     <Field
                         name={`${items}.variation_id`}
                         type="hidden"
-                        validate={[ required ]}
                         component={renderField}
                     />
                     <Field
@@ -164,7 +170,7 @@ class ProductRow extends Component
                         validate={[ required, minNumericValueOne ]}
                         attr={this.quantityAttrs()}
                         component={renderField} />
-                    {variation.attributes.map(attribute => (
+                    { !variation ? null : variation.attributes.map(attribute => (
                         <div className="option col-md-3" key={ attribute.attribute_slug }>
                             <label htmlFor={ attribute.attribute_slug }>{ attribute.name }</label>
                             <Field
@@ -196,7 +202,7 @@ class ProductRow extends Component
                         { remove_label }
                     </button> }
                 </div>
-            ))
+            )
         })
     }
 }
