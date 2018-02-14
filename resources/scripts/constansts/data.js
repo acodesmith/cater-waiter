@@ -15,6 +15,8 @@ export const SHOW_ITEM_OPTIONS          = 'SHOW_ITEM_OPTIONS'
 export const HIDE_ITEM_OPTIONS          = 'HIDE_ITEM_OPTIONS'
 export const SHOW_GROUPED_ITEMS_OPTIONS = 'SHOW_GROUPED_ITEMS_OPTIONS'
 export const HIDE_GROUPED_ITEMS_OPTIONS = 'HIDE_GROUPED_ITEMS_OPTIONS'
+export const SHOW_HELP_INFO             = 'SHOW_HELP_INFO'
+export const HIDE_HELP_INFO             = 'HIDE_HELP_INFO'
 /*
  * action creators
  */
@@ -61,4 +63,12 @@ export function showGroupedItemsOptions(data) {
 
 export function hideGroupedItemsOptions() {
     return { type: HIDE_GROUPED_ITEMS_OPTIONS }
+}
+
+export function showHelpInfo() {
+    return { type: SHOW_HELP_INFO }
+}
+
+export function hideHelpInfo() {
+    return { type: HIDE_HELP_INFO }
 }

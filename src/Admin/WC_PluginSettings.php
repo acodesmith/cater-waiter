@@ -91,12 +91,29 @@ class WC_PluginSettings {
 					'step' => '1'
 				]
 			),
+			'delivery_outside_of_range'         => array(
+				'name'              => __( 'Delivery Outside of Range Prompt', 'cater_waiter' ),
+				'type'              => 'textarea',
+				'desc'              => __( 'Message displays when a delivery address is outside of range.', 'cater_waiter' ),
+				'id'                => 'wc_settings_cater_waiter_delivery_outside_of_range',
+			),
 			'hours_in_advance'                 => array(
 				'name'              => __( 'Hours In Advance', 'cater_waiter' ),
 				'type'              => 'number',
 				'desc'              => __( 'Minimum number of hours an order can be placed. For example 24 hours for the next day.',
 					'cater_waiter' ),
 				'id'                => 'wc_settings_cater_waiter_hours_in_advance',
+				'custom_attributes' => [
+					'min'  => 0,
+					'step' => '0.01'
+				]
+			),
+			'help_info'                         => array(
+				'name'              => __( 'Help Info', 'cater_waiter' ),
+				'type'              => 'textarea',
+				'desc'              => __( 'Message displayed to the custom in the help info overlay.',
+					'cater_waiter' ),
+				'id'                => 'wc_settings_cater_waiter_help_info',
 				'custom_attributes' => [
 					'min'  => 0,
 					'step' => '0.01'

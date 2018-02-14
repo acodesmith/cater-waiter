@@ -64,5 +64,11 @@ class WC_ProductDataTabs
         	delete_post_meta( $post_id, '_product_custom_price_label' );
         }
 
+        if( ! empty( $_POST['_minimum_amount'] ) ) {
+            update_post_meta( $post_id, '_minimum_amount', $_POST['_minimum_amount'] );
+        }else{
+        	delete_post_meta( $post_id, '_minimum_amount' );
+        }
+
     }
 }

@@ -47,7 +47,6 @@ export const addToCart = (items, loading_message, closeModal, order) => {
                 return syncOrderDataToSession( order )
             })
             .then((data) => {
-                console.log("data",data);
                 dispatch(modalLoadingToggle())
             })
             .then(() => closeModal(new Event('click')))

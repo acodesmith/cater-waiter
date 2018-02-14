@@ -22,7 +22,7 @@ const DeliveryLocation = props =>
     } = props
 
     return (
-        <div className="cw__deliver_location">
+        <div className="cw__delivery_location">
             <h3>{ delivery_location }</h3>
             <div className="cw__delivery_address">
                 { Object.keys(order_delivery_address).map(key => {

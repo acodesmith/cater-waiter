@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import _ from 'lodash'
 import { Field, reduxForm, reset } from 'redux-form'
 import moment from 'moment'
-import { FORM_SCHEDULE_ORDER } from '../../constansts'
+import {
+    FORM_SCHEDULE_ORDER,
+    ORDER_TYPE_PICKUP
+} from '../../constansts'
 import {
     required,
     renderField,
@@ -71,6 +74,10 @@ class FormScheduleOrder extends Component
             order_type,
             location,
             labels: {
+                delivery_date_label,
+                delivery_time_of_day_label,
+                pickup_date_label,
+                pickup_time_of_day_label,
                 label_date_prompt,
                 label_time_prompt,
                 button_continue,
@@ -94,6 +101,9 @@ class FormScheduleOrder extends Component
                     placeholder={label_date_prompt}
                     component={renderField}
                     type="date"
+                    className="cw__order_schedule_field cw__order_schedule_date"
+                    label={ order_type === ORDER_TYPE_PICKUP ? pickup_date_label : delivery_date_label }
+                    hint="Format Example: 01/01/2020"
                     validate={[ required, function(value) {
                         return hoursInAdvanced(
                             hours_in_advance,
@@ -108,6 +118,9 @@ class FormScheduleOrder extends Component
                     placeholder={label_time_prompt}
                     component={renderField}
                     type="time"
+                    className="cw__order_schedule_field cw__order_schedule_time_of_day"
+                    label={ order_type === ORDER_TYPE_PICKUP ? pickup_time_of_day_label : delivery_time_of_day_label }
+                    hint="Format Example: 10:00 AM"
                     validate={[ required, function(value) {
                         return windowOfTime(
                             minOrderTime,

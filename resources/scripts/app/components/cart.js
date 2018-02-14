@@ -22,7 +22,7 @@ const Cart = props => {
 
     return (
         <div className="cw__cart">
-            <h1>{catering_menu_title}</h1>
+            {/*<h1>{catering_menu_title}</h1>*/}
             {!update_grouped_products ? null : <UpdateGroupedProducts {...props}/>}
             {!show_product_options ? null : <ProductOptions {...props} />}
             {!catering_categories.length ? null : catering_categories.map(category => {

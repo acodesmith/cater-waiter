@@ -11,12 +11,34 @@
 
   span:first-child {
     font-weight: bold;
-    padding-right: 0.5rem;
+    padding-right: 1rem;
+    text-align: right;
   }
 
   span.html--set span {
     display: inline;
     min-width: 0;
     padding-right: 0;
+  }
+}
+
+#cater_waiter__react_base .cw__menu_item {
+  background: #e9e6e666;
+  padding: 1rem;
+  margin-bottom: 2rem;
+
+  &:nth-child(2n) {
+    background: white;
+  }
+
+  button.btn {
+    background: #e9e6e6;
+    border-radius: 0;
+    border: none;
+    color: gray;
+    font-size: 1rem;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    width: 100%;
   }
 }

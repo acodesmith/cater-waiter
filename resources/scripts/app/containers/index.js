@@ -1,4 +1,5 @@
 export * from './back_button'
+export * from './help_info'
 export * from './loading'
 export * from './order_details'
 export * from './pathway'

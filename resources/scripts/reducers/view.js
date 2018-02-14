@@ -9,6 +9,9 @@ const view = (state, action) => {
     switch(action.type) {
         case SET_CURRENT_SCREEN:
 
+            if(!state.history)
+                state.history = []
+
             state.history.push( state.current );
 
             return Object.assign({}, state, {

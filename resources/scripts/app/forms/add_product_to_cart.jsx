@@ -4,8 +4,7 @@ import {
     FieldArray,
     reduxForm,
     arrayPush,
-    arrayRemoveAll,
-    arraySplice
+    arrayRemoveAll
 } from 'redux-form'
 import { FORM_ADD_PRODUCT_TO_CART } from '../../constansts'
 import { ProductRow } from './add_product_to_cart/product_row'
@@ -34,19 +33,23 @@ class FormAddProductToCart extends Component
 
         let data = {
             product_id: product.id,
-            variation_id: variations[0].variation_id,
+            variation_id: variations.length ? variations[0].variation_id : null,
             quantity: 1,
         }
 
         const {
             meta_data: {
-                _product_grouped_by_amount
+                _product_grouped_by_amount,
+                _minimum_amount
             }
         } = product
 
         if( _product_grouped_by_amount ) {
-
             data.quantity  = _product_grouped_by_amount.value
+        }
+
+        if( _minimum_amount ) {
+            data.quantity  = _minimum_amount.value
         }
 
         return data
@@ -87,20 +90,21 @@ class FormAddProductToCart extends Component
                             product={product}
                             rows={rows}
                             labels={this.props.labels}
+                            formData={formData}
                         />
                     </div>
                     { rows < 2 ? null : <TotalRow formData={formData} /> }
                     <div className="row">
                         <div className="col-sm-12">
                             <hr/>
-                            <button
+                            { ! variations.length ? null : <button
                                 className="pull-left"
                                 type="button"
                                 onClick={() => {
                                     this.addRow()
                                 }}>
                                 { add_more_button } +
-                            </button>
+                            </button> }
                             <button
                                 className="pull-right"
                                 type="submit" >

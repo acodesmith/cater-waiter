@@ -72,14 +72,15 @@ const MenuItems = props => {
                         </div>
                         <Button className="btn btn-xs btn-default" onClick={() => dispatch( showGroupedItemsOptions( group.product.id ) )}>
                             { _.upperFirst(update) }</Button>
-                        <Button className="btn btn-xs btn-danger" onClick={() => {
+                        {/*<Button className="btn btn-xs btn-danger" onClick={() => {*/}
 
-                            const confirm_action = confirm( removing_item_from_cart_confirm )
+                            {/*const confirm_action = confirm( removing_item_from_cart_confirm )*/}
 
-                            if( confirm_action )
-                                dispatch( removeGroupedProduct( group.product.id, removing_item_from_cart, updating_cart ) )
+                            {/*if( confirm_action )*/}
+                                {/*dispatch( removeGroupedProduct( group.product.id, removing_item_from_cart, updating_cart ) )*/}
 
-                        }}>{ _.upperFirst(remove) }</Button>
+                            {/*}}>{ _.upperFirst(remove) }*/}
+                        {/*</Button>*/}
                     </div>
                 )
             }) }

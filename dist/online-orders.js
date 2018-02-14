@@ -25280,7 +25280,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.JUMP_TO_VIEW = exports.BACK_TO_PREVIOUS_SCREEN = exports.SET_CURRENT_SCREEN = exports.VIEW_COMPLETE = exports.VIEW_CHECKOUT = exports.VIEW_CONFIRM = exports.VIEW_CART = exports.VIEW_SCHEDULE_ORDER = exports.VIEW_SELECT_LOCATION = exports.VIEW_DELIVERY_ADDRESS = exports.VIEW_SELECT_ORDER_TYPE = undefined;
+    exports.JUMP_TO_VIEW = exports.BACK_TO_PREVIOUS_SCREEN = exports.SET_CURRENT_SCREEN = exports.VIEW_CONFIRM = exports.VIEW_CART = exports.VIEW_SCHEDULE_ORDER = exports.VIEW_SELECT_LOCATION = exports.VIEW_DELIVERY_ADDRESS = exports.VIEW_SELECT_ORDER_TYPE = undefined;
     exports.setCurrentScreen = setCurrentScreen;
     exports.backToPreviousScreen = backToPreviousScreen;
     exports.jumpToView = jumpToView;
@@ -25296,8 +25296,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var VIEW_SCHEDULE_ORDER = exports.VIEW_SCHEDULE_ORDER = 'schedule_order';
     var VIEW_CART = exports.VIEW_CART = 'cart';
     var VIEW_CONFIRM = exports.VIEW_CONFIRM = 'confirm';
-    var VIEW_CHECKOUT = exports.VIEW_CHECKOUT = 'checkout';
-    var VIEW_COMPLETE = exports.VIEW_COMPLETE = 'complete';
+    // export const VIEW_CHECKOUT                  = 'checkout'
+    // export const VIEW_COMPLETE                  = 'complete'
 
     /*
      * action types
@@ -41494,7 +41494,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 items.map(function (item) {
                     dispatch((0, _reduxForm.arrayPush)(formId, 'items', (0, _assign2.default)({}, {
                         product_id: product.id,
-                        variation_id: variations[0].variation_id,
+                        variation_id: variations.length ? variations[0].variation_id : null,
                         quantity: item.quantity,
                         key: item.key
                     }, item.variation)));
@@ -41509,137 +41509,157 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     variations = _props3.variations,
                     _props3$formId = _props3.formId,
                     formId = _props3$formId === undefined ? _constansts.FORM_ADD_PRODUCT_TO_CART : _props3$formId;
+                var _product$meta_data = product.meta_data,
+                    _minimum_amount = _product$meta_data._minimum_amount,
+                    _product_grouped_by_amount = _product$meta_data._product_grouped_by_amount;
 
-
-                var groupedByAmount = this.productGroupedByAmount();
 
                 var row_defaults = {
                     product_id: product.id,
-                    variation_id: variations[0].variation_id,
+                    variation_id: variations.length ? variations[0].variation_id : null,
                     quantity: 1
                 };
 
-                if (groupedByAmount) {
-                    row_defaults.quantity = groupedByAmount.value;
+                if (_product_grouped_by_amount) {
+                    row_defaults.quantity = _product_grouped_by_amount.value;
+                }
+
+                if (_minimum_amount) {
+                    row_defaults.quantity = _minimum_amount.value;
                 }
 
                 dispatch((0, _reduxForm.arrayPush)(formId, 'items', row_defaults));
             }
         }, {
-            key: 'productGroupedByAmount',
-            value: function productGroupedByAmount() {
-                var _product_grouped_by_amount = this.props.product.meta_data._product_grouped_by_amount;
-
-
-                return _product_grouped_by_amount;
-            }
-        }, {
             key: 'quantityAttrs',
             value: function quantityAttrs() {
-                var attrs = { min: 1 },
-                    groupedByAmount = this.productGroupedByAmount();
+                var _props$product$meta_d = this.props.product.meta_data,
+                    _minimum_amount = _props$product$meta_d._minimum_amount,
+                    _product_grouped_by_amount = _props$product$meta_d._product_grouped_by_amount;
 
-                if (groupedByAmount) {
-                    attrs.step = groupedByAmount.value;
-                    attrs.min = groupedByAmount.value;
+
+                var attrs = { min: 1 };
+
+                if (_product_grouped_by_amount) {
+                    attrs.step = _product_grouped_by_amount.value;
+                    attrs.min = _product_grouped_by_amount.value;
                 }
 
+                if (_minimum_amount) attrs.min = _minimum_amount.value;
+
                 return attrs;
+            }
+        }, {
+            key: 'setVariationId',
+            value: function setVariationId(itemIndex, newValue, attribute) {
+                var _props4 = this.props,
+                    variations = _props4.variations,
+                    dispatch = _props4.dispatch;
+
+
+                var newVariation = variations.filter(function (variation) {
+                    return typeof variation.attributeValue[attribute] !== 'undefined' && variation.attributeValue[attribute] === newValue.toLowerCase();
+                });
+
+                if (newVariation.length) dispatch((0, _reduxForm.change)(_constansts.FORM_ADD_PRODUCT_TO_CART, 'items[' + itemIndex + '].variation_id', newVariation[0].variation_id));
             }
         }, {
             key: 'render',
             value: function render() {
                 var _this2 = this;
 
-                var _props4 = this.props,
-                    variations = _props4.variations,
-                    product = _props4.product,
-                    fields = _props4.fields,
-                    _props4$mode = _props4.mode,
-                    mode = _props4$mode === undefined ? _constansts.MODE_ADD : _props4$mode,
-                    remove = _props4.remove,
-                    remove_label = _props4.labels.remove;
+                var _props5 = this.props,
+                    variations = _props5.variations,
+                    product = _props5.product,
+                    fields = _props5.fields,
+                    _props5$mode = _props5.mode,
+                    mode = _props5$mode === undefined ? _constansts.MODE_ADD : _props5$mode,
+                    remove = _props5.remove,
+                    remove_label = _props5.labels.remove;
 
+
+                //Don't list all variations. Variations IDs are set based on the attribute values.
+                var variation = variations.length ? variations[0] : null;
 
                 return fields.map(function (items, index) {
 
-                    return variations.map(function (variation, variationIndex) {
-                        return _react2.default.createElement(
-                            'div',
-                            { style: { clear: 'both' }, className: 'cw__variation', key: variationIndex },
-                            mode === _constansts.MODE_ADD ? null : _react2.default.createElement(_reduxForm.Field, {
-                                name: items + '.key',
-                                type: 'hidden',
-                                validate: [_utilities.required],
-                                component: _utilities.renderField
-                            }),
-                            _react2.default.createElement(_reduxForm.Field, {
-                                name: items + '.variation_id',
-                                type: 'hidden',
-                                value: variation.variation_id,
-                                validate: [_utilities.required],
-                                component: _utilities.renderField
-                            }),
-                            _react2.default.createElement(_reduxForm.Field, {
-                                name: items + '.product_id',
-                                type: 'hidden',
-                                value: product.id,
-                                validate: [_utilities.required],
-                                component: _utilities.renderField
-                            }),
-                            _react2.default.createElement(_reduxForm.Field, {
-                                name: items + '.quantity',
-                                label: 'Quantity',
-                                type: 'number',
-                                className: 'col-md-3',
-                                validate: [_utilities.required, _utilities.minNumericValueOne],
-                                attr: _this2.quantityAttrs(),
-                                component: _utilities.renderField }),
-                            variation.attributes.map(function (attribute) {
-                                return _react2.default.createElement(
-                                    'div',
-                                    { className: 'option col-md-3', key: attribute.attribute_slug },
+                    return _react2.default.createElement(
+                        'div',
+                        { style: { clear: 'both' }, className: 'cw__variation', key: index },
+                        mode === _constansts.MODE_ADD ? null : _react2.default.createElement(_reduxForm.Field, {
+                            name: items + '.key',
+                            type: 'hidden',
+                            validate: [_utilities.required],
+                            component: _utilities.renderField
+                        }),
+                        _react2.default.createElement(_reduxForm.Field, {
+                            name: items + '.variation_id',
+                            type: 'hidden',
+                            component: _utilities.renderField
+                        }),
+                        _react2.default.createElement(_reduxForm.Field, {
+                            name: items + '.product_id',
+                            type: 'hidden',
+                            value: product.id,
+                            validate: [_utilities.required],
+                            component: _utilities.renderField
+                        }),
+                        _react2.default.createElement(_reduxForm.Field, {
+                            name: items + '.quantity',
+                            label: 'Quantity',
+                            type: 'number',
+                            className: 'col-md-3',
+                            validate: [_utilities.required, _utilities.minNumericValueOne],
+                            attr: _this2.quantityAttrs(),
+                            component: _utilities.renderField }),
+                        !variation ? null : variation.attributes.map(function (attribute) {
+                            return _react2.default.createElement(
+                                'div',
+                                { className: 'option col-md-3', key: attribute.attribute_slug },
+                                _react2.default.createElement(
+                                    'label',
+                                    { htmlFor: attribute.attribute_slug },
+                                    attribute.name
+                                ),
+                                _react2.default.createElement(
+                                    _reduxForm.Field,
+                                    {
+                                        name: items + '.' + attribute.attribute_slug,
+                                        id: attribute.attribute_slug,
+                                        validate: [_utilities.required],
+                                        type: 'select',
+                                        component: _utilities.renderField,
+                                        onChange: function onChange(e, newValue) {
+                                            _this2.setVariationId(index, newValue, attribute.attribute_slug);
+                                        }
+                                    },
                                     _react2.default.createElement(
-                                        'label',
-                                        { htmlFor: attribute.attribute_slug },
+                                        'option',
+                                        { value: '' },
+                                        'Select ',
                                         attribute.name
                                     ),
-                                    _react2.default.createElement(
-                                        _reduxForm.Field,
-                                        {
-                                            name: items + '.' + attribute.attribute_slug,
-                                            id: attribute.attribute_slug,
-                                            validate: [_utilities.required],
-                                            type: 'select',
-                                            component: _utilities.renderField },
-                                        _react2.default.createElement(
+                                    !attribute.options ? null : attribute.options.map(function (option, key) {
+                                        return _react2.default.createElement(
                                             'option',
-                                            { value: '' },
-                                            'Select ',
-                                            attribute.name
-                                        ),
-                                        !attribute.options ? null : attribute.options.map(function (option, key) {
-                                            return _react2.default.createElement(
-                                                'option',
-                                                { key: key, value: option },
-                                                (0, _unescape2.default)(option)
-                                            );
-                                        })
-                                    )
-                                );
-                            }),
-                            index < 1 && mode !== _constansts.MODE_EDIT ? null : _react2.default.createElement(
-                                'button',
-                                { className: 'option col-md-3', onClick: function onClick(event) {
+                                            { key: key, value: option },
+                                            (0, _unescape2.default)(option)
+                                        );
+                                    })
+                                )
+                            );
+                        }),
+                        index < 1 && mode !== _constansts.MODE_EDIT ? null : _react2.default.createElement(
+                            'button',
+                            { className: 'option col-md-3', onClick: function onClick(event) {
 
-                                        event.preventDefault();
+                                    event.preventDefault();
 
-                                        if (!remove) fields.remove(index);else remove(_this2.props.items[index], index);
-                                    } },
-                                remove_label
-                            )
-                        );
-                    });
+                                    if (!remove) fields.remove(index);else remove(_this2.props.items[index], index);
+                                } },
+                            remove_label
+                        )
+                    );
                 });
             }
         }]);
@@ -71528,6 +71548,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     modal_loading_message: action.data
                 });
                 break;
+            case _constansts.SHOW_HELP_INFO:
+                return (0, _assign2.default)({}, state, {
+                    help_info: true
+                });
+            case _constansts.HIDE_HELP_INFO:
+                return (0, _assign2.default)({}, state, {
+                    help_info: false
+                });
         }
 
         return (0, _assign2.default)({}, state);
@@ -71561,7 +71589,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.HIDE_GROUPED_ITEMS_OPTIONS = exports.SHOW_GROUPED_ITEMS_OPTIONS = exports.HIDE_ITEM_OPTIONS = exports.SHOW_ITEM_OPTIONS = exports.MODAL_LOADING_TOGGLE = exports.LOADING_TOGGLE = exports.CLEAR_ALL_NOTIFICATIONS = exports.CLEAR_NOTIFICATION = exports.SET_NOTIFICATION = undefined;
+    exports.HIDE_HELP_INFO = exports.SHOW_HELP_INFO = exports.HIDE_GROUPED_ITEMS_OPTIONS = exports.SHOW_GROUPED_ITEMS_OPTIONS = exports.HIDE_ITEM_OPTIONS = exports.SHOW_ITEM_OPTIONS = exports.MODAL_LOADING_TOGGLE = exports.LOADING_TOGGLE = exports.CLEAR_ALL_NOTIFICATIONS = exports.CLEAR_NOTIFICATION = exports.SET_NOTIFICATION = undefined;
     exports.setError = setError;
     exports.setNotification = setNotification;
     exports.clearNotification = clearNotification;
@@ -71572,6 +71600,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     exports.hideItemOptions = hideItemOptions;
     exports.showGroupedItemsOptions = showGroupedItemsOptions;
     exports.hideGroupedItemsOptions = hideGroupedItemsOptions;
+    exports.showHelpInfo = showHelpInfo;
+    exports.hideHelpInfo = hideHelpInfo;
 
 
     /*
@@ -71587,6 +71617,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var HIDE_ITEM_OPTIONS = exports.HIDE_ITEM_OPTIONS = 'HIDE_ITEM_OPTIONS';
     var SHOW_GROUPED_ITEMS_OPTIONS = exports.SHOW_GROUPED_ITEMS_OPTIONS = 'SHOW_GROUPED_ITEMS_OPTIONS';
     var HIDE_GROUPED_ITEMS_OPTIONS = exports.HIDE_GROUPED_ITEMS_OPTIONS = 'HIDE_GROUPED_ITEMS_OPTIONS';
+    var SHOW_HELP_INFO = exports.SHOW_HELP_INFO = 'SHOW_HELP_INFO';
+    var HIDE_HELP_INFO = exports.HIDE_HELP_INFO = 'HIDE_HELP_INFO';
     /*
      * action creators
      */
@@ -71637,6 +71669,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     function hideGroupedItemsOptions() {
         return { type: HIDE_GROUPED_ITEMS_OPTIONS };
+    }
+
+    function showHelpInfo() {
+        return { type: SHOW_HELP_INFO };
+    }
+
+    function hideHelpInfo() {
+        return { type: HIDE_HELP_INFO };
     }
 });
 
@@ -71724,8 +71764,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 });
 
                 var locations = (0, _utilities.extractDataFromResults)(data.results);
-
-                console.log("locations", locations);
 
                 if (!locations.length) return resolve({
                     valid: false,
@@ -72580,7 +72618,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             label = _ref.label,
             type = _ref.type,
             placeholder = _ref.placeholder,
-            className = _ref.className,
+            hint = _ref.hint,
+            _ref$className = _ref.className,
+            className = _ref$className === undefined ? '' : _ref$className,
             children = _ref.children,
             _ref$attr = _ref.attr,
             attr = _ref$attr === undefined ? {} : _ref$attr,
@@ -72590,45 +72630,46 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             warning = _ref$meta.warning;
         return _react2.default.createElement(
             'div',
-            { className: className },
+            { className: 'cw__form_field ' + className },
             !label ? null : _react2.default.createElement(
                 'label',
                 null,
                 label
             ),
-            _react2.default.createElement(
-                'div',
-                null,
-                function () {
-                    switch (type) {
-                        case 'textarea':
-                            return _react2.default.createElement(
-                                'textarea',
-                                (0, _extends3.default)({}, input, attr),
-                                children ? children : placeholder
-                            );
-                            break;
-                        case 'select':
-                            return _react2.default.createElement(
-                                'select',
-                                (0, _extends3.default)({}, input, attr),
-                                children
-                            );
-                            break;
-                        default:
-                            return _react2.default.createElement('input', (0, _extends3.default)({}, input, attr, { placeholder: placeholder, type: type }));
-                    }
-                }(),
-                touched && (error && _react2.default.createElement(
-                    'span',
-                    { className: 'cw__field_error' },
-                    error
-                ) || warning && _react2.default.createElement(
-                    'span',
-                    { className: 'cw__field_warning' },
-                    warning
-                ))
-            )
+            function () {
+                switch (type) {
+                    case 'textarea':
+                        return _react2.default.createElement(
+                            'textarea',
+                            (0, _extends3.default)({}, input, attr),
+                            children ? children : placeholder
+                        );
+                        break;
+                    case 'select':
+                        return _react2.default.createElement(
+                            'select',
+                            (0, _extends3.default)({}, input, attr),
+                            children
+                        );
+                        break;
+                    default:
+                        return _react2.default.createElement('input', (0, _extends3.default)({}, input, attr, { placeholder: placeholder, type: type }));
+                }
+            }(),
+            !hint ? null : _react2.default.createElement(
+                'span',
+                { className: 'cw__field_hint' },
+                hint
+            ),
+            touched && (error && _react2.default.createElement(
+                'span',
+                { className: 'cw__field_error' },
+                error
+            ) || warning && _react2.default.createElement(
+                'span',
+                { className: 'cw__field_warning' },
+                warning
+            ))
         );
     };
 });
@@ -74039,6 +74080,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         switch (action.type) {
             case _view.SET_CURRENT_SCREEN:
 
+                if (!state.history) state.history = [];
+
                 state.history.push(state.current);
 
                 return (0, _assign2.default)({}, state, {
@@ -74146,6 +74189,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             'div',
             { className: 'cw__app_base' },
             _react2.default.createElement(_containers.Loading, null),
+            _react2.default.createElement(_containers.HelpInfo, null),
             _react2.default.createElement(
                 'div',
                 { className: 'container-fluid' },
@@ -74181,20 +74225,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(580), __webpack_require__(581), __webpack_require__(582), __webpack_require__(626)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(580), __webpack_require__(633), __webpack_require__(581), __webpack_require__(582), __webpack_require__(626)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else if (typeof exports !== "undefined") {
-    factory(exports, require('./back_button'), require('./loading'), require('./order_details'), require('./pathway'));
+    factory(exports, require('./back_button'), require('./help_info'), require('./loading'), require('./order_details'), require('./pathway'));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.back_button, global.loading, global.order_details, global.pathway);
+    factory(mod.exports, global.back_button, global.help_info, global.loading, global.order_details, global.pathway);
     global.index = mod.exports;
   }
-})(this, function (exports, _back_button, _loading, _order_details, _pathway) {
+})(this, function (exports, _back_button, _help_info, _loading, _order_details, _pathway) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -74206,6 +74250,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       enumerable: true,
       get: function () {
         return _back_button[key];
+      }
+    });
+  });
+  Object.keys(_help_info).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function () {
+        return _help_info[key];
       }
     });
   });
@@ -74281,10 +74334,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         return _react2.default.createElement(
             _button.Button,
-            { onClick: function onClick(event) {
+            {
+                className: 'cw__button_back',
+                onClick: function onClick(event) {
                     event.preventDefault();
                     props.dispatch((0, _constansts.backToPreviousScreen)());
-                } },
+                }
+            },
             props.children
         );
     };
@@ -74379,20 +74435,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(10), __webpack_require__(3), __webpack_require__(583), __webpack_require__(49), __webpack_require__(104), __webpack_require__(111)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(10), __webpack_require__(632), __webpack_require__(49), __webpack_require__(3), __webpack_require__(583)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('react-redux'), require('../../constansts/'), require('../components/order_details/'), require('../elements/button'), require('../../constansts/local_storage'), require('../../utilities/local_storage'));
+        factory(exports, require('react'), require('react-redux'), require('../elements/icon_help'), require('../elements/button'), require('../../constansts/'), require('../components/order_details/'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.reactRedux, global.constansts, global.order_details, global.button, global.local_storage, global.local_storage);
+        factory(mod.exports, global.react, global.reactRedux, global.icon_help, global.button, global.constansts, global.order_details);
         global.order_details = mod.exports;
     }
-})(this, function (exports, _react, _reactRedux, _constansts, _order_details, _button, _local_storage, _local_storage2) {
+})(this, function (exports, _react, _reactRedux, _icon_help, _button, _constansts, _order_details) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -74416,12 +74472,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         return views.indexOf(current) !== -1;
     };
 
-    //TEMP
-
-
-    var clearData = function clearData() {
-        (0, _local_storage2.clear)(_local_storage.LOCAL_STORAGE_KEY);
-        window.location.reload();
+    var HelpTrigger = function HelpTrigger(_ref) {
+        var dispatch = _ref.dispatch;
+        return _react2.default.createElement(
+            'button',
+            {
+                className: 'cw__help_info_trigger',
+                onClick: function onClick(event) {
+                    event.preventDefault();
+                    dispatch((0, _constansts.showHelpInfo)());
+                }
+            },
+            _react2.default.createElement(_icon_help.IconHelp, null)
+        );
     };
 
     var OrderDetails = function OrderDetails(props) {
@@ -74449,7 +74512,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 _react2.default.createElement(
                     'header',
                     null,
-                    order_details_title
+                    order_details_title,
+                    ' ',
+                    _react2.default.createElement(HelpTrigger, { dispatch: dispatch })
                 ),
                 _react2.default.createElement(_order_details.OrderType, props),
                 order_type === _constansts.ORDER_TYPE_PICKUP ? _react2.default.createElement(_order_details.PickupLocation, props) : _react2.default.createElement(_order_details.DeliveryLocation, props),
@@ -74463,14 +74528,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         dispatch((0, _constansts.setCurrentScreen)(_constansts.VIEW_CONFIRM));
                     } },
                 review_order_button
-            ),
-            _react2.default.createElement(
-                _button.Button,
-                { onClick: function onClick(event) {
-                        event.preventDefault();
-                        clearData();
-                    } },
-                'Clear Data'
             )
         );
     };
@@ -74602,7 +74659,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         return _react2.default.createElement(
             'div',
-            { className: 'cw__deliver_location' },
+            { className: 'cw__delivery_location' },
             _react2.default.createElement(
                 'h3',
                 null,
@@ -74755,16 +74812,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                 return dispatch((0, _constansts.showGroupedItemsOptions)(group.product.id));
                             } },
                         _lodash2.default.upperFirst(update)
-                    ),
-                    _react2.default.createElement(
-                        _button_no_event.Button,
-                        { className: 'btn btn-xs btn-danger', onClick: function onClick() {
-
-                                var confirm_action = confirm(removing_item_from_cart_confirm);
-
-                                if (confirm_action) dispatch((0, _thunks.removeGroupedProduct)(group.product.id, removing_item_from_cart, updating_cart));
-                            } },
-                        _lodash2.default.upperFirst(remove)
                     )
                 );
             }),
@@ -74973,7 +75020,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
                 return (0, _utilities2.syncOrderDataToSession)(order);
             }).then(function (data) {
-                console.log("data", data);
                 dispatch((0, _constansts.modalLoadingToggle)());
             }).then(function () {
                 return closeModal(new Event('click'));
@@ -75275,20 +75321,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(32), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(20), __webpack_require__(32), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('../../elements/button_no_event'), require('../../../constansts'));
+        factory(exports, require('react'), require('lodash'), require('../../elements/button_no_event'), require('../../../constansts'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.button_no_event, global.constansts);
+        factory(mod.exports, global.react, global.lodash, global.button_no_event, global.constansts);
         global.order_type = mod.exports;
     }
-})(this, function (exports, _react, _button_no_event, _constansts) {
+})(this, function (exports, _react, _lodash, _button_no_event, _constansts) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -75297,6 +75343,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     exports.OrderType = undefined;
 
     var _react2 = _interopRequireDefault(_react);
+
+    var _lodash2 = _interopRequireDefault(_lodash);
 
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
@@ -75325,7 +75373,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             _react2.default.createElement(
                 'span',
                 null,
-                order_type
+                _lodash2.default.startCase(order_type)
             ),
             _react2.default.createElement(
                 'div',
@@ -75525,7 +75573,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
                 variations = variations.map(function (variation) {
                     return (0, _assign2.default)({}, variation, {
-                        attributes: (0, _utilities.mapVariationAttributes)(variation.attributes, product.attributes)
+                        attributes: (0, _utilities.mapVariationAttributes)(variation.attributes, product.attributes),
+                        attributeValue: variation.attributes
                     });
                 });
 
@@ -75685,16 +75734,21 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
                 var data = {
                     product_id: product.id,
-                    variation_id: variations[0].variation_id,
+                    variation_id: variations.length ? variations[0].variation_id : null,
                     quantity: 1
                 };
 
-                var _product_grouped_by_amount = product.meta_data._product_grouped_by_amount;
+                var _product$meta_data = product.meta_data,
+                    _product_grouped_by_amount = _product$meta_data._product_grouped_by_amount,
+                    _minimum_amount = _product$meta_data._minimum_amount;
 
 
                 if (_product_grouped_by_amount) {
-
                     data.quantity = _product_grouped_by_amount.value;
+                }
+
+                if (_minimum_amount) {
+                    data.quantity = _minimum_amount.value;
                 }
 
                 return data;
@@ -75737,7 +75791,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                 variations: variations,
                                 product: product,
                                 rows: rows,
-                                labels: this.props.labels
+                                labels: this.props.labels,
+                                formData: formData
                             })
                         ),
                         rows < 2 ? null : _react2.default.createElement(_total_row.TotalRow, { formData: formData }),
@@ -75748,7 +75803,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                 'div',
                                 { className: 'col-sm-12' },
                                 _react2.default.createElement('hr', null),
-                                _react2.default.createElement(
+                                !variations.length ? null : _react2.default.createElement(
                                     'button',
                                     {
                                         className: 'pull-left',
@@ -76085,11 +76140,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         return _react2.default.createElement(
             'div',
             { className: 'cw__cart' },
-            _react2.default.createElement(
-                'h1',
-                null,
-                catering_menu_title
-            ),
             !update_grouped_products ? null : _react2.default.createElement(_index.UpdateGroupedProducts, props),
             !show_product_options ? null : _react2.default.createElement(_index.ProductOptions, props),
             !catering_categories.length ? null : catering_categories.map(function (category) {
@@ -76562,23 +76612,24 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             labels = props.labels,
             _props$order = props.order,
             order = _props$order === undefined ? {} : _props$order,
-            delivery_max_range = props.settings.delivery_max_range;
+            _props$settings = props.settings,
+            delivery_max_range = _props$settings.delivery_max_range,
+            delivery_outside_of_range = _props$settings.delivery_outside_of_range;
         var _order$order_delivery = order.order_delivery_address,
-            order_delivery_address = _order$order_delivery === undefined ? {} : _order$order_delivery;
-        var delivery_within_range = order_delivery_address.delivery_within_range;
-        var delivery_address_validating = labels.delivery_address_validating,
-            delivery_out_of_range = labels.delivery_out_of_range;
+            order_delivery_address = _order$order_delivery === undefined ? {} : _order$order_delivery,
+            delivery_within_range = order_delivery_address.delivery_within_range,
+            delivery_address_validating = labels.delivery_address_validating;
 
 
         return _react2.default.createElement(
             'div',
-            { className: 'cw__deliver_address' },
+            { className: 'cw__delivery_address' },
             _react2.default.createElement(
                 'h1',
                 null,
                 'Delivery Address'
             ),
-            delivery_within_range === false ? delivery_out_of_range : null,
+            delivery_within_range === false ? _react2.default.createElement('div', { className: 'cw__delivery_outside_of_range cw__alert cw__alert_warning alert alert-warning', dangerouslySetInnerHTML: { __html: delivery_outside_of_range } }) : null,
             _react2.default.createElement(_delivery_address2.default, (0, _extends3.default)({ labels: labels }, { onSubmit: function onSubmit(values) {
                     dispatch((0, _thunks.validateDeliveryRange)(values, delivery_max_range, delivery_address_validating));
                 } }))
@@ -76636,46 +76687,59 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 { className: 'cw__alert cw__alert_error' },
                 error
             ) : null,
-            _react2.default.createElement(_reduxForm.Field, {
-                name: 'delivery_address_line_one',
-                placeholder: 'Address Line One',
-                component: _utilities.renderField,
-                type: 'text',
-                label: 'Address',
-                validate: [_utilities.required]
-            }),
-            _react2.default.createElement(_reduxForm.Field, {
-                name: 'delivery_address_line_two',
-                placeholder: 'Address Line Two',
-                component: _utilities.renderField,
-                type: 'text'
-            }),
-            _react2.default.createElement(_reduxForm.Field, {
-                name: 'delivery_address_city',
-                component: _utilities.renderField,
-                type: 'text',
-                label: 'City',
-                validate: [_utilities.required]
-            }),
-            _react2.default.createElement(_reduxForm.Field, {
-                name: 'delivery_address_state',
-                component: _utilities.renderField,
-                type: 'text',
-                label: 'State',
-                validate: [_utilities.required]
-            }),
-            _react2.default.createElement(_reduxForm.Field, {
-                name: 'delivery_address_zip',
-                component: _utilities.renderField,
-                type: 'text',
-                label: 'Zip',
-                validate: [_utilities.required]
-            }),
             _react2.default.createElement(
-                'button',
-                {
-                    type: 'submit' },
-                button_continue
+                'div',
+                { className: 'clearfix' },
+                _react2.default.createElement(_reduxForm.Field, {
+                    name: 'delivery_address_line_one',
+                    placeholder: 'Address Line One',
+                    component: _utilities.renderField,
+                    type: 'text',
+                    label: 'Address',
+                    className: 'cw__delivery_address_address_line_one clearfix',
+                    validate: [_utilities.required]
+                }),
+                _react2.default.createElement(_reduxForm.Field, {
+                    name: 'delivery_address_line_two',
+                    placeholder: 'Address Line Two',
+                    className: 'cw__delivery_address_address_line_two clearfix',
+                    component: _utilities.renderField,
+                    type: 'text'
+                }),
+                _react2.default.createElement(_reduxForm.Field, {
+                    name: 'delivery_address_city',
+                    component: _utilities.renderField,
+                    type: 'text',
+                    label: 'City',
+                    className: 'clearfix',
+                    validate: [_utilities.required]
+                }),
+                _react2.default.createElement(_reduxForm.Field, {
+                    name: 'delivery_address_state',
+                    component: _utilities.renderField,
+                    type: 'text',
+                    label: 'State',
+                    className: 'clearfix',
+                    validate: [_utilities.required]
+                }),
+                _react2.default.createElement(_reduxForm.Field, {
+                    name: 'delivery_address_zip',
+                    component: _utilities.renderField,
+                    type: 'text',
+                    label: 'Zip',
+                    className: 'clearfix',
+                    validate: [_utilities.required]
+                })
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: 'cw__form_button' },
+                _react2.default.createElement(
+                    'button',
+                    {
+                        type: 'submit' },
+                    button_continue
+                )
             )
         );
     };
@@ -77085,9 +77149,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             value: function render() {
                 var _props = this.props,
                     labels = _props.labels,
-                    _props$order = _props.order,
-                    order_type = _props$order.order_type,
-                    order_pickup_time = _props$order.order_pickup_time,
+                    order_type = _props.order.order_type,
                     settings_hours_in_advance = _props.settings.hours_in_advance,
                     _props$data = _props.data,
                     location = _props$data.location,
@@ -77241,6 +77303,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     order_type = _props.order_type,
                     location = _props.location,
                     _props$labels = _props.labels,
+                    delivery_date_label = _props$labels.delivery_date_label,
+                    delivery_time_of_day_label = _props$labels.delivery_time_of_day_label,
+                    pickup_date_label = _props$labels.pickup_date_label,
+                    pickup_time_of_day_label = _props$labels.pickup_time_of_day_label,
                     label_date_prompt = _props$labels.label_date_prompt,
                     label_time_prompt = _props$labels.label_time_prompt,
                     button_continue = _props$labels.button_continue,
@@ -77271,6 +77337,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         placeholder: label_date_prompt,
                         component: _utilities.renderField,
                         type: 'date',
+                        className: 'cw__order_schedule_field cw__order_schedule_date',
+                        label: order_type === _constansts.ORDER_TYPE_PICKUP ? pickup_date_label : delivery_date_label,
+                        hint: 'Format Example: 01/01/2020',
                         validate: [_utilities.required, function (value) {
                             return hoursInAdvanced(hours_in_advance, today, value, (0, _utilities.mapValue)(hours_in_advance, hours_in_advance_error));
                         }]
@@ -77280,6 +77349,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         placeholder: label_time_prompt,
                         component: _utilities.renderField,
                         type: 'time',
+                        className: 'cw__order_schedule_field cw__order_schedule_time_of_day',
+                        label: order_type === _constansts.ORDER_TYPE_PICKUP ? pickup_time_of_day_label : delivery_time_of_day_label,
+                        hint: 'Format Example: 10:00 AM',
                         validate: [_utilities.required, function (value) {
                             return windowOfTime(minOrderTime, maxOrderTime, value, windowOfTimeErrorMessage);
                         }]
@@ -77631,20 +77703,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(8), __webpack_require__(1), __webpack_require__(20), __webpack_require__(39), __webpack_require__(3), __webpack_require__(5), __webpack_require__(33), __webpack_require__(624), __webpack_require__(106)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(8), __webpack_require__(21), __webpack_require__(22), __webpack_require__(23), __webpack_require__(24), __webpack_require__(25), __webpack_require__(1), __webpack_require__(20), __webpack_require__(39), __webpack_require__(3), __webpack_require__(5), __webpack_require__(33), __webpack_require__(624), __webpack_require__(106)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('babel-runtime/core-js/object/assign'), require('react'), require('lodash'), require('./index'), require('../../constansts'), require('../../utilities'), require('../../thunks'), require('../forms/update_cart_items'), require('../../constansts/products'));
+        factory(exports, require('babel-runtime/core-js/object/assign'), require('babel-runtime/core-js/object/get-prototype-of'), require('babel-runtime/helpers/classCallCheck'), require('babel-runtime/helpers/createClass'), require('babel-runtime/helpers/possibleConstructorReturn'), require('babel-runtime/helpers/inherits'), require('react'), require('lodash'), require('./index'), require('../../constansts'), require('../../utilities'), require('../../thunks'), require('../forms/update_cart_items'), require('../../constansts/products'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.assign, global.react, global.lodash, global.index, global.constansts, global.utilities, global.thunks, global.update_cart_items, global.products);
+        factory(mod.exports, global.assign, global.getPrototypeOf, global.classCallCheck, global.createClass, global.possibleConstructorReturn, global.inherits, global.react, global.lodash, global.index, global.constansts, global.utilities, global.thunks, global.update_cart_items, global.products);
         global.update_grouped_products = mod.exports;
     }
-})(this, function (exports, _assign, _react, _lodash, _index, _constansts, _utilities, _thunks, _update_cart_items, _products) {
+})(this, function (exports, _assign, _getPrototypeOf, _classCallCheck2, _createClass2, _possibleConstructorReturn2, _inherits2, _react, _lodash, _index, _constansts, _utilities, _thunks, _update_cart_items, _products) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -77653,6 +77725,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     exports.UpdateGroupedProducts = undefined;
 
     var _assign2 = _interopRequireDefault(_assign);
+
+    var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+    var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+    var _createClass3 = _interopRequireDefault(_createClass2);
+
+    var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+    var _inherits3 = _interopRequireDefault(_inherits2);
 
     var _react2 = _interopRequireDefault(_react);
 
@@ -77666,63 +77748,87 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         };
     }
 
-    var UpdateGroupedProducts = function UpdateGroupedProducts(props) {
-        var dispatch = props.dispatch,
-            _props$data = props.data,
-            products = _props$data.products,
-            update_grouped_products = _props$data.update_grouped_products,
-            modal_loading = _props$data.modal_loading,
-            modal_loading_message = _props$data.modal_loading_message,
-            _props$order$order_ca = props.order.order_cart.items,
-            items = _props$order$order_ca === undefined ? [] : _props$order$order_ca,
-            _props$labels = props.labels,
-            update = _props$labels.update,
-            items_label = _props$labels.items,
-            update_cart_items = _props$labels.update_cart_items,
-            updating_cart = _props$labels.updating_cart;
+    var UpdateGroupedProducts = function (_Component) {
+        (0, _inherits3.default)(UpdateGroupedProducts, _Component);
+
+        function UpdateGroupedProducts() {
+            (0, _classCallCheck3.default)(this, UpdateGroupedProducts);
+            return (0, _possibleConstructorReturn3.default)(this, (UpdateGroupedProducts.__proto__ || (0, _getPrototypeOf2.default)(UpdateGroupedProducts)).apply(this, arguments));
+        }
+
+        (0, _createClass3.default)(UpdateGroupedProducts, [{
+            key: 'componentWillReceiveProps',
+            value: function componentWillReceiveProps(nextProps) {
+                var dispatch = nextProps.dispatch,
+                    _nextProps$order$orde = nextProps.order.order_cart.items,
+                    items = _nextProps$order$orde === undefined ? [] : _nextProps$order$orde;
 
 
-        var close = function close(event) {
-            event.preventDefault();
-            dispatch((0, _constansts.hideGroupedItemsOptions)());
-        };
+                if (!items.length) dispatch((0, _constansts.hideGroupedItemsOptions)());
+            }
+        }, {
+            key: 'render',
+            value: function render() {
+                var _props = this.props,
+                    dispatch = _props.dispatch,
+                    _props$data = _props.data,
+                    products = _props$data.products,
+                    update_grouped_products = _props$data.update_grouped_products,
+                    modal_loading = _props$data.modal_loading,
+                    modal_loading_message = _props$data.modal_loading_message,
+                    _props$order$order_ca = _props.order.order_cart.items,
+                    items = _props$order$order_ca === undefined ? [] : _props$order$order_ca,
+                    _props$labels = _props.labels,
+                    update = _props$labels.update,
+                    items_label = _props$labels.items,
+                    update_cart_items = _props$labels.update_cart_items,
+                    updating_cart = _props$labels.updating_cart;
 
-        var isPartOfGroup = function isPartOfGroup(item) {
-            return item.product_id === update_grouped_products;
-        },
-            product = (0, _utilities.getProductById)(update_grouped_products, products);
 
-        var variations = product.variations.map(function (variation) {
-            return (0, _assign2.default)({}, variation, {
-                attributes: (0, _utilities.mapVariationAttributes)(variation.attributes, product.attributes)
-            });
-        });
+                var close = function close(event) {
+                    event.preventDefault();
+                    dispatch((0, _constansts.hideGroupedItemsOptions)());
+                };
 
-        return _react2.default.createElement(
-            'div',
-            { className: 'cw__update_grouped_products' },
-            _react2.default.createElement(
-                _index.Modal,
-                {
-                    display_footer: false,
-                    loading: modal_loading,
-                    loading_message: modal_loading_message,
-                    loading_default_message: props.labels.loading,
-                    heading: _lodash2.default.upperFirst(update) + ' ' + product.name + ' ' + _lodash2.default.upperFirst(items_label),
-                    close: close },
-                _react2.default.createElement(_update_cart_items2.default, {
-                    labels: props.labels,
-                    items: items.filter(isPartOfGroup),
-                    product: product,
-                    variations: variations,
-                    mode: _products.MODE_EDIT,
-                    onSubmit: function onSubmit(values) {
-                        dispatch((0, _thunks.updateCartItems)(values, update_cart_items, updating_cart));
-                    }
-                })
-            )
-        );
-    };
+                var isPartOfGroup = function isPartOfGroup(item) {
+                    return item.product_id === update_grouped_products;
+                },
+                    product = (0, _utilities.getProductById)(update_grouped_products, products);
+
+                var variations = product.variations.map(function (variation) {
+                    return (0, _assign2.default)({}, variation, {
+                        attributes: (0, _utilities.mapVariationAttributes)(variation.attributes, product.attributes)
+                    });
+                });
+
+                return _react2.default.createElement(
+                    'div',
+                    { className: 'cw__update_grouped_products' },
+                    _react2.default.createElement(
+                        _index.Modal,
+                        {
+                            display_footer: false,
+                            loading: modal_loading,
+                            loading_message: modal_loading_message,
+                            loading_default_message: this.props.labels.loading,
+                            heading: _lodash2.default.upperFirst(update) + ' ' + product.name + ' ' + _lodash2.default.upperFirst(items_label),
+                            close: close },
+                        _react2.default.createElement(_update_cart_items2.default, {
+                            labels: this.props.labels,
+                            items: items.filter(isPartOfGroup),
+                            product: product,
+                            variations: variations,
+                            mode: _products.MODE_EDIT,
+                            onSubmit: function onSubmit(values) {
+                                dispatch((0, _thunks.updateCartItems)(values, update_cart_items, updating_cart));
+                            }
+                        })
+                    )
+                );
+            }
+        }]);
+        return UpdateGroupedProducts;
+    }(_react.Component);
 
     exports.UpdateGroupedProducts = UpdateGroupedProducts;
 });
@@ -77776,17 +77882,30 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var FormUpdateCartItems = function (_Component) {
         (0, _inherits3.default)(FormUpdateCartItems, _Component);
 
-        function FormUpdateCartItems(props) {
+        function FormUpdateCartItems() {
+            var _ref;
+
+            var _temp, _this, _ret;
+
             (0, _classCallCheck3.default)(this, FormUpdateCartItems);
 
-            var _this = (0, _possibleConstructorReturn3.default)(this, (FormUpdateCartItems.__proto__ || (0, _getPrototypeOf2.default)(FormUpdateCartItems)).call(this, props));
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
 
-            _this.state = {
+            return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = FormUpdateCartItems.__proto__ || (0, _getPrototypeOf2.default)(FormUpdateCartItems)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
                 rows: 1
-            };
+            }, _this.removeRow = function (item, index) {
+                var _this$props = _this.props,
+                    dispatch = _this$props.dispatch,
+                    _this$props$labels = _this$props.labels,
+                    removing_item_from_cart = _this$props$labels.removing_item_from_cart,
+                    update_cart_items = _this$props$labels.update_cart_items;
+                var key = item.key;
 
-            _this.removeRow = _this.removeRow.bind(_this);
-            return _this;
+
+                if (key) dispatch((0, _thunks.removeCartItemInForm)(key, index, removing_item_from_cart, update_cart_items));else console.warn('Trying to remove item from cart with missing session key information.');
+            }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
         }
 
         (0, _createClass3.default)(FormUpdateCartItems, [{
@@ -77809,29 +77928,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 }));
             }
         }, {
-            key: 'removeRow',
-            value: function removeRow(item, index) {
-                var _props2 = this.props,
-                    dispatch = _props2.dispatch,
-                    _props2$labels = _props2.labels,
-                    removing_item_from_cart = _props2$labels.removing_item_from_cart,
-                    update_cart_items = _props2$labels.update_cart_items;
-                var key = item.key;
-
-
-                if (key) dispatch((0, _thunks.removeCartItemInForm)(key, index, removing_item_from_cart, update_cart_items));else console.warn('Trying to remove item from cart with missing session key information.');
-            }
-        }, {
             key: 'render',
             value: function render() {
-                var _props3 = this.props,
-                    items = _props3.items,
-                    dispatch = _props3.dispatch,
-                    formData = _props3.formData,
-                    product = _props3.product,
-                    variations = _props3.variations,
-                    handleSubmit = _props3.handleSubmit,
-                    update_cart_items = _props3.labels.update_cart_items;
+                var _props2 = this.props,
+                    items = _props2.items,
+                    dispatch = _props2.dispatch,
+                    formData = _props2.formData,
+                    product = _props2.product,
+                    variations = _props2.variations,
+                    handleSubmit = _props2.handleSubmit,
+                    update_cart_items = _props2.labels.update_cart_items;
                 var rows = this.state.rows;
 
 
@@ -78120,6 +78226,153 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 628 */,
+/* 629 */,
+/* 630 */,
+/* 631 */,
+/* 632 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require("react"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react);
+        global.icon_help = mod.exports;
+    }
+})(this, function (exports, _react) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.IconHelp = undefined;
+
+    var _react2 = _interopRequireDefault(_react);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    var IconHelp = function IconHelp(props) {
+        return _react2.default.createElement(
+            "span",
+            { className: "cw__icon_help" },
+            _react2.default.createElement(
+                "svg",
+                { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 92 92" },
+                _react2.default.createElement("path", { d: "M45.386.004C19.983.344-.333 21.215.005 46.619c.34 25.393 21.209 45.715 46.611 45.377 25.398-.342 45.718-21.213 45.38-46.615-.34-25.395-21.21-45.716-46.61-45.377zM45.25 74l-.254-.004c-3.912-.116-6.67-2.998-6.559-6.852.109-3.788 2.934-6.538 6.717-6.538l.227.004c4.021.119 6.748 2.972 6.635 6.937C51.904 71.346 49.123 74 45.25 74zm16.455-32.659c-.92 1.307-2.943 2.93-5.492 4.916l-2.807 1.938c-1.541 1.198-2.471 2.325-2.82 3.434-.275.873-.41 1.104-.434 2.88l-.004.451H39.43l.031-.907c.131-3.728.223-5.921 1.768-7.733 2.424-2.846 7.771-6.289 7.998-6.435.766-.577 1.412-1.234 1.893-1.936 1.125-1.551 1.623-2.772 1.623-3.972a7.74 7.74 0 0 0-1.471-4.576c-.939-1.323-2.723-1.993-5.303-1.993-2.559 0-4.311.812-5.359 2.478-1.078 1.713-1.623 3.512-1.623 5.35v.457H27.936l.02-.477c.285-6.769 2.701-11.643 7.178-14.487C37.947 18.918 41.447 18 45.531 18c5.346 0 9.859 1.299 13.412 3.861 3.6 2.596 5.426 6.484 5.426 11.556 0 2.837-.896 5.502-2.664 7.924z", fill: "#030104" })
+            )
+        );
+    };
+
+    exports.IconHelp = IconHelp;
+});
+
+/***/ }),
+/* 633 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(10), __webpack_require__(39), __webpack_require__(111), __webpack_require__(49), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('react-redux'), require('../components/'), require('../../utilities/local_storage'), require('../elements/button'), require('../../constansts/'));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.reactRedux, global.components, global.local_storage, global.button, global.constansts);
+        global.help_info = mod.exports;
+    }
+})(this, function (exports, _react, _reactRedux, _components, _local_storage, _button, _constansts) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.HelpInfo = undefined;
+
+    var _react2 = _interopRequireDefault(_react);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    var clearData = function clearData() {
+        (0, _local_storage.clear)(_constansts.LOCAL_STORAGE_KEY);
+        window.location.reload();
+    };
+
+    var HelpInfo = function HelpInfo(_ref) {
+        var dispatch = _ref.dispatch,
+            display_help_info = _ref.data.help_info,
+            _ref$labels = _ref.labels,
+            need_help = _ref$labels.need_help,
+            need_help_clear_data = _ref$labels.need_help_clear_data,
+            help_info_settings = _ref.settings.help_info;
+
+        return !display_help_info ? null : _react2.default.createElement(
+            'div',
+            { className: 'cw__help_info' },
+            _react2.default.createElement(
+                _components.Modal,
+                {
+                    heading: need_help,
+                    close: function close(event) {
+                        event.preventDefault();
+                        dispatch((0, _constansts.hideHelpInfo)());
+                    }
+                },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'cw__help_info_settings' },
+                    _react2.default.createElement('p', { dangerouslySetInnerHTML: { __html: help_info_settings } })
+                ),
+                _react2.default.createElement('hr', null),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'cw__help_info_clear_data' },
+                    _react2.default.createElement('p', { dangerouslySetInnerHTML: { __html: need_help_clear_data } }),
+                    _react2.default.createElement(
+                        _button.Button,
+                        {
+                            className: 'cw__clear_data',
+                            onClick: function onClick(event) {
+                                event.preventDefault();
+                                clearData();
+                            }
+                        },
+                        'Clear Data'
+                    )
+                )
+            )
+        );
+    };
+
+    exports.HelpInfo = HelpInfo = (0, _reactRedux.connect)(function (state) {
+        return state;
+    })(HelpInfo);
+
+    exports.HelpInfo = HelpInfo;
+});
 
 /***/ })
 /******/ ]);

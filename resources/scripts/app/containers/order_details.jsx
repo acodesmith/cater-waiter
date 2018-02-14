@@ -1,9 +1,12 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
-import {
+import { IconHelp } from "../elements/icon_help"
+import { Button } from '../elements/button'
+    import {
     ORDER_TYPE_PICKUP,
     VIEW_CONFIRM,
-    setCurrentScreen
+    setCurrentScreen,
+    showHelpInfo
 } from '../../constansts/'
 import {
     OrderType,
@@ -13,10 +16,6 @@ import {
     MenuItems
 } from '../components/order_details/'
 
-//TEMP
-import { Button } from '../elements/button'
-import { LOCAL_STORAGE_KEY } from '../../constansts/local_storage'
-import { clear } from '../../utilities/local_storage'
 
 const display = props =>
 {
@@ -26,10 +25,17 @@ const display = props =>
     return views.indexOf( current ) !== -1
 }
 
-const clearData = () => {
-    clear( LOCAL_STORAGE_KEY )
-    window.location.reload()
-}
+const HelpTrigger = ({ dispatch }) => (
+    <button
+        className='cw__help_info_trigger'
+        onClick={event => {
+            event.preventDefault()
+            dispatch( showHelpInfo() )
+        }}
+    >
+        <IconHelp/>
+    </button>
+)
 
 let OrderDetails = props =>
 {
@@ -55,7 +61,7 @@ let OrderDetails = props =>
     return (
         <div className="cw__order_details">
             <section>
-                <header>{ order_details_title }</header>
+                <header>{ order_details_title } <HelpTrigger dispatch={dispatch} /></header>
                 <OrderType {...props} />
                 { order_type === ORDER_TYPE_PICKUP ?
                     <PickupLocation {...props} /> :
@@ -67,10 +73,6 @@ let OrderDetails = props =>
                 event.preventDefault()
                 dispatch( setCurrentScreen( VIEW_CONFIRM ) )
             }}>{ review_order_button }</Button> }
-            <Button onClick={event => {
-                event.preventDefault()
-                clearData();
-            }}>Clear Data</Button>
         </div>
     )
 }

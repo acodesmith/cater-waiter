@@ -1,4 +1,5 @@
 import React from 'react'
+import _ from 'lodash'
 import { Button } from '../../elements/button_no_event'
 import {
     ORDER_TYPE_DELIVERY,
@@ -27,7 +28,7 @@ const OrderType = props =>
     return (
         <div className="cw__order_type">
             <h3>{ order_type_title }</h3>
-            <span>{ order_type }</span>
+            <span>{ _.startCase( order_type ) }</span>
             <div className="cw__order_alter_options">
                 <Button
                     onClick={() => dispatch( jumpToView( VIEW_SELECT_ORDER_TYPE, history ) )}
