@@ -108,6 +108,17 @@ class WC_PluginSettings {
 					'step' => '0.01'
 				]
 			),
+			'help_info'                         => array(
+				'name'              => __( 'Help Info', 'cater_waiter' ),
+				'type'              => 'textarea',
+				'desc'              => __( 'Message displayed to the custom in the help info overlay.',
+					'cater_waiter' ),
+				'id'                => 'wc_settings_cater_waiter_help_info',
+				'custom_attributes' => [
+					'min'  => 0,
+					'step' => '0.01'
+				]
+			),
 //            'description' => array(
 //                'name' => __( 'Description', 'cater_waiter' ),
 //                'type' => 'textarea',

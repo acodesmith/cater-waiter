@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { IconHelp } from "../elements/icon_help"
-import {
+import { Button } from '../elements/button'
+    import {
     ORDER_TYPE_PICKUP,
     VIEW_CONFIRM,
     setCurrentScreen,
@@ -15,10 +16,6 @@ import {
     MenuItems
 } from '../components/order_details/'
 
-//TEMP
-import { Button } from '../elements/button'
-import { LOCAL_STORAGE_KEY } from '../../constansts/local_storage'
-import { clear } from '../../utilities/local_storage'
 
 const display = props =>
 {
@@ -28,13 +25,8 @@ const display = props =>
     return views.indexOf( current ) !== -1
 }
 
-const clearData = () => {
-    clear( LOCAL_STORAGE_KEY )
-    window.location.reload()
-}
-
 const HelpTrigger = ({ dispatch }) => (
-    <button 
+    <button
         className='cw__help_info_trigger'
         onClick={event => {
             event.preventDefault()
@@ -81,10 +73,6 @@ let OrderDetails = props =>
                 event.preventDefault()
                 dispatch( setCurrentScreen( VIEW_CONFIRM ) )
             }}>{ review_order_button }</Button> }
-            <Button onClick={event => {
-                event.preventDefault()
-                clearData();
-            }}>Clear Data</Button>
         </div>
     )
 }

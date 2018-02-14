@@ -74433,20 +74433,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(10), __webpack_require__(632), __webpack_require__(3), __webpack_require__(583), __webpack_require__(49), __webpack_require__(104), __webpack_require__(111)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(10), __webpack_require__(632), __webpack_require__(49), __webpack_require__(3), __webpack_require__(583)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('react-redux'), require('../elements/icon_help'), require('../../constansts/'), require('../components/order_details/'), require('../elements/button'), require('../../constansts/local_storage'), require('../../utilities/local_storage'));
+        factory(exports, require('react'), require('react-redux'), require('../elements/icon_help'), require('../elements/button'), require('../../constansts/'), require('../components/order_details/'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.reactRedux, global.icon_help, global.constansts, global.order_details, global.button, global.local_storage, global.local_storage);
+        factory(mod.exports, global.react, global.reactRedux, global.icon_help, global.button, global.constansts, global.order_details);
         global.order_details = mod.exports;
     }
-})(this, function (exports, _react, _reactRedux, _icon_help, _constansts, _order_details, _button, _local_storage, _local_storage2) {
+})(this, function (exports, _react, _reactRedux, _icon_help, _button, _constansts, _order_details) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -74468,14 +74468,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
         return views.indexOf(current) !== -1;
-    };
-
-    //TEMP
-
-
-    var clearData = function clearData() {
-        (0, _local_storage2.clear)(_local_storage.LOCAL_STORAGE_KEY);
-        window.location.reload();
     };
 
     var HelpTrigger = function HelpTrigger(_ref) {
@@ -74534,14 +74526,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         dispatch((0, _constansts.setCurrentScreen)(_constansts.VIEW_CONFIRM));
                     } },
                 review_order_button
-            ),
-            _react2.default.createElement(
-                _button.Button,
-                { onClick: function onClick(event) {
-                        event.preventDefault();
-                        clearData();
-                    } },
-                'Clear Data'
             )
         );
     };
@@ -78262,20 +78246,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(10), __webpack_require__(39), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(1), __webpack_require__(10), __webpack_require__(39), __webpack_require__(111), __webpack_require__(49), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('react-redux'), require('../components/'), require('../../constansts/'));
+        factory(exports, require('react'), require('react-redux'), require('../components/'), require('../../utilities/local_storage'), require('../elements/button'), require('../../constansts/'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.reactRedux, global.components, global.constansts);
+        factory(mod.exports, global.react, global.reactRedux, global.components, global.local_storage, global.button, global.constansts);
         global.help_info = mod.exports;
     }
-})(this, function (exports, _react, _reactRedux, _components, _constansts) {
+})(this, function (exports, _react, _reactRedux, _components, _local_storage, _button, _constansts) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -78291,21 +78275,54 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         };
     }
 
+    var clearData = function clearData() {
+        (0, _local_storage.clear)(_constansts.LOCAL_STORAGE_KEY);
+        window.location.reload();
+    };
+
     var HelpInfo = function HelpInfo(_ref) {
         var dispatch = _ref.dispatch,
-            help_info = _ref.data.help_info,
-            need_help = _ref.labels.need_help;
+            display_help_info = _ref.data.help_info,
+            _ref$labels = _ref.labels,
+            need_help = _ref$labels.need_help,
+            need_help_clear_data = _ref$labels.need_help_clear_data,
+            help_info_settings = _ref.settings.help_info;
 
-        return !help_info ? null : _react2.default.createElement(
+        return !display_help_info ? null : _react2.default.createElement(
             'div',
             { className: 'cw__help_info' },
-            _react2.default.createElement(_components.Modal, {
-                heading: need_help,
-                close: function close(event) {
-                    event.preventDefault();
-                    dispatch((0, _constansts.hideHelpInfo)());
-                }
-            })
+            _react2.default.createElement(
+                _components.Modal,
+                {
+                    heading: need_help,
+                    close: function close(event) {
+                        event.preventDefault();
+                        dispatch((0, _constansts.hideHelpInfo)());
+                    }
+                },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'cw__help_info_settings' },
+                    _react2.default.createElement('p', { dangerouslySetInnerHTML: { __html: help_info_settings } })
+                ),
+                _react2.default.createElement('hr', null),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'cw__help_info_clear_data' },
+                    _react2.default.createElement('p', { dangerouslySetInnerHTML: { __html: need_help_clear_data } }),
+                    _react2.default.createElement(
+                        _button.Button,
+                        {
+                            className: 'cw__clear_data',
+                            onClick: function onClick(event) {
+                                event.preventDefault();
+                                clearData();
+                            }
+                        },
+                        'Clear Data'
+                    )
+                )
+            )
         );
     };
 

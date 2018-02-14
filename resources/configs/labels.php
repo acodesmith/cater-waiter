@@ -41,6 +41,7 @@ return apply_filters( 'cater_waiter_filter_labels', [
 	'label_zip_code_prompt'             => __( 'Enter Zip Code', 'cater_waiter' ),
 	'loading'                           => __( 'Loading...', 'cater_waiter' ),
 	'need_help'                         => __( 'Need Help?', 'cater_waiter' ),
+	'need_help_clear_data'              => __( 'Something wrong with your order? Try starting the process over by clicking the button below.'),
 	'options'                           => __( 'options', 'cater_waiter' ),
 	'order_details_title'               => __( 'Order Details', 'cater_waiter' ),
 	'order_type_title'                  => __( 'Order Type', 'cater_waiter' ),
