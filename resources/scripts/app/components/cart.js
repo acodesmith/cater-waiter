@@ -27,7 +27,7 @@ const Cart = props => {
             {!show_product_options ? null : <ProductOptions {...props} />}
             {!catering_categories.length ? null : catering_categories.map(category => {
                 return (
-                    <div key={category.term_id} className={`cw__category cw__category_${category.slug}`}>
+                    <div key={category.term_id} className={`cw__category cw__category_${category.slug} clearfix`}>
                         <h3>{category.name}</h3>
                         {!Object.keys(grouped_products).length && grouped_products[category.slug] ? null
                             : grouped_products[category.slug].map(product => {

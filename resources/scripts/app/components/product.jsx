@@ -4,9 +4,12 @@ import {
     showItemOptions
 } from '../../constansts'
 
-const html = markup =>
-{
-    return {__html: markup};
+const getProductPrice = ({ price_html }, custom_label) => {
+    return <span className="cw__product_price">
+        { custom_label ? custom_label : (() => {
+           return <span dangerouslySetInnerHTML={{__html: price_html}}></span>
+        })() }
+    </span>
 }
 
 const Product = props => {
@@ -26,16 +29,15 @@ const Product = props => {
     } = product
     
     return (
-        <div key={product.id}  className="cw__product">
-            <h4>{product.name}
-                { _product_custom_price_label ? <span className="cw__product_price">{ _product_custom_price_label.value }</span>
-                    : <span className="cw__product_price" dangerouslySetInnerHTML={html(product.price_html)}></span> }
-            </h4>
-            <div dangerouslySetInnerHTML={html(product.description)}></div>
-            <Button onClick={event => {
-                event.preventDefault()
-                dispatch( showItemOptions( product.id ) )
-            }}>{ add_to_cart_title }</Button>
+        <div className="col-sm-12 col-md-6">
+            <div key={product.id}  className="cw__product">
+                <h4>{product.name} { getProductPrice(product, _product_custom_price_label ? _product_custom_price_label.value : null) }</h4>
+                <div dangerouslySetInnerHTML={{__html: product.description}}></div>
+                <Button onClick={event => {
+                    event.preventDefault()
+                    dispatch( showItemOptions( product.id ) )
+                }}>{ add_to_cart_title }</Button>
+            </div>
         </div>
     )
 }
