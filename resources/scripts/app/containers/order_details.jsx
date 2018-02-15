@@ -69,10 +69,16 @@ let OrderDetails = props =>
                 <OrderTime {...props} />
             </section>
             <MenuItems {...props} />
-            { ! items.length ? null : <Button onClick={event => {
-                event.preventDefault()
-                dispatch( setCurrentScreen( VIEW_CONFIRM ) )
-            }}>{ review_order_button }</Button> }
+            <div className="cw__buttons text-center">
+                { ! items.length ? null
+                    : <Button
+                        className='cw__review_order'
+                        onClick={event => {
+                            event.preventDefault()
+                            dispatch( setCurrentScreen( VIEW_CONFIRM ) )
+                        }}
+                    >{ review_order_button }</Button> }
+            </div>
         </div>
     )
 }

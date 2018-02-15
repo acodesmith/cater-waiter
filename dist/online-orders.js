@@ -74521,13 +74521,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 _react2.default.createElement(_order_details.OrderTime, props)
             ),
             _react2.default.createElement(_order_details.MenuItems, props),
-            !items.length ? null : _react2.default.createElement(
-                _button.Button,
-                { onClick: function onClick(event) {
-                        event.preventDefault();
-                        dispatch((0, _constansts.setCurrentScreen)(_constansts.VIEW_CONFIRM));
-                    } },
-                review_order_button
+            _react2.default.createElement(
+                'div',
+                { className: 'cw__buttons text-center' },
+                !items.length ? null : _react2.default.createElement(
+                    _button.Button,
+                    {
+                        className: 'cw__review_order',
+                        onClick: function onClick(event) {
+                            event.preventDefault();
+                            dispatch((0, _constansts.setCurrentScreen)(_constansts.VIEW_CONFIRM));
+                        }
+                    },
+                    review_order_button
+                )
             )
         );
     };
