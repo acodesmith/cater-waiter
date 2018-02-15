@@ -12,10 +12,10 @@ return [
 	'settings' => Load::config( 'settings.php' ),
 	'request'  => [
 		'api'     => [
-			'baseurl' => get_site_url() . '/wp-json/' . \CaterWaiter\API\Bootstrap::ENDPOINT_NAMESPACE,
+			'baseurl' => get_home_url() . '/wp-json/' . \CaterWaiter\API\Bootstrap::ENDPOINT_NAMESPACE,
 		],
 		'ajax'    => [
-			'site_url' => get_site_url(),
+			'site_url' => get_home_url(),
 			'baseurl'  => admin_url( 'admin-ajax.php' ),
 		],
 		'loading' => false,
