@@ -12,7 +12,7 @@ return [
 	'settings' => Load::config( 'settings.php' ),
 	'request'  => [
 		'api'     => [
-			'baseurl' => '/wp-json/' . \CaterWaiter\API\Bootstrap::ENDPOINT_NAMESPACE,
+			'baseurl' => get_site_url() . '/wp-json/' . \CaterWaiter\API\Bootstrap::ENDPOINT_NAMESPACE,
 		],
 		'ajax'    => [
 			'site_url' => get_site_url(),

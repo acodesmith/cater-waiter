@@ -6,6 +6,7 @@ namespace CaterWaiter;
 
 use CaterWaiter\Admin\Cart;
 use CaterWaiter\Admin\Locations;
+use CaterWaiter\Admin\Log;
 use CaterWaiter\Admin\Order;
 use CaterWaiter\Admin\WC_PluginSettings;
 use CaterWaiter\Admin\WC_ProductDataTabs;
@@ -50,6 +51,7 @@ class Bootstrap
         new Cart();
         new Order();
         new Checkout();
+        new Log();
         new \CaterWaiter\Module\WooCommerce\Order();
     }
 

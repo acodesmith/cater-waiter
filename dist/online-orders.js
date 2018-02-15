@@ -63049,6 +63049,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   /*global cw__config*/
 
   locally_stored_data.labels = cw__config.labels;
+  locally_stored_data.request = cw__config.request;
   locally_stored_data.data = locally_stored_data.data ? locally_stored_data.data : {};
   locally_stored_data.data.products = cw__config.data.products;
   locally_stored_data.data.location_posts = cw__config.data.location_posts;
