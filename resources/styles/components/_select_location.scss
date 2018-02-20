@@ -1,0 +1,19 @@
+.cw__locations {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cw__location {
+  padding: 1rem;
+  margin: 1rem;
+
+  //&:nth-child(3n) {
+  //  background: #e3e3e3;
+  //}
+
+  button {
+    font-size: 1.5rem !important;
+    margin-top: 1rem;
+  }
+}
