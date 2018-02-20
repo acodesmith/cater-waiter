@@ -11,7 +11,7 @@ const Location = props => {
     } = props
 
     return (
-        <div className="cw_location">
+        <div className="cw__location">
             <h4>{ title }</h4>
             <p>{ distance }</p>
             { children }

@@ -193,4 +193,16 @@
 .cw__schedule_order button[type='submit'] {
   margin-top: 2rem; }
 
+.cw__locations {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; }
+
+.cw__location {
+  padding: 1rem;
+  margin: 1rem; }
+  .cw__location button {
+    font-size: 1.5rem !important;
+    margin-top: 1rem; }
+
 /*# sourceMappingURL=online-orders.css.map*/
