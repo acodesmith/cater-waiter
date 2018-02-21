@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import _ from 'lodash'
 import { Field, change } from 'redux-form'
 import unescape from 'unescape'
 import { arrayPush, arrayRemoveAll } from 'redux-form'
@@ -9,6 +8,7 @@ import {
     MODE_EDIT
 } from '../../../constansts'
 import {
+    renderSelect,
     renderField,
     required,
     minNumericValueOne
@@ -177,17 +177,18 @@ class ProductRow extends Component
                                 name={ `${items}.${attribute.attribute_slug}` }
                                 id={ attribute.attribute_slug }
                                 validate={[ required ]}
-                                type="select"
-                                component={renderField}
+                                component={renderSelect}
                                 onChange={(e, newValue) => {
                                     this.setVariationId(index, newValue, attribute.attribute_slug)
                                 }}
-                            >
-                                <option value="">Select { attribute.name }</option>
-                                { ! attribute.options ? null : attribute.options.map((option, key) => (
-                                    <option key={key} value={option}>{ unescape( option ) }</option>
-                                )) }
-                            </Field>
+                                placeholder={attribute.name}
+                                options={attribute.options.map((option, key) => {
+                                    return {
+                                        value: option,
+                                        label: unescape( option )
+                                    }
+                                })}
+                            />
                         </div>
                     ))}
                     { index < 1 && mode !== MODE_EDIT ? null : <button className="option col-md-3" onClick={event => {
