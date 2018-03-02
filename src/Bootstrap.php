@@ -13,8 +13,9 @@ use CaterWaiter\Admin\WC_ProductDataTabs;
 use CaterWaiter\FrontEnd\OnlineOrders;
 use CaterWaiter\API\Bootstrap as BootstrapAPI;
 use CaterWaiter\Module\WooCommerce\Checkout;
-use CaterWaiter\Module\WooCommerce\FrontEnd;
+use CaterWaiter\Module\WooCommerce\Email;
 use CaterWaiter\Module\WooCommerce\ProductTaxonomy;
+use CaterWaiter\Module\WooCommerce\Order as WooCommerceOrder;
 
 /**
  * Class Bootstrap
@@ -42,17 +43,25 @@ class Bootstrap
             return;
         }
 
-        new WC_PluginSettings();
-        new WC_ProductDataTabs();
+        // Admin
+	    new Cart();
+	    new Locations();
+	    new Log();
+	    new Order();
+	    new WC_PluginSettings();
+	    new WC_ProductDataTabs();
+
+        // Front End
         new OnlineOrders();
-        new Locations();
+
+        // API
         new BootstrapAPI();
-        new ProductTaxonomy();
-        new Cart();
-        new Order();
-        new Checkout();
-        new Log();
-        new \CaterWaiter\Module\WooCommerce\Order();
+
+        // Modules
+	    new Checkout();
+	    new Email();
+	    new ProductTaxonomy();
+        new WooCommerceOrder();
     }
 
 	/**

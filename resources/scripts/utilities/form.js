@@ -3,7 +3,6 @@ import Select from 'react-select'
 
 export const renderField = ({ input, label, type, placeholder, hint, className = '', children, attr = {}, meta: { touched, error, warning } }) => (
     <div className={`cw__form_field ${className}`}>
-        {console.log("input value", input.value)}
         { ! label ? null : <label>{label}</label> }
         {(()=>{
             switch( type ) {

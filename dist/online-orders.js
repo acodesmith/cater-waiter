@@ -72622,7 +72622,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         return _react2.default.createElement(
             'div',
             { className: 'cw__form_field ' + className },
-            console.log("input value", input.value),
             !label ? null : _react2.default.createElement(
                 'label',
                 null,
