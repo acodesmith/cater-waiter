@@ -31,7 +31,6 @@ const PickupLocation = props =>
     if( ! order_location )
         return null
 
-
     const location = getLocationPostById( order_location.id, location_posts )
 
     const {
