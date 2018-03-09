@@ -23,7 +23,7 @@ let locally_stored_data = Object.assign({}, cw__config, retrieve(LOCAL_STORAGE_K
 locally_stored_data.labels                      = cw__config.labels
 locally_stored_data.request                     = cw__config.request
 locally_stored_data.data                        = locally_stored_data.data ? locally_stored_data.data : {}
-locally_stored_data.data.locations              = cw__config.data.locations
+//locally_stored_data.data.locations              = cw__config.data.locations
 locally_stored_data.data.products               = cw__config.data.products
 locally_stored_data.data.location_posts         = cw__config.data.location_posts
 locally_stored_data.data.grouped_products       = cw__config.data.grouped_products
@@ -44,7 +44,7 @@ locally_stored_data.data.modal_loading = false
 const { order_location } = locally_stored_data.order
     , { locations } = cw__config.data
 
-if( order_location ) {
+if( order_location && locations.length ) {
     const location = getLocationPostById( order_location.id, locations )
 
     /**

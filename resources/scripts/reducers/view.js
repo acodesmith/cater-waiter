@@ -1,8 +1,9 @@
 import {
     SET_CURRENT_SCREEN,
     BACK_TO_PREVIOUS_SCREEN,
-    JUMP_TO_VIEW
-} from '../constansts/view'
+    JUMP_TO_VIEW,
+    VIEW_SELECT_ORDER_TYPE
+} from '../constansts/'
 
 const view = (state, action) => {
 
@@ -26,7 +27,7 @@ const view = (state, action) => {
             state.history.pop()
 
             return Object.assign({}, state, {
-                current: current,
+                current: current ? current : VIEW_SELECT_ORDER_TYPE,
                 history: state.history
             })
             break;

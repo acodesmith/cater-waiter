@@ -7,7 +7,8 @@ import {
     DeliveryAddress,
     Cart,
     Confirm,
-    Notifications
+    Notifications,
+    ViewError
 } from '../components/'
 import {
     VIEW_SELECT_ORDER_TYPE,
@@ -27,7 +28,7 @@ let Pathway = props =>
             notifications = []
         },
         view: {
-            current
+            current = VIEW_SELECT_ORDER_TYPE
         }
     } = props
 
@@ -57,11 +58,7 @@ let Pathway = props =>
                     case VIEW_CONFIRM:
                         return <Confirm {...props} />
                     default:
-                        return (
-                            <div className="cw__error">
-                                Something has gone wrong! Trying to render view <strong>{ props.view.current }</strong>
-                            </div>
-                        )
+                        return <ViewError {...props} />
                 }
             })()}
         </div>

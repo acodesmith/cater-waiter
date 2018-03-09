@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import { Field, reduxForm, reset } from 'redux-form'
+import { Field, reduxForm } from 'redux-form'
 import moment from 'moment'
 import {
     FORM_SCHEDULE_ORDER,
@@ -9,6 +9,8 @@ import {
 import {
     required,
     renderField,
+    renderDatePicker,
+    renderTimePicker,
     mapValue,
     extractWindowOfTime,
     windowOfTimeError
@@ -26,8 +28,15 @@ import {
  */
 const hoursInAdvanced = (hours, today, value, error) =>
 {
-    const minTime = moment( `${today} 00:00:00` ).add(hours, 'hours')
-        , currentTime = moment( `${value} 00:00:01` )
+    // momentjs object returned from the component
+    if( typeof value === 'object' )
+        value = value.format("MM-DD-YYYY")
+
+    // string returned from the redux state
+    value = moment( value, "MM-DD-YYYY").format("YYYY-MM-DD")
+    
+    const minTime = moment( `${today} 00:00:00`, 'YYYY-MM-DD HH:mm:ss' ).add(hours, 'hours')
+        , currentTime = moment( `${value} 00:00:01`, 'YYYY-MM-DD HH:mm:ss' )
 
     return ! currentTime.isAfter( minTime ) ? error : undefined
 }
@@ -99,11 +108,11 @@ class FormScheduleOrder extends Component
                 <Field
                     name="order_date"
                     placeholder={label_date_prompt}
-                    component={renderField}
+                    component={renderDatePicker}
                     type="date"
                     className="cw__order_schedule_field cw__order_schedule_date"
                     label={ order_type === ORDER_TYPE_PICKUP ? pickup_date_label : delivery_date_label }
-                    hint="Format Example: 01/01/2020"
+                    hint="Format Example: 01-31-2020"
                     validate={[ required, function(value) {
                         return hoursInAdvanced(
                             hours_in_advance,
@@ -120,7 +129,7 @@ class FormScheduleOrder extends Component
                     type="time"
                     className="cw__order_schedule_field cw__order_schedule_time_of_day"
                     label={ order_type === ORDER_TYPE_PICKUP ? pickup_time_of_day_label : delivery_time_of_day_label }
-                    hint="Format Example: 10:00 AM"
+                    hint="Format Example: 11:00 AM"
                     validate={[ required, function(value) {
                         return windowOfTime(
                             minOrderTime,

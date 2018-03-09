@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { ajax } from "../../utilities/request"
+import { ClearData } from './clear_data'
 
 const logErrorToMyService = (error, info) => {
 
-    ajax('remove_cart_item', { error: error, info: info }, 'GET', true, true)
+    // @todo
+    // ajax('log_error', { error: error, info: info }, 'GET', true, true)
 }
 
 class ErrorBoundary extends Component {
@@ -22,11 +23,11 @@ class ErrorBoundary extends Component {
     }
 
     render() {
-        if (this.state.hasError) {
-            // You can render any custom fallback UI
-            return <h1>Something went wrong. Please refresh the page and try again.</h1>;
-        }
+        if (this.state.hasError)
+            return <ClearData labels={this.props.labels} />
+
         return this.props.children;
     }
 }
 
+export { ErrorBoundary }

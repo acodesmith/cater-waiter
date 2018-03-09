@@ -29,7 +29,7 @@
     "numeral": "^2.0.6",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "redux-devtools": "^3.4.0",
@@ -43,6 +43,8 @@
     "webpack-dev-server": "^2.9.1"
   },
   "dependencies": {
+    "rc-time-picker": "^3.3.1",
+    "react-datepicker": "^1.2.2",
     "react-select": "^1.2.1"
   }
 }

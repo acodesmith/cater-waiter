@@ -1,5 +1,16 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import Select from 'react-select'
+import DatePicker from 'react-datepicker'
+import TimePicker from 'rc-time-picker'
+import moment from 'moment'
+
+const FieldMeta = ({ hint, touched, error, warning }) => (
+    <Fragment>
+        { !hint ? null : <span className='cw__field_hint'>{hint}</span> }
+        {touched && ((error && <span className="cw__field_error">{error}</span>)
+        || (warning && <span className="cw__field_warning">{warning}</span>))}
+    </Fragment>
+)
 
 export const renderField = ({ input, label, type, placeholder, hint, className = '', children, attr = {}, meta: { touched, error, warning } }) => (
     <div className={`cw__form_field ${className}`}>
@@ -16,9 +27,7 @@ export const renderField = ({ input, label, type, placeholder, hint, className =
                     return <input {...input} {...attr} placeholder={placeholder} type={type} />
             }
         })()}
-        { !hint ? null : <span className='cw__field_hint'>{hint}</span> }
-        {touched && ((error && <span className="cw__field_error">{error}</span>)
-            || (warning && <span className="cw__field_warning">{warning}</span>))}
+        <FieldMeta hint={hint} touched={touched} error={error} warning={warning} />
     </div>
 )
 
@@ -38,9 +47,42 @@ export const renderSelect = ({input, label, options, name, id, className, hint, 
                 onChange={value => onChange(value.value)}
                 onBlur={value => onBlur(value.value)}
             />
-            { !hint ? null : <span className='cw__field_hint'>{hint}</span> }
-            {touched && ((error && <span className="cw__field_error">{error}</span>)
-                || (warning && <span className="cw__field_warning">{warning}</span>))}
+            <FieldMeta hint={hint} touched={touched} error={error} warning={warning} />
+        </div>
+    )
+}
+
+export const renderDatePicker = ({input, placeholder, defaultValue, hint, meta: {touched, error, warning} }) => {
+
+    if( typeof input.value === 'object' )
+        input.value = input.value.format("MM-DD-YYYY");
+
+    return (
+        <div>
+            <DatePicker {...input} dateForm="MM-DD-YYYY" selected={input.value ? moment(input.value, "MM-DD-YYYY") : null} />
+            <FieldMeta hint={hint} touched={touched} error={error} warning={warning} />
+        </div>
+    )
+}
+
+export const renderTimePicker = ({input, placeholder, defaultValue, hint, meta: {touched, error, warning} }) => {
+
+    console.log("before input.value",input.value);
+    if( typeof input.value !== 'object' )
+        input.value = moment(input.value)
+
+    // delete input.value
+    console.log("after input.value",input.value);
+    return (
+        <div>
+            <TimePicker
+                {...input}
+                dateForm="MM-DD-YYYY"
+                showSecond={false}
+                format={'hh:mm a'}
+                //selected={input.value ? moment(input.value, "MM-DD-YYYY") : null}
+            />
+            <FieldMeta hint={hint} touched={touched} error={error} warning={warning} />
         </div>
     )
 }

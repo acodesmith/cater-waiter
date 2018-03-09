@@ -6,6 +6,7 @@ import {Provider} from 'react-redux'
 import { store } from "./store"
 import { set_tax_session } from "../utilities/taxes"
 import App from './app'
+import { ErrorBoundary } from './components'
 
 const state = store.getState()
 
@@ -21,7 +22,9 @@ if( order_location )
 const runApp = function () {
     window.app = render(
         <Provider store={store}>
-            <App/>
+            <ErrorBoundary labels={state.labels}>
+                <App/>
+            </ErrorBoundary>
         </Provider>,
         document.getElementById('cater_waiter__react_base')
     )

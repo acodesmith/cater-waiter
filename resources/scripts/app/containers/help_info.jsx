@@ -1,19 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Modal } from '../components/'
-import { clear } from '../../utilities/local_storage'
+import { clearData } from '../../utilities/'
 import { Button } from "../elements/button"
-import {
-    hideHelpInfo,
-    LOCAL_STORAGE_KEY
-} from "../../constansts/"
+import { hideHelpInfo } from "../../constansts/"
+import { ClearData } from '../components'
 
-const clearData = () => {
-    clear( LOCAL_STORAGE_KEY )
-    window.location.reload()
-}
 
-let HelpInfo = ({ dispatch, data: { help_info: display_help_info }, labels: { need_help, need_help_clear_data }, settings: { help_info: help_info_settings } }) => {
+let HelpInfo = ({ dispatch, data: { help_info: display_help_info }, labels, settings: { help_info: help_info_settings } }) => {
+
+    const { need_help } = labels
+
     return !display_help_info ? null : (
         <div className="cw__help_info">
             <Modal
@@ -27,16 +24,7 @@ let HelpInfo = ({ dispatch, data: { help_info: display_help_info }, labels: { ne
                     <p dangerouslySetInnerHTML={{ __html: help_info_settings }}></p>
                 </div>
                 <hr/>
-                <div className="cw__help_info_clear_data">
-                    <p dangerouslySetInnerHTML={{ __html: need_help_clear_data }}></p>
-                    <Button
-                        className='cw__clear_data'
-                        onClick={event => {
-                            event.preventDefault()
-                            clearData();
-                        }}
-                    >Clear Data</Button>
-                </div>
+                <ClearData labels={labels} />
             </Modal>
         </div>
     )
