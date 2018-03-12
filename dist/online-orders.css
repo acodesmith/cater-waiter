@@ -942,6 +942,12 @@ li.rc-time-picker-panel-select-option-disabled:hover {
     padding: 0.75rem;
     width: 100%; }
 
+.cw__product_row {
+  margin-bottom: 2rem; }
+
+.cw__product_image img {
+  width: 100%; }
+
 #cater_waiter__react_base .cw__order_details button.cw__help_info_trigger {
   float: right;
   height: 30px;

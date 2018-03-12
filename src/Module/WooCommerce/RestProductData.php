@@ -37,6 +37,7 @@ class RestProductData extends \WC_REST_Products_Controller
             'images'                => $this->get( 'get_images', [ $product, 'tag' ] ),
             'attributes'            => $this->get( 'get_attributes', [ $product, 'tag' ] ),
             'default_attributes'    => $this->get( 'get_default_attributes', [ $product, 'tag' ] ),
+            'images'                => $this->get( 'get_images', [ $product ] ),
             'variations'            => $variable_product->get_available_variations(),
             'grouped_products'      => array(),
             'menu_order'            => $product->get_menu_order( $context ),

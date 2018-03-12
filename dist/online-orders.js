@@ -107324,30 +107324,45 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var dispatch = props.dispatch,
             product = props.product,
             add_to_cart_title = props.labels.add_to_cart_title;
-        var _product_custom_price_label = product.meta_data._product_custom_price_label;
+        var _product_custom_price_label = product.meta_data._product_custom_price_label,
+            _product$images = product.images,
+            images = _product$images === undefined ? [] : _product$images;
 
 
         return _react2.default.createElement(
             'div',
-            { className: 'col-sm-12 col-md-6' },
+            { className: 'row cw__product_row' },
+            images.length && _react2.default.createElement(
+                'div',
+                { className: 'col-sm-12 col-md-6' },
+                _react2.default.createElement(
+                    'figure',
+                    { className: 'cw__product_image' },
+                    _react2.default.createElement('img', { src: images[0].src })
+                )
+            ),
             _react2.default.createElement(
                 'div',
-                { key: product.id, className: 'cw__product' },
+                { className: 'col-sm-12 col-md-6' },
                 _react2.default.createElement(
-                    'h4',
-                    null,
-                    product.name,
-                    ' ',
-                    getProductPrice(product, _product_custom_price_label ? _product_custom_price_label.value : null)
-                ),
-                _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: product.description } }),
-                _react2.default.createElement(
-                    _button.Button,
-                    { onClick: function onClick(event) {
-                            event.preventDefault();
-                            dispatch((0, _constansts.showItemOptions)(product.id));
-                        } },
-                    add_to_cart_title
+                    'div',
+                    { key: product.id, className: 'cw__product' },
+                    _react2.default.createElement(
+                        'h4',
+                        null,
+                        product.name,
+                        ' ',
+                        getProductPrice(product, _product_custom_price_label ? _product_custom_price_label.value : null)
+                    ),
+                    _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: product.description } }),
+                    _react2.default.createElement(
+                        _button.Button,
+                        { onClick: function onClick(event) {
+                                event.preventDefault();
+                                dispatch((0, _constansts.showItemOptions)(product.id));
+                            } },
+                        add_to_cart_title
+                    )
                 )
             )
         );

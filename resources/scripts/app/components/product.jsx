@@ -25,18 +25,28 @@ const Product = props => {
     const {
         meta_data: {
             _product_custom_price_label
-        }
+        },
+        images = []
     } = product
     
     return (
-        <div className="col-sm-12 col-md-6">
-            <div key={product.id}  className="cw__product">
-                <h4>{product.name} { getProductPrice(product, _product_custom_price_label ? _product_custom_price_label.value : null) }</h4>
-                <div dangerouslySetInnerHTML={{__html: product.description}}></div>
-                <Button onClick={event => {
-                    event.preventDefault()
-                    dispatch( showItemOptions( product.id ) )
-                }}>{ add_to_cart_title }</Button>
+        <div className="row cw__product_row">
+            {images.length && (
+                <div className="col-sm-12 col-md-6">
+                    <figure className="cw__product_image">
+                        <img src={images[0].src} />
+                    </figure>
+                </div>
+            )}
+            <div className="col-sm-12 col-md-6">
+                <div key={product.id}  className="cw__product">
+                    <h4>{product.name} { getProductPrice(product, _product_custom_price_label ? _product_custom_price_label.value : null) }</h4>
+                    <div dangerouslySetInnerHTML={{__html: product.description}}></div>
+                    <Button onClick={event => {
+                        event.preventDefault()
+                        dispatch( showItemOptions( product.id ) )
+                    }}>{ add_to_cart_title }</Button>
+                </div>
             </div>
         </div>
     )
