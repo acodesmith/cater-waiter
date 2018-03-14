@@ -14,6 +14,9 @@ class Cart
         add_action( 'wp_ajax_cart', [ $this, 'cart' ] );
         add_action( 'wp_ajax_nopriv_cart', [ $this, 'cart' ] );
 
+        add_action( 'wp_ajax_clear_cart', [ $this, 'clear_cart' ] );
+        add_action( 'wp_ajax_nopriv_clear_cart', [ $this, 'clear_cart' ] );
+
         add_action( 'wp_ajax_remove_grouped_product', [ $this, 'remove_grouped_product' ] );
         add_action( 'wp_ajax_nopriv_remove_grouped_product', [ $this, 'remove_grouped_product' ] );
 
@@ -66,6 +69,17 @@ class Cart
 		    'message' => $message
 	    ]);
     	wp_die();
+    }
+
+    public function clear_cart()
+    {
+	     global $woocommerce;
+	     $woocommerce->cart->empty_cart();
+
+	    wp_send_json([
+		    'success' => true,
+	    ]);
+	    wp_die();
     }
 
 	/**

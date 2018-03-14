@@ -46,6 +46,14 @@ export const getCart = () =>
 }
 
 /**
+ * Clear the cart via a Woocommerce call on the server.
+ */
+export const clearCart = () =>
+{
+    return ajax('clear_cart', {}, 'GET', false, true)
+}
+
+/**
  * Remove all cart items based on the product id
  * @param product_id
  */

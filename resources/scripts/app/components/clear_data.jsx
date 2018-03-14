@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { clearData } from '../../utilities'
+import { clearData, clearCart } from '../../utilities'
 import { Button } from '../elements/button_no_event'
 
 const ClearData = ({ labels: { need_help_clear_data } }) => (
@@ -9,7 +9,9 @@ const ClearData = ({ labels: { need_help_clear_data } }) => (
         <Button
             className='cw__clear_data'
             onClick={() => {
-                clearData();
+                clearCart().then(() => {
+                    clearData();
+                });
             }}
         >Clear Data</Button>
     </div>

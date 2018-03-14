@@ -8,9 +8,6 @@ import {
 import {
     showGroupedItemsOptions
 } from '../../../constansts'
-import {
-    removeGroupedProduct
-} from '../../../thunks'
 
 const MenuItems = props => {
 
@@ -24,10 +21,6 @@ const MenuItems = props => {
             subtotal: subtotal_label,
             tax: tax_label,
             total: total_label,
-            remove,
-            removing_item_from_cart,
-            updating_cart,
-            removing_item_from_cart_confirm
         },
         data: {
             products
@@ -57,33 +50,21 @@ const MenuItems = props => {
     return (
         <div className="cw__menu_items cw__menu_items_mini">
             <h3>Menu Items</h3>
-            { grouped_items.map((group, key) => {
-
-                return (
-                    <div className="cw__menu_item" key={key}>
-                        <h4>{ group.product.name }</h4>
-                        <div className="cw__menu_item_quantity cw__menu_item_line">
-                            <span>{ quantity }:</span>
-                            <span>{ group.quantity }</span>
-                        </div>
-                        <div className="cw__menu_item_line_total cw__menu_item_line">
-                            <span>{ item_total }:</span>
-                            <span>{ formatCurrency(group.line_total, currency) }</span>
-                        </div>
-                        <Button className="btn btn-xs btn-default" onClick={() => dispatch( showGroupedItemsOptions( group.product.id ) )}>
-                            { _.upperFirst(update) }</Button>
-                        {/*<Button className="btn btn-xs btn-danger" onClick={() => {*/}
-
-                            {/*const confirm_action = confirm( removing_item_from_cart_confirm )*/}
-
-                            {/*if( confirm_action )*/}
-                                {/*dispatch( removeGroupedProduct( group.product.id, removing_item_from_cart, updating_cart ) )*/}
-
-                            {/*}}>{ _.upperFirst(remove) }*/}
-                        {/*</Button>*/}
+            { grouped_items.map((group, key) => (
+                <div className="cw__menu_item" key={key}>
+                    <h4>{ group.product.name }</h4>
+                    <div className="cw__menu_item_quantity cw__menu_item_line">
+                        <span>{ quantity }:</span>
+                        <span>{ group.quantity }</span>
                     </div>
-                )
-            }) }
+                    <div className="cw__menu_item_line_total cw__menu_item_line">
+                        <span>{ item_total }:</span>
+                        <span>{ formatCurrency(group.line_total, currency) }</span>
+                    </div>
+                    <Button className="btn btn-xs btn-default" onClick={() => dispatch( showGroupedItemsOptions( group.product.id ) )}>
+                        { _.upperFirst(update) }</Button>
+                </div>
+            )) }
             <hr/>
             <div className="cw__cart_subtotal">
                 <span>{ subtotal_label }:</span>
