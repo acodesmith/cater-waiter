@@ -20,18 +20,22 @@ export const groupCartItemsByProductId = (items, products) =>
 
     items.forEach(item => {
 
-        if( typeof groups[ item.product_id ] === 'undefined' ) {
-            groups[ item.product_id ] = {
-                product: getProductById( item.product_id, products ),
-                quantity: 0,
-                line_total: 0,
-                items: []
-            }
-        }
+        const product = getProductById( item.product_id, products );
 
-        groups[ item.product_id ].items.push( item )
-        groups[ item.product_id ].quantity +=  Number( item.quantity )
-        groups[ item.product_id ].line_total +=  item.line_total
+        if(product) {
+            if( typeof groups[ item.product_id ] === 'undefined' ) {
+                groups[ item.product_id ] = {
+                    product: product,
+                    quantity: 0,
+                    line_total: 0,
+                    items: []
+                }
+            }
+
+            groups[ item.product_id ].items.push( item )
+            groups[ item.product_id ].quantity +=  Number( item.quantity )
+            groups[ item.product_id ].line_total +=  item.line_total
+        }
     })
 
     return groups

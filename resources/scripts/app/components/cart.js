@@ -5,40 +5,38 @@ import {
     UpdateGroupedProducts
 } from './index'
 
-const Cart = props => {
-
-    const {
-        dispatch,
-        data: {
-            grouped_products,
-            catering_categories,
-            show_product_options,
-            update_grouped_products
-        }
-    } = props
-
-    return (
-        <div className="cw__cart">
-            {!update_grouped_products ? null : <UpdateGroupedProducts {...props}/>}
-            {!show_product_options ? null : <ProductOptions {...props} />}
-            {!catering_categories.length ? null : catering_categories.map(category => {
-                return (
-                    <div key={category.term_id} className={`cw__category cw__category_${category.slug} clearfix`}>
-                        <h3>{category.name}</h3>
-                        {!Object.keys(grouped_products).length || !grouped_products[category.slug] ? null
-                            : grouped_products[category.slug].map(product => {
-                                return <Product
-                                    key={product.id}
-                                    product={product}
-                                    dispatch={dispatch}
-                                    labels={props.labels}
-                                />
-                            })}
-                    </div>
-                )
-            })}
-        </div>
-    )
-}
+const Cart = ({
+  dispatch,
+  labels,
+  data: {
+      grouped_products = [],
+      catering_categories = [],
+      show_product_options,
+      update_grouped_products
+  }
+}) => (
+    <div className="cw__cart">
+        {console.log("grouped_products", {grouped_products})}
+        {console.log("catering_categories", {catering_categories})}
+        {!update_grouped_products ? null : <UpdateGroupedProducts {...props}/>}
+        {!show_product_options ? null : <ProductOptions {...props} />}
+        {catering_categories && catering_categories.length && catering_categories.map(category => (
+            <div key={category.term_id} className={`cw__category cw__category_${category.slug} clearfix`}>
+                <h3>{category.name}</h3>
+                {Object.keys(grouped_products).length
+                    && grouped_products[category.slug] &&
+                    grouped_products[category.slug].map(product => (
+                        <Product
+                            key={product.id}
+                            product={product}
+                            dispatch={dispatch}
+                            labels={labels}
+                        />
+                    ))
+                }
+            </div>
+        ))}
+    </div>
+)
 
 export { Cart }

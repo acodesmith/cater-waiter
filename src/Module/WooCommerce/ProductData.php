@@ -15,6 +15,7 @@ class ProductData
 
 		$query = new \WP_Query([
 			'post_type' => 'product',
+			'posts_per_page' => -1,
 			'tax_query' => [
 				[
 					'taxonomy' => ProductTaxonomy::CATERING_CATEGORY_NAMESPACE,
@@ -36,7 +37,7 @@ class ProductData
 
 		$products = array_map( function($product) use($rest_product_data) {
 			return $rest_product_data->data( $product );
-		}, (new \WC_Product_Query( [ 'include' => $ids ] ))->get_products() );
+		}, (new \WC_Product_Query( [ 'include' => $ids, 'limit' => -1 ] ))->get_products() );
 
 		$grouped_products = [];
 
