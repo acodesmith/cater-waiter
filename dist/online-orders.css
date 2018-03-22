@@ -794,7 +794,8 @@ li.rc-time-picker-panel-select-option-disabled:hover {
   text-align: left; }
 
 #cater_waiter__react_base .modal {
-  background: rgba(0, 0, 0, 0.8); }
+  background: rgba(0, 0, 0, 0.8);
+  overflow: auto !important; }
   #cater_waiter__react_base .modal .modal-dialog {
     margin-top: 10vh; }
 

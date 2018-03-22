@@ -1,5 +1,6 @@
 #cater_waiter__react_base .modal {
   background: rgba(0, 0, 0, 0.8);
+  overflow: auto !important;
 
   .modal-dialog {
     margin-top: 10vh;
