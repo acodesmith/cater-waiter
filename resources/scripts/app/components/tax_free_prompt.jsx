@@ -13,7 +13,7 @@ class TaxFreePrompt extends Component {
             , { active } = this.state
         
         return (
-            <div className="cw__tax_exempt_prompt">
+            <div className="cw__tax_exempt_prompt clearfix">
                 <label htmlFor="tax-free-prompt">
                     {label}
                     <input 

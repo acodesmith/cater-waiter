@@ -39,3 +39,25 @@
     padding-right: 0;
   }
 }
+
+.cw__tax_exempt_prompt {
+
+  label {
+    float: left;
+    margin-right: 2rem;
+  }
+
+  input[type=checkbox] {
+    margin-left: 1rem;
+  }
+}
+
+.cw__tax_exempt_prompt_content {
+  float: left;
+  max-width: 500px;
+}
+
+.cw__button_continue_shopping {
+  color: #fff;
+  margin-left: 2rem;
+}

@@ -875,6 +875,21 @@ li.rc-time-picker-panel-select-option-disabled:hover {
 .cw__cart_total .row .col-sm-6:nth-child(2) {
   padding-right: 0; }
 
+.cw__tax_exempt_prompt label {
+  float: left;
+  margin-right: 2rem; }
+
+.cw__tax_exempt_prompt input[type=checkbox] {
+  margin-left: 1rem; }
+
+.cw__tax_exempt_prompt_content {
+  float: left;
+  max-width: 500px; }
+
+.cw__button_continue_shopping {
+  color: #fff;
+  margin-left: 2rem; }
+
 .cw__delivery_address {
   max-width: 600px;
   margin: 0.5rem auto 1rem;
@@ -1046,5 +1061,8 @@ li.rc-time-picker-panel-select-option-disabled:hover {
   .cw__location button {
     font-size: 1.5rem !important;
     margin-top: 1rem; }
+
+.cw__select_location form input[name="zip_code"] {
+  padding: 1.4rem; }
 
 /*# sourceMappingURL=online-orders.css.map*/

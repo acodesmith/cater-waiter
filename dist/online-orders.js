@@ -105351,6 +105351,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 _react2.default.createElement(
                     'div',
                     { className: 'row' },
+                    _react2.default.createElement(
+                        _containers.BackButton,
+                        null,
+                        'Back'
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'row' },
                     _react2.default.createElement(_containers.Pathway, null),
                     _react2.default.createElement(
                         'div',
@@ -105452,26 +105461,28 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(16), __webpack_require__(5), __webpack_require__(46)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(116), __webpack_require__(2), __webpack_require__(16), __webpack_require__(33), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('react-redux'), require('../../constansts/'), require('../elements/button'));
+        factory(exports, require('babel-runtime/helpers/defineProperty'), require('react'), require('react-redux'), require('../elements/button_no_event'), require('../../constansts/'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.reactRedux, global.constansts, global.button);
+        factory(mod.exports, global.defineProperty, global.react, global.reactRedux, global.button_no_event, global.constansts);
         global.back_button = mod.exports;
     }
-})(this, function (exports, _react, _reactRedux, _constansts, _button) {
+})(this, function (exports, _defineProperty2, _react, _reactRedux, _button_no_event, _constansts) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
     exports.BackButton = undefined;
+
+    var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 
     var _react2 = _interopRequireDefault(_react);
 
@@ -105481,28 +105492,63 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         };
     }
 
-    var BackButton = function BackButton(props) {
-        var display = props.display;
+    var displayMap = (0, _defineProperty3.default)({}, _constansts.VIEW_CONFIRM, function (label, action) {
+        return _react2.default.createElement(
+            _button_no_event.Button,
+            {
+                className: 'cw__button_continue_shopping',
+                onClick: action
+            },
+            label
+        );
+    });
+
+    var actionMap = (0, _defineProperty3.default)({}, _constansts.VIEW_CONFIRM, function (dispatch) {
+        return function () {
+            dispatch((0, _constansts.backToPreviousScreen)());
+        };
+    });
+
+    var labelMap = (0, _defineProperty3.default)({}, _constansts.VIEW_CONFIRM, function (labels) {
+        return labels.continue_shopping;
+    });
+
+    var renderButtonBasedOnView = function renderButtonBasedOnView(current, dispatch, labels) {
+        return displayMap[current] && actionMap[current] && labelMap[current] && displayMap[current](labelMap[current](labels), actionMap[current](dispatch));
+    };
+
+    var BackButton = function BackButton(_ref) {
+        var display = _ref.display,
+            dispatch = _ref.dispatch,
+            children = _ref.children,
+            current = _ref.current,
+            labels = _ref.labels;
 
 
         if (!display) return null;
 
         return _react2.default.createElement(
-            _button.Button,
-            {
-                className: 'cw__button_back',
-                onClick: function onClick(event) {
-                    event.preventDefault();
-                    props.dispatch((0, _constansts.backToPreviousScreen)());
-                }
-            },
-            props.children
+            _react2.default.Fragment,
+            null,
+            _react2.default.createElement(
+                _button_no_event.Button,
+                {
+                    className: 'cw__button_back',
+                    onClick: function onClick() {
+                        dispatch((0, _constansts.backToPreviousScreen)(current, labels));
+                    }
+                },
+                children
+            ),
+            renderButtonBasedOnView(current, dispatch, labels)
         );
     };
 
     exports.BackButton = BackButton = (0, _reactRedux.connect)(function (state) {
         return {
-            display: state.view.history.length
+            display: state.view.history.length,
+            current: state.view.current,
+            labels: state.labels
         };
     })(BackButton);
 
@@ -106746,7 +106792,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
                 return _react2.default.createElement(
                     'div',
-                    { className: 'cw__tax_exempt_prompt' },
+                    { className: 'cw__tax_exempt_prompt clearfix' },
                     _react2.default.createElement(
                         'label',
                         { htmlFor: 'tax-free-prompt' },

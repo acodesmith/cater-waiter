@@ -20,6 +20,7 @@ return apply_filters( 'cater_waiter_filter_labels', [
 	'change_pickup_location'            => __( 'Change Pickup Location', 'cater_waiter' ),
 	'change_pickup_time'                => __( 'Change Pickup Time', 'cater_waiter' ),
 	'confirm_order_title'               => __( 'Confirm Order', 'cater_waiter' ),
+	'continue_shopping'                 => __( 'Continue Shopping', 'cater_waiter' ),
 	'continue_to_checkout_button'       => __( 'Continue To Checkout', 'cater_waiter' ),
 	'currency'                          => __( '$', 'cater_waiter' ),
 	'delivery_address_title'            => __( 'Enter Your Delivery Address', 'cater_waiter' ),

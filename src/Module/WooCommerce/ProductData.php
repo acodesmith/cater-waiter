@@ -22,7 +22,9 @@ class ProductData
 					'terms' => $terms_in_taxonomy,
 					'operator' => 'IN',
 				]
-			]
+			],
+			'orderby' => 'menu_order',
+			'order' => 'DESC'
 		]);
 
 		if (!$query->have_posts()) {
@@ -42,6 +44,7 @@ class ProductData
 		$grouped_products = [];
 
 		foreach ($products as $product) {
+
 			if( ! empty( $product['catering_categories'] ) ) {
 
 				$first_category = $product['catering_categories'][0];
@@ -50,8 +53,15 @@ class ProductData
 					$grouped_products[ $first_category['slug'] ] = [];
 
 				$grouped_products[ $first_category['slug'] ][] = $product;
+
+				usort($grouped_products[ $first_category['slug'] ], function ($a, $b) {
+					return $a['menu_order'] - $b['menu_order'];
+				});
+
+				$grouped_products[ $first_category['slug'] ] = array_reverse($grouped_products[ $first_category['slug'] ]);
 			}
 		}
+
 
 		return [
 			'grouped_products' => $grouped_products,

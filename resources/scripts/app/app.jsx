@@ -14,6 +14,9 @@ const App = () => {
             <HelpInfo/>
             <div className="container-fluid">
                 <div className="row">
+                    <BackButton>Back</BackButton>
+                </div>
+                <div className="row">
                     <Pathway/>
                     <div className="col-md-4">
                         <OrderDetails/>
