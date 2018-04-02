@@ -166,12 +166,12 @@ class ProductRow extends Component
                         name={`${items}.quantity`}
                         label="Quantity"
                         type="number"
-                        className="col-md-3"
+                        className="col-md-3 cw__input_quantity"
                         validate={[ required, minNumericValueOne ]}
                         attr={this.quantityAttrs()}
                         component={renderField} />
                     { !variation ? null : variation.attributes.map(attribute => (
-                        <div className="option col-md-3" key={ attribute.attribute_slug }>
+                        <div className="cw__input_dropdown option col-md-3" key={ attribute.attribute_slug }>
                             <label htmlFor={ attribute.attribute_slug }>{ attribute.name }</label>
                             <Field
                                 name={ `${items}.${attribute.attribute_slug}` }
@@ -191,17 +191,20 @@ class ProductRow extends Component
                             />
                         </div>
                     ))}
-                    { index < 1 && mode !== MODE_EDIT ? null : <button className="option col-md-3" onClick={event => {
+                    { index < 1 && mode === MODE_EDIT &&
+                    <div className="col-md-3">
+                        <button className="option btn btn-remove" onClick={event => {
 
-                        event.preventDefault()
+                            event.preventDefault()
 
-                        if( ! remove )
-                            fields.remove(index)
-                        else
-                            remove(this.props.items[index], index)
-                    }}>
-                        { remove_label }
-                    </button> }
+                            if( ! remove )
+                                fields.remove(index)
+                            else
+                                remove(this.props.items[index], index)
+                        }}>
+                            { remove_label }
+                        </button>
+                    </div> }
                 </div>
             )
         })

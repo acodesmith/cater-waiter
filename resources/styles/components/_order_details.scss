@@ -6,16 +6,19 @@
     margin: 0;
     max-width: 30px;
   }
+}
 
-  section button {
-    background: #e9e6e6;
-    border-radius: 0;
-    color: gray;
-    display: block;
-    font-size: 1rem;
-    margin-top: 2rem;
-    max-width: 100%;
-    padding: 0.75rem;
-    width: 100%;
-  }
+#cater_waiter__react_base .cw__menu_item button.btn,
+#cater_waiter__react_base .cw__order_details section button {
+  background: #dbd8d8;
+  border: 1px solid black;
+  border-radius: 0;
+  color: black;
+  display: block;
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  max-width: 100%;
+  padding: 0.75rem;
+  text-transform: uppercase;
+  width: 100%;
 }

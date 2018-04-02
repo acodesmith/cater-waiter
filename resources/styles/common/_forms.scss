@@ -1,8 +1,79 @@
 .cw__field_error {
-  background: #ff00001a;
+  background: rgba(255, 0, 0, 0.1);
   color: #6f0e12;
   display: block;
   font-weight: bold;
+  margin: 0.5rem 0 1rem;
   padding: 1rem;
   text-align: left;
+}
+
+.cw__input_quantity {
+  input {
+    max-width: 100%;
+    min-width: 100%;
+  }
+}
+
+.cw__input_quantity,
+.cw__input_dropdown {
+  margin-bottom: 2rem;
+}
+
+.cw__form_field {
+
+  label {
+    display: block;
+  }
+
+  input,
+  .Select-control {
+    box-sizing: border-box;
+    background-color: #f2f2f2;
+    border: none;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.125);
+    color: #43454b;
+    font-weight: 400;
+    font-size: 1.8rem;
+    outline: 0;
+    padding: .6em;
+    -webkit-appearance: none;
+  }
+}
+
+//react-select styles
+.cw__form_field {
+
+  .Select-control {
+    border-radius: 0;
+    padding: 0.75rem 0;
+
+    input {
+      box-shadow: none;
+      margin: 0;
+    }
+  }
+
+  .Select-input {
+    height: auto;
+
+    input {
+      padding: 0.25rem 0;
+    }
+  }
+
+  .Select.is-focused>.Select-control {
+    background-color: #f2f2f2;
+  }
+
+  .Select.has-value.Select--single>.Select-control .Select-value .Select-value-label,
+  .Select.has-value.is-pseudo-focused.Select--single>.Select-control .Select-value .Select-value-label {
+    float: left;
+    margin-top: 0.5rem;
+  }
+
+  .Select--single>.Select-control .Select-value, .Select-placeholder {
+    top:0.5rem;
+  }
+
 }

@@ -1,4 +1,6 @@
 .cw__delivery_address {
+  max-width: 600px;
+  margin: 0.5rem auto 1rem;
   text-align: center;
 }
 
@@ -8,8 +10,6 @@
 }
 
 .cw__delivery_address form .cw__form_field {
-  max-width: 600px;
-  margin: 0.5rem auto 1rem;
 
   input,
   label {

@@ -786,12 +786,60 @@ li.rc-time-picker-panel-select-option-disabled:hover {
   width: 100%; }
 
 .cw__field_error {
-  background: #ff00001a;
+  background: rgba(255, 0, 0, 0.1);
   color: #6f0e12;
   display: block;
   font-weight: bold;
+  margin: 0.5rem 0 1rem;
   padding: 1rem;
   text-align: left; }
+
+.cw__input_quantity input {
+  max-width: 100%;
+  min-width: 100%; }
+
+.cw__input_quantity,
+.cw__input_dropdown {
+  margin-bottom: 2rem; }
+
+.cw__form_field label {
+  display: block; }
+
+.cw__form_field input,
+.cw__form_field .Select-control {
+  box-sizing: border-box;
+  background-color: #f2f2f2;
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.125);
+  color: #43454b;
+  font-weight: 400;
+  font-size: 1.8rem;
+  outline: 0;
+  padding: .6em;
+  -webkit-appearance: none; }
+
+.cw__form_field .Select-control {
+  border-radius: 0;
+  padding: 0.75rem 0; }
+  .cw__form_field .Select-control input {
+    box-shadow: none;
+    margin: 0; }
+
+.cw__form_field .Select-input {
+  height: auto; }
+  .cw__form_field .Select-input input {
+    padding: 0.25rem 0; }
+
+.cw__form_field .Select.is-focused > .Select-control {
+  background-color: #f2f2f2; }
+
+.cw__form_field .Select.has-value.Select--single > .Select-control .Select-value .Select-value-label,
+.cw__form_field .Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
+  float: left;
+  margin-top: 0.5rem; }
+
+.cw__form_field .Select--single > .Select-control .Select-value, .cw__form_field .Select-placeholder {
+  top: 0.5rem; }
 
 #cater_waiter__react_base .modal {
   background: rgba(0, 0, 0, 0.8);
@@ -828,26 +876,27 @@ li.rc-time-picker-panel-select-option-disabled:hover {
   padding-right: 0; }
 
 .cw__delivery_address {
+  max-width: 600px;
+  margin: 0.5rem auto 1rem;
   text-align: center; }
 
 .cw__delivery_outside_of_range {
   max-width: 600px;
   margin: auto; }
 
-.cw__delivery_address form .cw__form_field {
-  max-width: 600px;
-  margin: 0.5rem auto 1rem; }
-  .cw__delivery_address form .cw__form_field input,
-  .cw__delivery_address form .cw__form_field label {
-    float: left;
-    text-align: left;
-    width: 100%; }
-  .cw__delivery_address form .cw__form_field label {
-    padding: 1rem 0.5rem 0.25rem; }
-  .cw__delivery_address form .cw__form_field .cw__field_error {
-    float: left;
-    margin-bottom: 1rem;
-    width: 100%; }
+.cw__delivery_address form .cw__form_field input,
+.cw__delivery_address form .cw__form_field label {
+  float: left;
+  text-align: left;
+  width: 100%; }
+
+.cw__delivery_address form .cw__form_field label {
+  padding: 1rem 0.5rem 0.25rem; }
+
+.cw__delivery_address form .cw__form_field .cw__field_error {
+  float: left;
+  margin-bottom: 1rem;
+  width: 100%; }
 
 .cw__form_field.cw__delivery_address_address_line_two {
   margin-top: 1rem; }
@@ -955,18 +1004,23 @@ li.rc-time-picker-panel-select-option-disabled:hover {
   margin: 0;
   max-width: 30px; }
 
+#cater_waiter__react_base .cw__menu_item button.btn,
 #cater_waiter__react_base .cw__order_details section button {
-  background: #e9e6e6;
+  background: #dbd8d8;
+  border: 1px solid black;
   border-radius: 0;
-  color: gray;
+  color: black;
   display: block;
-  font-size: 1rem;
+  font-size: 1.5rem;
   margin-top: 2rem;
   max-width: 100%;
   padding: 0.75rem;
+  text-transform: uppercase;
   width: 100%; }
 
 .cw__schedule_order {
+  max-width: 500px;
+  margin: auto;
   text-align: center; }
 
 .cw__order_schedule_field {
