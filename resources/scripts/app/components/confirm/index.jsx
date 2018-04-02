@@ -9,39 +9,37 @@ import { TaxFreePrompt } from "../tax_free_prompt"
 import { Totals } from "./totals"
 import { Item } from "./item"
 
-const Confirm = props => {
+const Confirm = ({ labels, dispatch, data, order, settings, ...props }) => {
 
     const {
-        dispatch,
-        labels: {
-            are_you_a_tax_exempt_organization,
-            cart_item,
-            confirm_order_title,
-            continue_to_checkout_button,
-            currency,
-            delivery_minimum_error,
-            item_total,
-            quantity,
-            update
-        },
-        data: {
-            products,
-            update_grouped_products
-        },
-        order: {
-            order_checkout_url,
-            order_cart = {
-                subtotal: 0,
-                tax: [],
-                total: "",
-                items: []
-            }
-        },
-        settings: {
-            delivery_minimum,
-            tax_free_prompt
+        order_checkout_url,
+        order_cart = {
+            subtotal: 0,
+            tax: [],
+            total: "",
+            items: []
         }
-    } = props
+    }= order
+
+    const {
+        are_you_a_tax_exempt_organization,
+        cart_item,
+        confirm_order_title,
+        continue_to_checkout_button,
+        delivery_minimum_error,
+        item_total,
+        quantity,
+    } = labels
+
+    const {
+        products,
+        update_grouped_products
+    } = data
+
+    const {
+        delivery_minimum,
+        tax_free_prompt
+    } = settings
 
     const {
         subtotal,
@@ -74,13 +72,13 @@ const Confirm = props => {
                         key={key}
                         product={getProductById( item.product_id, products )}
                         item={item}
-                        labels={props.labels}
+                        labels={labels}
                         dispatch={dispatch}
                     />
                 )) }
             </div>
             <hr/>
-            <Totals labels={props.labels} order_cart={order_cart} />
+            <Totals labels={labels} order_cart={order_cart} />
             <hr/>
             <TaxFreePrompt
                 label={are_you_a_tax_exempt_organization}

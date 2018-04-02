@@ -43,16 +43,12 @@ let Pathway = props =>
                 switch( current ) {
                     case VIEW_SELECT_ORDER_TYPE:
                         return <SelectOrderType {...props} />
-                        break;
                     case VIEW_SELECT_LOCATION:
                         return <SelectLocation {...props} />
-                        break;
                     case VIEW_DELIVERY_ADDRESS:
                         return <DeliveryAddress {...props} />
-                        break;
                     case VIEW_SCHEDULE_ORDER:
                         return <ScheduleOrder {...props} />
-                        break;
                     case VIEW_CART:
                         return <Cart {...props} />
                     case VIEW_CONFIRM:

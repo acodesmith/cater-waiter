@@ -1,7 +1,7 @@
 /*global cw__config*/
 
 import createStore from '../configs/store'
-import {LOCAL_STORAGE_KEY} from '../constansts/local_storage'
+import { LOCAL_STORAGE_KEY } from '../constansts/local_storage'
 import {
     storeLocal,
     retrieve,

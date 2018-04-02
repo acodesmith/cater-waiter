@@ -58755,7 +58755,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     };
 
     /**
-     * Dispatch a backToPreviewScreen action when user hits browers's back button.
+     * Dispatch a backToPreviewScreen action when user hits browser's back button.
      */
     var watchForBrowserBackButton = exports.watchForBrowserBackButton = function watchForBrowserBackButton(store) {
         window.addEventListener('popstate', function (event) {
@@ -86647,20 +86647,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(23), __webpack_require__(13), __webpack_require__(32), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(23), __webpack_require__(32), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('babel-runtime/helpers/extends'), require('babel-runtime/core-js/object/assign'), require('lodash'), require('../constansts/'));
+        factory(exports, require('babel-runtime/helpers/extends'), require('lodash'), require('../constansts/'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global._extends, global.assign, global.lodash, global.constansts);
+        factory(mod.exports, global._extends, global.lodash, global.constansts);
         global.data = mod.exports;
     }
-})(this, function (exports, _extends2, _assign, _lodash, _constansts) {
+})(this, function (exports, _extends2, _lodash, _constansts) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -86668,8 +86668,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     });
 
     var _extends3 = _interopRequireDefault(_extends2);
-
-    var _assign2 = _interopRequireDefault(_assign);
 
     var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -86679,7 +86677,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         };
     }
 
-    var data = function data(state, action) {
+    var data = function data() {
+        var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        var action = arguments[1];
+
 
         switch (action.type) {
             case _constansts.CLEAR_NOTIFICATION:
@@ -86687,14 +86688,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     notifications = _state$notifications === undefined ? [] : _state$notifications;
 
 
-                return (0, _assign2.default)({}, state, {
+                return (0, _extends3.default)({}, state, {
                     notifications: notifications.filter(function (n) {
                         return n.id === action.data.id;
                     })
                 });
 
             case _constansts.CLEAR_ALL_NOTIFICATIONS:
-                return (0, _assign2.default)({}, state, {
+                return (0, _extends3.default)({}, state, {
                     notifications: []
                 });
 
@@ -86702,37 +86703,36 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
                 state.notifications.push(action.data);
 
-                return (0, _assign2.default)({}, state, {
+                return (0, _extends3.default)({}, state, {
                     notifications: state.notifications
                 });
 
             case _constansts.SET_LOCATIONS:
-                return (0, _assign2.default)({}, state, {
+                return (0, _extends3.default)({}, state, {
                     locations: action.locations
                 });
 
             case _constansts.SET_LOCATION:
-                return (0, _assign2.default)({}, state, {
+                return (0, _extends3.default)({}, state, {
                     location: action.location
                 });
 
             case _constansts.SET_CURRENT_SCREEN:
-                if (typeof action.order_type !== 'undefined') return (0, _assign2.default)({}, state, {
+                if (typeof action.order_type !== 'undefined') return (0, _extends3.default)({}, state, {
                     order_type: action.order_type
                 });
 
+                return state;
             case _constansts.SET_PRODUCTS:
-                return (0, _assign2.default)({}, state, {
-                    products: action.data
-                });
+                return (0, _extends3.default)({}, state, { products: action.data });
 
             case _constansts.SHOW_ITEM_OPTIONS:
-                return (0, _assign2.default)({}, state, {
+                return (0, _extends3.default)({}, state, {
                     show_product_options: action.data
                 });
 
             case _constansts.HIDE_ITEM_OPTIONS:
-                return (0, _assign2.default)({}, state, {
+                return (0, _extends3.default)({}, state, {
                     show_product_options: null
                 });
 
@@ -86742,33 +86742,33 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 });
 
             case _constansts.HIDE_GROUPED_ITEMS_OPTIONS:
-                return (0, _assign2.default)({}, state, {
+                return (0, _extends3.default)({}, state, {
                     update_grouped_products: null
                 });
 
             case _constansts.LOADING_TOGGLE:
-                return (0, _assign2.default)({}, state, {
+                return (0, _extends3.default)({}, state, {
                     loading: action.data !== null ? true : !state.loading,
                     loading_message: action.data
                 });
 
             case _constansts.MODAL_LOADING_TOGGLE:
-                return (0, _assign2.default)({}, state, {
+                return (0, _extends3.default)({}, state, {
                     modal_loading: action.data !== null ? true : !state.modal_loading,
                     modal_loading_message: action.data
                 });
 
             case _constansts.SHOW_HELP_INFO:
-                return (0, _assign2.default)({}, state, {
+                return (0, _extends3.default)({}, state, {
                     help_info: true
                 });
             case _constansts.HIDE_HELP_INFO:
-                return (0, _assign2.default)({}, state, {
+                return (0, _extends3.default)({}, state, {
                     help_info: false
                 });
+            default:
+                return state;
         }
-
-        return (0, _assign2.default)({}, state);
     };
 
     exports.default = data;
@@ -106520,26 +106520,28 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(19), __webpack_require__(33), __webpack_require__(6), __webpack_require__(791), __webpack_require__(792), __webpack_require__(827)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(747), __webpack_require__(2), __webpack_require__(19), __webpack_require__(33), __webpack_require__(6), __webpack_require__(791), __webpack_require__(792), __webpack_require__(827)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('../../components'), require('../../elements/button_no_event'), require('../../../utilities'), require('../tax_free_prompt'), require('./totals'), require('./item'));
+        factory(exports, require('babel-runtime/helpers/objectWithoutProperties'), require('react'), require('../../components'), require('../../elements/button_no_event'), require('../../../utilities'), require('../tax_free_prompt'), require('./totals'), require('./item'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.components, global.button_no_event, global.utilities, global.tax_free_prompt, global.totals, global.item);
+        factory(mod.exports, global.objectWithoutProperties, global.react, global.components, global.button_no_event, global.utilities, global.tax_free_prompt, global.totals, global.item);
         global.index = mod.exports;
     }
-})(this, function (exports, _react, _components, _button_no_event, _utilities, _tax_free_prompt, _totals, _item) {
+})(this, function (exports, _objectWithoutProperties2, _react, _components, _button_no_event, _utilities, _tax_free_prompt, _totals, _item) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
     exports.Confirm = undefined;
+
+    var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
 
     var _react2 = _interopRequireDefault(_react);
 
@@ -106549,33 +106551,32 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         };
     }
 
-    var Confirm = function Confirm(props) {
-        var dispatch = props.dispatch,
-            _props$labels = props.labels,
-            are_you_a_tax_exempt_organization = _props$labels.are_you_a_tax_exempt_organization,
-            cart_item = _props$labels.cart_item,
-            confirm_order_title = _props$labels.confirm_order_title,
-            continue_to_checkout_button = _props$labels.continue_to_checkout_button,
-            currency = _props$labels.currency,
-            delivery_minimum_error = _props$labels.delivery_minimum_error,
-            item_total = _props$labels.item_total,
-            quantity = _props$labels.quantity,
-            update = _props$labels.update,
-            _props$data = props.data,
-            products = _props$data.products,
-            update_grouped_products = _props$data.update_grouped_products,
-            _props$order = props.order,
-            order_checkout_url = _props$order.order_checkout_url,
-            _props$order$order_ca = _props$order.order_cart,
-            order_cart = _props$order$order_ca === undefined ? {
+    var Confirm = function Confirm(_ref) {
+        var labels = _ref.labels,
+            dispatch = _ref.dispatch,
+            data = _ref.data,
+            order = _ref.order,
+            settings = _ref.settings,
+            props = (0, _objectWithoutProperties3.default)(_ref, ['labels', 'dispatch', 'data', 'order', 'settings']);
+        var order_checkout_url = order.order_checkout_url,
+            _order$order_cart = order.order_cart,
+            order_cart = _order$order_cart === undefined ? {
             subtotal: 0,
             tax: [],
             total: "",
             items: []
-        } : _props$order$order_ca,
-            _props$settings = props.settings,
-            delivery_minimum = _props$settings.delivery_minimum,
-            tax_free_prompt = _props$settings.tax_free_prompt;
+        } : _order$order_cart;
+        var are_you_a_tax_exempt_organization = labels.are_you_a_tax_exempt_organization,
+            cart_item = labels.cart_item,
+            confirm_order_title = labels.confirm_order_title,
+            continue_to_checkout_button = labels.continue_to_checkout_button,
+            delivery_minimum_error = labels.delivery_minimum_error,
+            item_total = labels.item_total,
+            quantity = labels.quantity;
+        var products = data.products,
+            update_grouped_products = data.update_grouped_products;
+        var delivery_minimum = settings.delivery_minimum,
+            tax_free_prompt = settings.tax_free_prompt;
         var subtotal = order_cart.subtotal,
             tax = order_cart.tax,
             items = order_cart.items;
@@ -106634,13 +106635,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         key: key,
                         product: (0, _utilities.getProductById)(item.product_id, products),
                         item: item,
-                        labels: props.labels,
+                        labels: labels,
                         dispatch: dispatch
                     });
                 })
             ),
             _react2.default.createElement('hr', null),
-            _react2.default.createElement(_totals.Totals, { labels: props.labels, order_cart: order_cart }),
+            _react2.default.createElement(_totals.Totals, { labels: labels, order_cart: order_cart }),
             _react2.default.createElement('hr', null),
             _react2.default.createElement(_tax_free_prompt.TaxFreePrompt, {
                 label: are_you_a_tax_exempt_organization,
@@ -108781,20 +108782,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(16), __webpack_require__(811), __webpack_require__(46), __webpack_require__(5), __webpack_require__(812)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(16), __webpack_require__(811), __webpack_require__(33), __webpack_require__(5), __webpack_require__(812)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('react-redux'), require('../elements/icon_help'), require('../elements/button'), require('../../constansts/'), require('../components/order_details/'));
+        factory(exports, require('react'), require('react-redux'), require('../elements/icon_help'), require('../elements/button_no_event'), require('../../constansts/'), require('../components/order_details/'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.reactRedux, global.icon_help, global.button, global.constansts, global.order_details);
+        factory(mod.exports, global.react, global.reactRedux, global.icon_help, global.button_no_event, global.constansts, global.order_details);
         global.order_details = mod.exports;
     }
-})(this, function (exports, _react, _reactRedux, _icon_help, _button, _constansts, _order_details) {
+})(this, function (exports, _react, _reactRedux, _icon_help, _button_no_event, _constansts, _order_details) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -108870,12 +108871,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             _react2.default.createElement(
                 'div',
                 { className: 'cw__buttons text-center' },
-                !items.length ? null : _react2.default.createElement(
-                    _button.Button,
+                items.length && _react2.default.createElement(
+                    _button_no_event.Button,
                     {
                         className: 'cw__review_order',
-                        onClick: function onClick(event) {
-                            event.preventDefault();
+                        onClick: function onClick() {
                             dispatch((0, _constansts.setCurrentScreen)(_constansts.VIEW_CONFIRM));
                         }
                     },
@@ -109584,16 +109584,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 switch (current) {
                     case _constansts.VIEW_SELECT_ORDER_TYPE:
                         return _react2.default.createElement(_components.SelectOrderType, props);
-                        break;
                     case _constansts.VIEW_SELECT_LOCATION:
                         return _react2.default.createElement(_components.SelectLocation, props);
-                        break;
                     case _constansts.VIEW_DELIVERY_ADDRESS:
                         return _react2.default.createElement(_components.DeliveryAddress, props);
-                        break;
                     case _constansts.VIEW_SCHEDULE_ORDER:
                         return _react2.default.createElement(_components.ScheduleOrder, props);
-                        break;
                     case _constansts.VIEW_CART:
                         return _react2.default.createElement(_components.Cart, props);
                     case _constansts.VIEW_CONFIRM:

@@ -17,60 +17,67 @@ import {
     HIDE_HELP_INFO
 } from '../constansts/'
 
-const data = (state, action) => {
+const data = (state = {}, action) => {
 
     switch(action.type) {
         case CLEAR_NOTIFICATION:
 
             const { notifications = [] } = state
 
-            return Object.assign( {}, state, {
+            return {
+                ...state,
                 notifications: notifications.filter(n => n.id === action.data.id)
-            })
+            }
             
         case CLEAR_ALL_NOTIFICATIONS:
-            return Object.assign( {}, state, {
+            return {
+                ...state,
                 notifications: []
-            })
+            }
             
         case SET_NOTIFICATION:
 
             state.notifications.push( action.data )
 
-            return Object.assign( {}, state, {
+            return {
+                ...state,
                 notifications: state.notifications
-            })
+            }
             
         case SET_LOCATIONS:
-            return Object.assign( {}, state, {
-                locations: action.locations,
-            })
+            return {
+                ...state,
+                locations: action.locations
+            }
             
         case SET_LOCATION:
-            return Object.assign( {}, state, {
-                location: action.location,
-            })
+            return {
+                ...state,
+                location: action.location
+            }
             
         case SET_CURRENT_SCREEN:
             if( typeof action.order_type !== 'undefined' )
-                return Object.assign( {}, state, {
-                    order_type: action.order_type,
-                })
-            
+                return {
+                    ...state,
+                    order_type: action.order_type
+                }
+
+            return state
         case SET_PRODUCTS:
-            return Object.assign( {}, state, {
-                products: action.data,
-            })
+            return { ...state, products: action.data }
             
         case SHOW_ITEM_OPTIONS:
-            return Object.assign( {}, state, {
-                show_product_options: action.data,
-            })
+            return {
+                ...state,
+                show_product_options: action.data
+            }
             
         case HIDE_ITEM_OPTIONS:
-            return Object.assign( {}, state, {
+            return {
+                ...state,
                 show_product_options: null,
-            })
+            }
             
         case SHOW_GROUPED_ITEMS_OPTIONS:
             return {
@@ -79,33 +86,38 @@ const data = (state, action) => {
             }
             
         case HIDE_GROUPED_ITEMS_OPTIONS:
-            return Object.assign( {}, state, {
+            return {
+                ...state,
                 update_grouped_products: null,
-            })
+            }
             
         case LOADING_TOGGLE:
-            return Object.assign( {}, state, {
+            return {
+                ...state,
                 loading: action.data !== null ? true : ! state.loading,
                 loading_message: action.data
-            })
+            }
             
         case MODAL_LOADING_TOGGLE:
-            return Object.assign( {}, state, {
+            return {
+                ...state,
                 modal_loading: action.data !== null ? true : ! state.modal_loading,
                 modal_loading_message: action.data
-            })
+            }
             
         case SHOW_HELP_INFO:
-            return Object.assign( {}, state, {
+            return {
+                ...state,
                 help_info: true
-            })
+            }
         case HIDE_HELP_INFO:
-            return Object.assign( {}, state, {
+            return {
+                ...state,
                 help_info: false
-            })
+            }
+        default:
+            return state
     }
-
-    return Object.assign({}, state)
 }
 
 export default data

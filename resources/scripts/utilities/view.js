@@ -81,7 +81,7 @@ export const windowHistoryMiddleware = store => {
 }
 
 /**
- * Dispatch a backToPreviewScreen action when user hits browers's back button.
+ * Dispatch a backToPreviewScreen action when user hits browser's back button.
  */
 export const watchForBrowserBackButton = store => {
     window.addEventListener('popstate', function(event) {

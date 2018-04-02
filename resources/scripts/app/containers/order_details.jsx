@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { IconHelp } from "../elements/icon_help"
-import { Button } from '../elements/button'
+import { Button } from '../elements/button_no_event'
     import {
     ORDER_TYPE_PICKUP,
     VIEW_CONFIRM,
@@ -70,13 +70,10 @@ let OrderDetails = props =>
             </section>
             <MenuItems {...props} />
             <div className="cw__buttons text-center">
-                { ! items.length ? null
-                    : <Button
+                { items.length &&
+                    <Button
                         className='cw__review_order'
-                        onClick={event => {
-                            event.preventDefault()
-                            dispatch( setCurrentScreen( VIEW_CONFIRM ) )
-                        }}
+                        onClick={() => { dispatch( setCurrentScreen( VIEW_CONFIRM ) ) }}
                     >{ review_order_button }</Button> }
             </div>
         </div>
