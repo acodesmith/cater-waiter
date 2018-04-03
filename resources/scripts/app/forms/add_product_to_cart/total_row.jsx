@@ -3,19 +3,26 @@ import React from 'react'
 const TotalRow = props =>
 {
     const { formData: {
-        values = {}
+        values = { items: [] }
     } } = props
 
-    let { quantity } = values
+    const { items } = values
 
-    if( quantity && quantity.length )
-        quantity = quantity.map(value => Number( value ))
+    let quantity = 0
+
+    if( items && items.length )
+        quantity = items.map(item => Number( item.quantity )).reduce((a, b) => a + b, 0)
+
+    if(!quantity)
+        return null
 
     return (
         <div className="row">
             <div className="col-sm-12">
                 <hr/>
-                 { ! quantity ? null : `TOTAL: ${quantity.reduce((a, b) => a + b, 0)}` }
+                <div className="cw__add_to_cart_quantity_total">
+                    TOTAL: <span>{quantity}</span>
+                </div>
             </div>
         </div>
     )

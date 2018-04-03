@@ -13,10 +13,6 @@ import { TotalRow } from './add_product_to_cart/total_row'
 
 class FormAddProductToCart extends Component
 {
-    state = {
-        rows: 1
-    }
-
     componentWillUnmount()
     {
         this.props.dispatch(
@@ -55,18 +51,11 @@ class FormAddProductToCart extends Component
         return data
     }
 
-    addRow()
-    {
-        this.props.dispatch(
-            arrayPush( FORM_ADD_PRODUCT_TO_CART, 'items', this.rowDefaults() )
-        )
-    }
-
     render()
     {
         const {
             dispatch,
-            formData,
+            formData = { values } ,
             product,
             variations,
             handleSubmit,
@@ -76,7 +65,8 @@ class FormAddProductToCart extends Component
             }
         } = this.props
 
-        const { rows } = this.state
+        const { values = {} } = formData
+        const { items = [] } = values
 
         return (
             <form onSubmit={ handleSubmit }>
@@ -88,27 +78,31 @@ class FormAddProductToCart extends Component
                             component={ProductRow}
                             variations={variations}
                             product={product}
-                            rows={rows}
+                            rows={items.length}
                             labels={this.props.labels}
                             formData={formData}
                         />
                     </div>
-                    { rows < 2 ? null : <TotalRow formData={formData} /> }
+                    { items.length < 2 ? null : <TotalRow formData={formData} /> }
                     <div className="row">
                         <div className="col-sm-12">
                             <hr/>
-                            { ! variations.length ? null : <button
-                                className="pull-left"
-                                type="button"
-                                onClick={() => {
-                                    this.addRow()
-                                }}>
-                                { add_more_button } +
-                            </button> }
+                            {variations.length > 0 && (
+                                <button
+                                    className="pull-left"
+                                    type="button"
+                                    onClick={() => {
+                                        dispatch(
+                                            arrayPush( FORM_ADD_PRODUCT_TO_CART, 'items', this.rowDefaults() )
+                                        )
+                                    }}>
+                                    {add_more_button} +
+                                </button>
+                            )}
                             <button
                                 className="pull-right"
                                 type="submit" >
-                                { add_to_cart_button }
+                                {add_to_cart_button}
                             </button>
                         </div>
                     </div>

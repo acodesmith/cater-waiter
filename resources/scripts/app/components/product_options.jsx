@@ -10,20 +10,20 @@ import {
 function getHeading(product, currency) {
 
     const {
+        name,
+        price,
         meta_data: {
             _product_custom_price_label
         }
     } = product
 
-    let heading = product.name
+    let display_price = formatCurrency( price, currency );
 
-    if( _product_custom_price_label ) {
-        heading = `${heading} ${_product_custom_price_label.value}`
-    }else{
-        heading = `${heading} ${ formatCurrency( product.price, currency )}`
+    if( _product_custom_price_label && _product_custom_price_label.value !== "" ) {
+        display_price =  `${_product_custom_price_label.value}`
     }
 
-    return heading
+    return `${name} <span class="cw__product_price">${display_price}</span>`
 }
 
 const ProductOptions = props => {
@@ -47,7 +47,6 @@ const ProductOptions = props => {
     const product = getProductById( show_product_options, products )
 
     const close = event => {
-
         event.preventDefault()
         dispatch( hideItemOptions() )
         dispatch( destroy( FORM_ADD_PRODUCT_TO_CART ) )
@@ -61,6 +60,7 @@ const ProductOptions = props => {
                 loading_message={modal_loading_message}
                 loading_default_message={labels.loading}
                 heading={ getHeading( product, labels.currency ) }
+                heading_format="html"
                 close={close}>
                 <AddProductToCart
                     formData={ form[ FORM_ADD_PRODUCT_TO_CART ] ? form[ FORM_ADD_PRODUCT_TO_CART ] : null }

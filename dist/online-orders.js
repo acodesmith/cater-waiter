@@ -59070,18 +59070,22 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                 })
                             );
                         }),
-                        index < 1 && mode === _constansts.MODE_EDIT && _react2.default.createElement(
+                        index > 0 && _react2.default.createElement(
                             'div',
                             { className: 'col-md-3' },
                             _react2.default.createElement(
-                                'button',
-                                { className: 'option btn btn-remove', onClick: function onClick(event) {
+                                'div',
+                                { className: 'cw__add_to_cart_remove_button' },
+                                _react2.default.createElement(
+                                    'button',
+                                    { className: 'option btn btn-remove', onClick: function onClick(event) {
 
-                                        event.preventDefault();
+                                            event.preventDefault();
 
-                                        if (!remove) fields.remove(index);else remove(_this2.props.items[index], index);
-                                    } },
-                                remove_label
+                                            if (!remove) fields.remove(index);else remove(_this2.props.items[index], index);
+                                        } },
+                                    remove_label
+                                )
                             )
                         )
                     );
@@ -59131,13 +59135,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     var TotalRow = function TotalRow(props) {
         var _props$formData$value = props.formData.values,
-            values = _props$formData$value === undefined ? {} : _props$formData$value;
-        var quantity = values.quantity;
+            values = _props$formData$value === undefined ? { items: [] } : _props$formData$value;
+        var items = values.items;
 
 
-        if (quantity && quantity.length) quantity = quantity.map(function (value) {
-            return Number(value);
-        });
+        var quantity = 0;
+
+        if (items && items.length) quantity = items.map(function (item) {
+            return Number(item.quantity);
+        }).reduce(function (a, b) {
+            return a + b;
+        }, 0);
+
+        if (!quantity) return null;
 
         return _react2.default.createElement(
             "div",
@@ -59146,9 +59156,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 "div",
                 { className: "col-sm-12" },
                 _react2.default.createElement("hr", null),
-                !quantity ? null : "TOTAL: " + quantity.reduce(function (a, b) {
-                    return a + b;
-                }, 0)
+                _react2.default.createElement(
+                    "div",
+                    { className: "cw__add_to_cart_quantity_total" },
+                    "TOTAL: ",
+                    _react2.default.createElement(
+                        "span",
+                        null,
+                        quantity
+                    )
+                )
             )
         );
     };
@@ -105634,20 +105651,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(13), __webpack_require__(26), __webpack_require__(7), __webpack_require__(10), __webpack_require__(8), __webpack_require__(9), __webpack_require__(2), __webpack_require__(3), __webpack_require__(6), __webpack_require__(782), __webpack_require__(47), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(23), __webpack_require__(2), __webpack_require__(3), __webpack_require__(6), __webpack_require__(782), __webpack_require__(47), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('babel-runtime/core-js/object/assign'), require('babel-runtime/core-js/object/get-prototype-of'), require('babel-runtime/helpers/classCallCheck'), require('babel-runtime/helpers/createClass'), require('babel-runtime/helpers/possibleConstructorReturn'), require('babel-runtime/helpers/inherits'), require('react'), require('prop-types'), require('../../utilities'), require('../forms/add_product_to_cart'), require('../../thunks'), require('../../constansts'));
+        factory(exports, require('babel-runtime/helpers/extends'), require('react'), require('prop-types'), require('../../utilities'), require('../forms/add_product_to_cart'), require('../../thunks'), require('../../constansts'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.assign, global.getPrototypeOf, global.classCallCheck, global.createClass, global.possibleConstructorReturn, global.inherits, global.react, global.propTypes, global.utilities, global.add_product_to_cart, global.thunks, global.constansts);
+        factory(mod.exports, global._extends, global.react, global.propTypes, global.utilities, global.add_product_to_cart, global.thunks, global.constansts);
         global.add_product_to_cart = mod.exports;
     }
-})(this, function (exports, _assign, _getPrototypeOf, _classCallCheck2, _createClass2, _possibleConstructorReturn2, _inherits2, _react, _propTypes, _utilities, _add_product_to_cart, _thunks, _constansts) {
+})(this, function (exports, _extends2, _react, _propTypes, _utilities, _add_product_to_cart, _thunks, _constansts) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -105655,17 +105672,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     });
     exports.AddProductToCart = undefined;
 
-    var _assign2 = _interopRequireDefault(_assign);
-
-    var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
-    var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-    var _createClass3 = _interopRequireDefault(_createClass2);
-
-    var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-    var _inherits3 = _interopRequireDefault(_inherits2);
+    var _extends3 = _interopRequireDefault(_extends2);
 
     var _react2 = _interopRequireDefault(_react);
 
@@ -105679,67 +105686,47 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         };
     }
 
-    var AddProductToCart = function (_Component) {
-        (0, _inherits3.default)(AddProductToCart, _Component);
+    var addToCart = function addToCart(values, props) {
+        var _values$items = values.items,
+            items = _values$items === undefined ? [] : _values$items;
+        var dispatch = props.dispatch,
+            adding_items_to_cart = props.labels.adding_items_to_cart,
+            order = props.order,
+            closeModal = props.closeModal;
 
-        function AddProductToCart() {
-            (0, _classCallCheck3.default)(this, AddProductToCart);
-            return (0, _possibleConstructorReturn3.default)(this, (AddProductToCart.__proto__ || (0, _getPrototypeOf2.default)(AddProductToCart)).apply(this, arguments));
+
+        if (items.length) {
+            dispatch((0, _thunks.addToCartAction)(items, adding_items_to_cart, closeModal, order));
         }
+    };
 
-        (0, _createClass3.default)(AddProductToCart, [{
-            key: 'addToCart',
-            value: function addToCart(values, closeModal) {
-                var _values$items = values.items,
-                    items = _values$items === undefined ? [] : _values$items;
-                var _props = this.props,
-                    dispatch = _props.dispatch,
-                    adding_items_to_cart = _props.labels.adding_items_to_cart,
-                    order = _props.order;
+    var AddProductToCart = function AddProductToCart(props) {
+        var formData = props.formData,
+            labels = props.labels,
+            _props$product = props.product,
+            product = _props$product === undefined ? { variations: [] } : _props$product;
 
 
-                if (items.length) {
-                    dispatch((0, _thunks.addToCart)(items, adding_items_to_cart, closeModal, order));
-                }
-            }
-        }, {
-            key: 'render',
-            value: function render() {
-                var _this2 = this;
-
-                var _props2 = this.props,
-                    formData = _props2.formData,
-                    labels = _props2.labels,
-                    product = _props2.product;
-                var _product$variations = product.variations,
-                    variations = _product$variations === undefined ? [] : _product$variations;
-
-
-                variations = variations.map(function (variation) {
-                    return (0, _assign2.default)({}, variation, {
+        return _react2.default.createElement(
+            'div',
+            { className: 'cw__add_product_to_cart' },
+            _react2.default.createElement(_add_product_to_cart2.default, {
+                product: product,
+                labels: labels,
+                formData: formData,
+                mode: _constansts.MODE_ADD,
+                onSubmit: function onSubmit(values) {
+                    addToCart(values, props);
+                },
+                variations: product.variations.map(function (variation) {
+                    return (0, _extends3.default)({}, variation, {
                         attributes: (0, _utilities.mapVariationAttributes)(variation.attributes, product.attributes),
                         attributeValue: variation.attributes
                     });
-                });
-
-                return _react2.default.createElement(
-                    'div',
-                    { className: 'cw__add_product_to_cart' },
-                    _react2.default.createElement(_add_product_to_cart2.default, {
-                        product: product,
-                        variations: variations,
-                        labels: labels,
-                        formData: formData,
-                        mode: _constansts.MODE_ADD,
-                        onSubmit: function onSubmit(values) {
-                            _this2.addToCart(values, _this2.props.closeModal);
-                        }
-                    })
-                );
-            }
-        }]);
-        return AddProductToCart;
-    }(_react.Component);
+                })
+            })
+        );
+    };
 
     AddProductToCart.propTypes = {
         product: _propTypes2.default.object.isRequired,
@@ -105822,19 +105809,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         (0, _inherits3.default)(FormAddProductToCart, _Component);
 
         function FormAddProductToCart() {
-            var _ref;
-
-            var _temp, _this, _ret;
-
             (0, _classCallCheck3.default)(this, FormAddProductToCart);
-
-            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-                args[_key] = arguments[_key];
-            }
-
-            return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = FormAddProductToCart.__proto__ || (0, _getPrototypeOf2.default)(FormAddProductToCart)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-                rows: 1
-            }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
+            return (0, _possibleConstructorReturn3.default)(this, (FormAddProductToCart.__proto__ || (0, _getPrototypeOf2.default)(FormAddProductToCart)).apply(this, arguments));
         }
 
         (0, _createClass3.default)(FormAddProductToCart, [{
@@ -105872,25 +105848,24 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 return data;
             }
         }, {
-            key: 'addRow',
-            value: function addRow() {
-                this.props.dispatch((0, _reduxForm.arrayPush)(_constansts.FORM_ADD_PRODUCT_TO_CART, 'items', this.rowDefaults()));
-            }
-        }, {
             key: 'render',
             value: function render() {
                 var _this2 = this;
 
                 var _props2 = this.props,
                     dispatch = _props2.dispatch,
-                    formData = _props2.formData,
+                    _props2$formData = _props2.formData,
+                    formData = _props2$formData === undefined ? { values: values } : _props2$formData,
                     product = _props2.product,
                     variations = _props2.variations,
                     handleSubmit = _props2.handleSubmit,
                     _props2$labels = _props2.labels,
                     add_to_cart_button = _props2$labels.add_to_cart_button,
                     add_more_button = _props2$labels.add_more_button;
-                var rows = this.state.rows;
+                var _formData$values = formData.values,
+                    values = _formData$values === undefined ? {} : _formData$values;
+                var _values$items = values.items,
+                    items = _values$items === undefined ? [] : _values$items;
 
 
                 return _react2.default.createElement(
@@ -105908,12 +105883,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                 component: _product_row.ProductRow,
                                 variations: variations,
                                 product: product,
-                                rows: rows,
+                                rows: items.length,
                                 labels: this.props.labels,
                                 formData: formData
                             })
                         ),
-                        rows < 2 ? null : _react2.default.createElement(_total_row.TotalRow, { formData: formData }),
+                        items.length < 2 ? null : _react2.default.createElement(_total_row.TotalRow, { formData: formData }),
                         _react2.default.createElement(
                             'div',
                             { className: 'row' },
@@ -105921,13 +105896,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                                 'div',
                                 { className: 'col-sm-12' },
                                 _react2.default.createElement('hr', null),
-                                !variations.length ? null : _react2.default.createElement(
+                                variations.length > 0 && _react2.default.createElement(
                                     'button',
                                     {
                                         className: 'pull-left',
                                         type: 'button',
                                         onClick: function onClick() {
-                                            _this2.addRow();
+                                            dispatch((0, _reduxForm.arrayPush)(_constansts.FORM_ADD_PRODUCT_TO_CART, 'items', _this2.rowDefaults()));
                                         } },
                                     add_more_button,
                                     ' +'
@@ -107551,18 +107526,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
 
     function getHeading(product, currency) {
-        var _product_custom_price_label = product.meta_data._product_custom_price_label;
+        var name = product.name,
+            price = product.price,
+            _product_custom_price_label = product.meta_data._product_custom_price_label;
 
 
-        var heading = product.name;
+        var display_price = (0, _utilities.formatCurrency)(price, currency);
 
-        if (_product_custom_price_label) {
-            heading = heading + ' ' + _product_custom_price_label.value;
-        } else {
-            heading = heading + ' ' + (0, _utilities.formatCurrency)(product.price, currency);
+        if (_product_custom_price_label && _product_custom_price_label.value !== "") {
+            display_price = '' + _product_custom_price_label.value;
         }
 
-        return heading;
+        return name + ' <span class="cw__product_price">' + display_price + '</span>';
     }
 
     var ProductOptions = function ProductOptions(props) {
@@ -107582,7 +107557,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var product = (0, _utilities.getProductById)(show_product_options, products);
 
         var close = function close(event) {
-
             event.preventDefault();
             dispatch((0, _constansts.hideItemOptions)());
             dispatch((0, _reduxForm.destroy)(_constansts.FORM_ADD_PRODUCT_TO_CART));
@@ -107599,6 +107573,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     loading_message: modal_loading_message,
                     loading_default_message: labels.loading,
                     heading: getHeading(product, labels.currency),
+                    heading_format: 'html',
                     close: close },
                 _react2.default.createElement(_index.AddProductToCart, {
                     formData: form[_constansts.FORM_ADD_PRODUCT_TO_CART] ? form[_constansts.FORM_ADD_PRODUCT_TO_CART] : null,
@@ -108621,28 +108596,26 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(13), __webpack_require__(2), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('babel-runtime/core-js/object/assign'), require('react'), require('prop-types'));
+        factory(exports, require('react'), require('prop-types'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.assign, global.react, global.propTypes);
+        factory(mod.exports, global.react, global.propTypes);
         global.modal = mod.exports;
     }
-})(this, function (exports, _assign, _react, _propTypes) {
+})(this, function (exports, _react, _propTypes) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
     exports.Modal = undefined;
-
-    var _assign2 = _interopRequireDefault(_assign);
 
     var _react2 = _interopRequireDefault(_react);
 
@@ -108654,23 +108627,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         };
     }
 
-    var Modal = function Modal(props) {
-
-        props = (0, _assign2.default)({}, {
-            display_footer: true
-        }, props);
-
-        var _props = props,
-            _props$loading = _props.loading,
-            loading = _props$loading === undefined ? false : _props$loading,
-            loading_message = _props.loading_message,
-            loading_default_message = _props.loading_default_message,
-            heading = _props.heading,
-            children = _props.children,
-            close = _props.close,
-            display_footer = _props.display_footer;
-
-
+    var Modal = function Modal(_ref) {
+        var children = _ref.children,
+            close = _ref.close,
+            display_footer = _ref.display_footer,
+            loading = _ref.loading,
+            loading_message = _ref.loading_message,
+            loading_default_message = _ref.loading_default_message,
+            heading = _ref.heading,
+            heading_format = _ref.heading_format;
         return _react2.default.createElement(
             'div',
             { className: 'modal fade in', tabIndex: '-1', style: { display: 'block' }, role: 'dialog' },
@@ -108680,7 +108645,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 _react2.default.createElement(
                     'div',
                     { className: 'modal-content' },
-                    !loading ? null : _react2.default.createElement(
+                    loading && _react2.default.createElement(
                         'div',
                         { className: 'cw__modal_loading' },
                         _react2.default.createElement(
@@ -108709,7 +108674,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         _react2.default.createElement(
                             'h4',
                             { className: 'modal-title' },
-                            heading
+                            function () {
+                                switch (heading_format) {
+                                    case 'html':
+                                        return _react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: heading } });
+                                    case 'string':
+                                    default:
+                                        return heading;
+                                }
+                            }()
                         )
                     ),
                     _react2.default.createElement(
@@ -108717,24 +108690,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         { className: 'modal-body' },
                         children
                     ),
-                    function () {
-
-                        if (!display_footer) return null;
-
-                        return _react2.default.createElement(
-                            'div',
-                            { className: 'modal-footer' },
-                            _react2.default.createElement(
-                                'button',
-                                {
-                                    type: 'button',
-                                    className: 'btn btn-default',
-                                    onClick: close,
-                                    'data-dismiss': 'modal' },
-                                'Close'
-                            )
-                        );
-                    }()
+                    display_footer && _react2.default.createElement(
+                        'div',
+                        { className: 'modal-footer' },
+                        _react2.default.createElement(
+                            'button',
+                            {
+                                type: 'button',
+                                className: 'btn btn-default',
+                                onClick: close,
+                                'data-dismiss': 'modal' },
+                            'Close'
+                        )
+                    )
                 )
             )
         );
@@ -108742,6 +108710,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     Modal.propTypes = {
         close: _propTypes2.default.func.isRequired
+    };
+
+    Modal.defaultProps = {
+        display_footer: true,
+        heading_format: 'string',
+        loading: false
     };
 
     exports.Modal = Modal;

@@ -191,19 +191,21 @@ class ProductRow extends Component
                             />
                         </div>
                     ))}
-                    { index < 1 && mode === MODE_EDIT &&
+                    { index > 0 &&
                     <div className="col-md-3">
-                        <button className="option btn btn-remove" onClick={event => {
+                        <div className="cw__add_to_cart_remove_button">
+                            <button className="option btn btn-remove" onClick={event => {
 
-                            event.preventDefault()
+                                event.preventDefault()
 
-                            if( ! remove )
-                                fields.remove(index)
-                            else
-                                remove(this.props.items[index], index)
-                        }}>
-                            { remove_label }
-                        </button>
+                                if( ! remove )
+                                    fields.remove(index)
+                                else
+                                    remove(this.props.items[index], index)
+                            }}>
+                                { remove_label }
+                            </button>
+                        </div>
                     </div> }
                 </div>
             )
