@@ -22,3 +22,20 @@
   margin-top: 2rem;
 }
 
+.cw__datepicker,
+.cw__timepicker {
+  margin-top: 3rem;
+}
+
+.cw__timepicker {
+  .rc-time-picker {
+    display: block;
+    max-width: 180px;
+    margin: auto;
+
+    input {
+      font-size: 14px;
+      height: 40px;
+    }
+  }
+}

@@ -70,5 +70,11 @@ class WC_ProductDataTabs
         	delete_post_meta( $post_id, '_minimum_amount' );
         }
 
+        if( ! empty( $_POST['_product_display_product_short_description'] ) ) {
+            update_post_meta( $post_id, '_product_display_product_short_description', $_POST['_product_display_product_short_description'] );
+        }else{
+        	delete_post_meta( $post_id, '_product_display_product_short_description' );
+        }
+
     }
 }

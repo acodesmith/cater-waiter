@@ -54,7 +54,10 @@ const windowOfTime = (min, max, value, error) =>
     if( ! min && ! max )
         return undefined
 
-    const time = Number( value.replace(':', '') )
+    if(typeof value !== 'object')
+        value = moment(value, 'hh:mm A');
+
+    const time = value.format('HH:mm').replace(':', '')
 
     min = Number( min.replace(':', '') )
     max = Number( max.replace(':', '') )
@@ -112,7 +115,6 @@ class FormScheduleOrder extends Component
                     type="date"
                     className="cw__order_schedule_field cw__order_schedule_date"
                     label={ order_type === ORDER_TYPE_PICKUP ? pickup_date_label : delivery_date_label }
-                    hint="Format Example: 01-31-2020"
                     validate={[ required, function(value) {
                         return hoursInAdvanced(
                             hours_in_advance,
@@ -125,11 +127,10 @@ class FormScheduleOrder extends Component
                 <Field
                     name="order_time"
                     placeholder={label_time_prompt}
-                    component={renderField}
+                    component={renderTimePicker}
                     type="time"
                     className="cw__order_schedule_field cw__order_schedule_time_of_day"
                     label={ order_type === ORDER_TYPE_PICKUP ? pickup_time_of_day_label : delivery_time_of_day_label }
-                    hint="Format Example: 11:00 AM"
                     validate={[ required, function(value) {
                         return windowOfTime(
                             minOrderTime,

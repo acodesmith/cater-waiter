@@ -8,7 +8,8 @@ import {
 } from 'redux-form'
 import {
     FORM_UPDATE_CART_ITEMS,
-    MODE_EDIT
+    MODE_EDIT,
+    hideGroupedItemsOptions
 } from '../../constansts'
 import { removeCartItemInForm } from '../../thunks'
 import { ProductRow } from './add_product_to_cart/product_row'
@@ -26,6 +27,18 @@ class FormUpdateCartItems extends Component
         this.props.dispatch(
             arrayRemoveAll( FORM_UPDATE_CART_ITEMS, 'items' )
         )
+    }
+
+    componentDidUpdate()
+    {
+        const {
+            dispatch,
+            items
+        } = this.props;
+
+        // Auto close modal if no more items.
+        if(!items.length)
+            dispatch( hideGroupedItemsOptions() )
     }
 
     addRow()
@@ -47,6 +60,7 @@ class FormUpdateCartItems extends Component
     removeRow = (item, index) =>
     {
         const {
+            items = [],
             dispatch,
             labels: {
                 removing_item_from_cart,

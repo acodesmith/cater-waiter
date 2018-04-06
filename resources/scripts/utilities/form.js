@@ -52,35 +52,32 @@ export const renderSelect = ({input, label, options, name, id, className, hint, 
     )
 }
 
-export const renderDatePicker = ({input, placeholder, defaultValue, hint, meta: {touched, error, warning} }) => {
+export const renderDatePicker = ({input, label, hint, meta: {touched, error, warning} }) => {
 
     if( typeof input.value === 'object' )
         input.value = input.value.format("MM-DD-YYYY");
 
     return (
-        <div>
+        <div className='cw__datepicker'>
+            <label>{label}</label>
             <DatePicker {...input} dateForm="MM-DD-YYYY" selected={input.value ? moment(input.value, "MM-DD-YYYY") : null} />
             <FieldMeta hint={hint} touched={touched} error={error} warning={warning} />
         </div>
     )
 }
 
-export const renderTimePicker = ({input, placeholder, defaultValue, hint, meta: {touched, error, warning} }) => {
+export const renderTimePicker = ({input, label, hint, meta: {touched, error, warning} }) => {
 
-    console.log("before input.value",input.value);
     if( typeof input.value !== 'object' )
-        input.value = moment(input.value)
+        input.value = moment(input.value, 'hh:mm A')
 
-    // delete input.value
-    console.log("after input.value",input.value);
     return (
-        <div>
+        <div className='cw__timepicker'>
+            <label>{label}</label>
             <TimePicker
                 {...input}
-                dateForm="MM-DD-YYYY"
                 showSecond={false}
-                format={'hh:mm a'}
-                //selected={input.value ? moment(input.value, "MM-DD-YYYY") : null}
+                use12Hours={true}
             />
             <FieldMeta hint={hint} touched={touched} error={error} warning={warning} />
         </div>

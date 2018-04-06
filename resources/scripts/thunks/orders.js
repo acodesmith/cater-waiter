@@ -161,7 +161,9 @@ export const removeCartItemInForm = (key, index, loading_message, cart_updating_
             .then(result => {
                 return dispatch(setCart(result.cart))
             })
-            .then(() => dispatch(modalLoadingToggle()))
+            .then(() => {
+                dispatch(modalLoadingToggle())
+            })
     }
 }
 

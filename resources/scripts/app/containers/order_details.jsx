@@ -70,11 +70,14 @@ let OrderDetails = props =>
             </section>
             <MenuItems {...props} />
             <div className="cw__buttons text-center">
-                { items.length &&
+                { !!items.length &&
                     <Button
                         className='cw__review_order'
                         onClick={() => { dispatch( setCurrentScreen( VIEW_CONFIRM ) ) }}
-                    >{ review_order_button }</Button> }
+                    >
+                        { review_order_button }
+                    </Button>
+                }
             </div>
         </div>
     )

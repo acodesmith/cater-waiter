@@ -44,5 +44,13 @@
 		'default'       => '0',
 		'desc_tip'      => false,
 	) );
+
+	woocommerce_wp_checkbox( array(
+		'id'            => '_product_display_product_short_description',
+		'label'         => __( 'Product Short Description', 'cater_waiter' ),
+		'description'   => __( 'Display the field "Product Short Description" when a customer is adding the item to cart.', 'cater_waiter' ),
+		'default'       => '0',
+		'desc_tip'      => false,
+	) );
 	?>
 </div>

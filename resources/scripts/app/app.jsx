@@ -7,27 +7,29 @@ import {
     Pathway,
 } from './containers'
 
-const App = () => {
-    return (
-        <div className="cw__app_base">
-            <Loading />
-            <HelpInfo/>
-            <div className="container-fluid">
-                <div className="row">
+const App = () => (
+    <div className="cw__app_base">
+        <Loading />
+        <HelpInfo/>
+        <div className="container-fluid">
+            <div className="row">
+                <div className="col-sm-12">
                     <BackButton>Back</BackButton>
                 </div>
-                <div className="row">
-                    <Pathway/>
-                    <div className="col-md-4">
-                        <OrderDetails/>
-                    </div>
+            </div>
+            <div className="row">
+                <Pathway/>
+                <div className="col-md-4">
+                    <OrderDetails/>
                 </div>
-                <div className="row">
+            </div>
+            <div className="row">
+                <div className="col-sm-12">
                     <BackButton>Back</BackButton>
                 </div>
             </div>
         </div>
-    )
-}
+    </div>
+)
 
 export default App

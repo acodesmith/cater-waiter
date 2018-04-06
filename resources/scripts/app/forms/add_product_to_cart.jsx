@@ -53,9 +53,9 @@ class FormAddProductToCart extends Component
 
     render()
     {
-        const {
+        let {
             dispatch,
-            formData = { values } ,
+            formData = {},
             product,
             variations,
             handleSubmit,
@@ -64,6 +64,9 @@ class FormAddProductToCart extends Component
                 add_more_button
             }
         } = this.props
+
+        if(!formData)
+            formData = {};
 
         const { values = {} } = formData
         const { items = [] } = values
@@ -83,11 +86,11 @@ class FormAddProductToCart extends Component
                             formData={formData}
                         />
                     </div>
-                    { items.length < 2 ? null : <TotalRow formData={formData} /> }
+                    { items.length > 1 && <TotalRow formData={formData} /> }
                     <div className="row">
                         <div className="col-sm-12">
                             <hr/>
-                            {variations.length > 0 && (
+                            {!!variations.length && (
                                 <button
                                     className="pull-left"
                                     type="button"

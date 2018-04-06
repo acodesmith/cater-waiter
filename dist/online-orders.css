@@ -841,11 +841,49 @@ li.rc-time-picker-panel-select-option-disabled:hover {
 .cw__form_field .Select--single > .Select-control .Select-value, .cw__form_field .Select-placeholder {
   top: 0.5rem; }
 
+.cw__form_field .Select-value-label {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
+.cw__datepicker .react-datepicker {
+  font-size: 1em; }
+
+.cw__datepicker .react-datepicker__header {
+  padding-top: 0.8em; }
+
+.cw__datepicker .react-datepicker__month {
+  margin: 0.4em 1em; }
+
+.cw__datepicker .react-datepicker__day-name, .cw__datepicker .react-datepicker__day {
+  width: 1.9em;
+  line-height: 1.9em;
+  margin: 0.166em; }
+
+.cw__datepicker .react-datepicker__current-month {
+  font-size: 1em; }
+
+.cw__datepicker .react-datepicker__navigation {
+  top: 1em;
+  line-height: 1.7em;
+  border: 0.45em solid transparent; }
+
+.cw__datepicker .react-datepicker__navigation--previous {
+  border-right-color: #ccc;
+  left: 1em; }
+
+.cw__datepicker .react-datepicker__navigation--next {
+  border-left-color: #ccc;
+  right: 1em; }
+
 #cater_waiter__react_base .modal {
   background: rgba(0, 0, 0, 0.8);
   overflow: auto !important; }
   #cater_waiter__react_base .modal .modal-dialog {
     margin-top: 10vh; }
+
+.cw__cart .cw__category:first-child h3 {
+  margin-top: 1rem; }
 
 .cw__cart_items_labels {
   border-bottom: 1px solid #eee;
@@ -1072,6 +1110,18 @@ li.rc-time-picker-panel-select-option-disabled:hover {
 
 .cw__schedule_order button[type='submit'] {
   margin-top: 2rem; }
+
+.cw__datepicker,
+.cw__timepicker {
+  margin-top: 3rem; }
+
+.cw__timepicker .rc-time-picker {
+  display: block;
+  max-width: 180px;
+  margin: auto; }
+  .cw__timepicker .rc-time-picker input {
+    font-size: 14px;
+    height: 40px; }
 
 .cw__locations {
   display: flex;

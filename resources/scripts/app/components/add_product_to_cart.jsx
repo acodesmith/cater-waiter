@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { mapVariationAttributes } from '../../utilities'
 import FormAddProductToCart from '../forms/add_product_to_cart'
-import { addToCartAction } from '../../thunks'
+import { addToCart as addToCartAction } from '../../thunks'
 import { MODE_ADD } from '../../constansts'
 
 
-const addToCart = (values, props) => {
+const addToCart = (values = {}, props) => {
     const { items = [] } = values
 
     const {

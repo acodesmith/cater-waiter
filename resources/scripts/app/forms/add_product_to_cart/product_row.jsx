@@ -137,6 +137,9 @@ class ProductRow extends Component
             }
         } = this.props
 
+        const { meta_data = {}, short_description } = product;
+        const { _product_display_product_short_description = { value: 'no' } } = meta_data;
+
         //Don't list all variations. Variations IDs are set based on the attribute values.
         const variation = variations.length ? variations[0] : null
 
@@ -144,6 +147,13 @@ class ProductRow extends Component
 
             return (
                 <div style={{clear: 'both'}} className="cw__variation" key={index}>
+                    { _product_display_product_short_description.value === 'yes' && short_description &&
+                    (
+                        <div className="cw__product_short_description">
+                            <span dangerouslySetInnerHTML={{__html: short_description}}></span>
+                            <hr />
+                        </div>
+                    )}
                     { mode === MODE_ADD ? null : <Field
                         name={`${items}.key`}
                         type="hidden"
@@ -170,7 +180,7 @@ class ProductRow extends Component
                         validate={[ required, minNumericValueOne ]}
                         attr={this.quantityAttrs()}
                         component={renderField} />
-                    { !variation ? null : variation.attributes.map(attribute => (
+                    { !!variation && variation.attributes.map(attribute => (
                         <div className="cw__input_dropdown option col-md-3" key={ attribute.attribute_slug }>
                             <label htmlFor={ attribute.attribute_slug }>{ attribute.name }</label>
                             <Field
@@ -191,8 +201,8 @@ class ProductRow extends Component
                             />
                         </div>
                     ))}
-                    { index > 0 &&
-                    <div className="col-md-3">
+                    { (!!index || mode === MODE_EDIT) &&
+                    <div className="col-md-3 pull-right">
                         <div className="cw__add_to_cart_remove_button">
                             <button className="option btn btn-remove" onClick={event => {
 
