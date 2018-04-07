@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {Component} from 'react'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { IconHelp } from "../elements/icon_help"
 import { Button } from '../elements/button_no_event'
@@ -37,51 +38,54 @@ const HelpTrigger = ({ dispatch }) => (
     </button>
 )
 
-let OrderDetails = props =>
-{
-    let {
-        dispatch,
-        labels: {
-            order_details_title,
-            review_order_button
-        },
-        order: {
-            order_type,
-            order_cart = {
-                items: []
-            }
-        },
-    } = props
+class OrderDetails extends Component {
 
-    const { items } = order_cart
+    render() {
+        let {
+            dispatch,
+            labels: {
+                order_details_title,
+                review_order_button
+            },
+            order: {
+                order_type,
+                order_cart = {
+                    items: []
+                }
+            },
+        } = this.props
 
-    if( ! display( props ) )
-        return null
+        const { items } = order_cart
 
-    return (
-        <div className="cw__order_details">
-            <section>
-                <header>{ order_details_title } <HelpTrigger dispatch={dispatch} /></header>
-                <OrderType {...props} />
-                { order_type === ORDER_TYPE_PICKUP ?
-                    <PickupLocation {...props} /> :
-                    <DeliveryLocation {...props} /> }
-                <OrderTime {...props} />
-            </section>
-            <MenuItems {...props} />
-            <div className="cw__buttons text-center">
-                { !!items.length &&
+        if( ! display( this.props ) )
+            return null
+
+        return (
+            <div className="cw__order_details" id='cw__order_details'>
+                <section>
+                    <header>{ order_details_title } <HelpTrigger dispatch={dispatch} /></header>
+                    <OrderType {...this.props} />
+                    { order_type === ORDER_TYPE_PICKUP ?
+                        <PickupLocation {...this.props} /> :
+                        <DeliveryLocation {...this.props} /> }
+                    <OrderTime {...this.props} />
+                </section>
+                <MenuItems {...this.props} />
+                <div className="cw__buttons text-center">
+                    { !!items.length &&
                     <Button
                         className='cw__review_order'
                         onClick={() => { dispatch( setCurrentScreen( VIEW_CONFIRM ) ) }}
                     >
                         { review_order_button }
                     </Button>
-                }
+                    }
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
+
 
 OrderDetails = connect(
     state => state

@@ -4107,7 +4107,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@15.x:
+prop-types@15.x, prop-types@>=15.5.10:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.1.tgz#36644453564255ddda391191fb3a125cbdf654ca"
   dependencies:
@@ -4325,6 +4325,12 @@ react-select@^1.2.1:
     classnames "^2.2.4"
     prop-types "^15.5.8"
     react-input-autosize "^2.1.2"
+
+react-sticky-el@^1.0.16:
+  version "1.0.16"
+  resolved "https://registry.yarnpkg.com/react-sticky-el/-/react-sticky-el-1.0.16.tgz#21eb464bbaaeb2b05e7d27d0184a9213c49240dd"
+  dependencies:
+    prop-types ">=15.5.10"
 
 react@^16.0.0:
   version "16.2.0"

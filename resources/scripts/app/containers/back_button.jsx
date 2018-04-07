@@ -36,7 +36,7 @@ const renderButtonBasedOnView = (current, dispatch, labels) => {
         && displayMap[current](labelMap[current](labels), actionMap[current](dispatch))
 }
 
-let BackButton = ({ display, dispatch, children, current, labels }) => {
+let BackButton = ({ display, dispatch, children, current, labels, className = '' }) => {
 
     if( ! display )
         return null
@@ -44,7 +44,7 @@ let BackButton = ({ display, dispatch, children, current, labels }) => {
     return (
         <React.Fragment>
             <Button
-                className='cw__button_back'
+                className={`cw__button_back ${className}`}
                 onClick={() => { dispatch( backToPreviousScreen(current, labels) ) }}
             >
                 { children }

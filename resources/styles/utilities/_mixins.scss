@@ -1,0 +1,145 @@
+// retina image mixin
+// @include image-2x('imagesrc',w,h);
+@mixin image-2x($image, $width, $height) {
+  @media (min--moz-device-pixel-ratio: 1.3),
+         (-o-min-device-pixel-ratio: 2.6/2),
+         (-webkit-min-device-pixel-ratio: 1.3),
+         (min-device-pixel-ratio: 1.3),
+         (min-resolution: 1.3dppx) {
+    // on retina, image scale by two
+    background-image: url($image);
+    background-size: $width $height;
+  }
+}
+
+%image-replacement {
+  text-indent: -9999px;
+  line-height: 0;
+  font-size: 0;
+}
+
+// @include css-gradient(#dfdfdf,#f8f8f8);
+@mixin css-gradient($from: $white, $to: $dark-gray) {
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$from), color-stop(100%,$to));
+  background-image: -webkit-linear-gradient(top, $from 0%, $to 100%);
+  background-image: -moz-linear-gradient(top, $from 0%, $to 100%);
+  background-image: -o-linear-gradient(top, $from 0%, $to 100%);
+  background-image: linear-gradient(to bottom, $from 0%, $to 100%);
+}
+
+// @include background-css-gradient(#dfdfdf,#f8f8f8);
+@mixin background-css-gradient($from: rgba(255, 255, 255, 0), $to: rgba(255, 255, 255, 1), $size: 10%) {
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$from), color-stop($size,$to));
+  background-image: -webkit-linear-gradient(top, $from 0%, $to $size);
+  background-image: -moz-linear-gradient(top, $from 0%, $to $size);
+  background-image: -o-linear-gradient(top, $from 0%, $to $size);
+  background-image: linear-gradient(to bottom, $from 0%, $to $size);
+}
+
+// functions to urlencode the svg string
+@mixin aspect-ratio($arglist... /*$width/$ratio, $height*/){
+  $map : keywords($arglist);
+  $height: map-get($map, height) or nth-or-null($arglist, 2);
+  $width:  map-get($map, width)  or nth-or-null($arglist, 1);
+  $ratio:  map-get($map, ratio)  or if($width and $height, $width/$height, nth-or-null($arglist, 1)) or 1;
+  $padding: 1/$ratio * 100%;
+  &:before { content: ''; float:left; padding-bottom: $padding; }
+  &:after  { content: ''; display:table; clear: both; }
+}
+
+// Helper function 
+// Return null rather than throwing an error if index is outside list range.    
+@function nth-or-null($list, $index) {
+  @return if(length($list) >= $index, nth($list, $index), null);
+}    
+
+
+// below has to do with SVGs as data uri
+@function str-replace($string, $search, $replace: '') {
+  $index: str-index($string, $search); 
+  @if $index { 
+    @return str-slice($string, 1, $index - 1) + $replace + 
+      str-replace(str-slice($string, $index + 
+      str-length($search)), $search, $replace); 
+    }
+  @return $string; 
+}
+
+//
+//  Function to create an optimized svg url
+//  (may need a few extra replacements)
+//
+@function old_svg-url($svg) {
+  $svg: str-replace($svg,'"','\'');
+  $svg: str-replace($svg,'<','%3C');
+  $svg: str-replace($svg,'>','%3E');
+  $svg: str-replace($svg,'&','%26');
+  $svg: str-replace($svg,'#','%23');
+  @return url("data:image/svg+xml;charset=utf8,#{$svg}");   
+}
+
+// background-image: svg-url('<svg></svg>')
+@function svg-url($svg) {
+  //
+  // Chunk up string in order to avoid 
+  // "SystemStackError: stack level too deep"
+  // 
+  $encoded:'';
+  $slice: 2000;
+  $index: 0;
+  $loops: ceil(str-length($svg)/$slice);
+  @for $i from 1 through $loops {
+    $chunk: str-slice($svg, $index, $index + $slice - 1); 
+    $chunk: str-replace($chunk,'"','\'');
+    $chunk: str-replace($chunk,'<','%3C');
+    $chunk: str-replace($chunk,'>','%3E');
+    $chunk: str-replace($chunk,'&','%26');
+    $chunk: str-replace($chunk,'#','%23');       
+    $encoded: #{$encoded}#{$chunk};
+    $index: $index + $slice; 
+  }
+  @return url("data:image/svg+xml;charset=utf8,#{$encoded}");   
+}
+
+// Sass Mixin
+// Named Breakpoints are phone, tablet-portrait, tablet-landscape-desktop, large-desktop, non-retina, retina
+@mixin respond-to($media) {
+  /* Mobile Devices for Mice */
+  @if $media == xxs {
+    @media (max-width: 360px) { @content; }
+  }
+  /* Landscape phones and down */
+  @if $media == xs {
+    @media (max-width: 767px) { @content; }
+  }
+  /* Landscape phone to portrait tablet */
+  @if $media == sm {
+    @media (min-width: 768px) and (max-width: 991px) {@content; }
+  }
+  /* Portrait tablet to landscape and desktop */
+  @if $media == md {
+    @media (min-width: 992px) and (max-width: 1199px) { @content; }
+  }
+  /* desktop and large desktop */
+  @if $media == lg {
+    @media (min-width: 1200px) and (max-width: 1439px) { @content; }
+  }
+
+  @if $media == xl {
+    @media (min-width: 1439px) and (max-width: 4200px) { @content; }
+  }
+}
+
+@mixin respondto($media...) {
+  @each $mediatype in $media {
+    @include respond-to($mediatype) {@content;}
+  }
+}
+
+@mixin respondtoCustom($media...) {
+  @each $mediatype in $media {
+    @media (max-width:700px) {
+      @content;
+    }
+  }
+}

@@ -22,3 +22,34 @@
   text-transform: uppercase;
   width: 100%;
 }
+
+.cw__order_details_mobile {
+  color: white;
+  visibility: hidden;
+  font-weight: bold;
+  padding: 1rem;
+  text-align: center;
+  text-transform: uppercase;
+  transition: background 300ms ease;
+  width: 100%;
+  z-index: 10000;
+}
+
+.cw__cart {
+  .sticky {
+    z-index:10000;
+
+    .cw__order_details_mobile {
+      background: white;
+      transition: background 300ms ease;
+
+      @include respondto(sm, xs) {
+        visibility: visible;
+      }
+    }
+  }
+}
+
+.cw__back_button_top {
+  margin-bottom: 2rem;
+}
