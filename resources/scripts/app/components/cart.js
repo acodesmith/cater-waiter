@@ -45,7 +45,7 @@ const Cart = props => {
                             window.t = rect;
                             window.scrollTo(0, rect.height + ( window.innerHeight/ 2 ));
                         }
-                    }}>Jump to { order_details_title }</Button>
+                    }}>{`Jump to ${order_details_title}`}</Button>
                 </div>
             </Sticky>
             {!update_grouped_products ? null : <UpdateGroupedProducts {...props}/>}

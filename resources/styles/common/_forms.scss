@@ -41,7 +41,15 @@
   }
 }
 
-//react-select styles
+//common back button
+.cw__button_back {
+  @include respondto(sm,xs) {
+    margin-top: 0 !important;
+    width: 100%;
+  }
+}
+
+  //react-select styles
 .cw__form_field {
 
   .Select-control {

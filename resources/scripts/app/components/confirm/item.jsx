@@ -12,7 +12,7 @@ const removeCartItem = (item_key, dispatch) => {
         dispatch( removeCartItemAction( item_key, removing_item_from_cart, updating_cart ) )
 }
 
-export const Item = ({ product, item, labels: { currency, update }, dispatch }) => (
+export const Item = ({ product, item, labels: { currency, update, quantity, item_total }, dispatch }) => (
     <div className="cw__cart_item">
         <div className="container-fluid">
             <div className="row">
@@ -32,8 +32,12 @@ export const Item = ({ product, item, labels: { currency, update }, dispatch }) 
                         }
                     }) }
                 </div>
-                <div className="col-md-2 col-sm-4 text-center">{ item.quantity }</div>
-                <div className="col-md-2 col-sm-4 text-right">{currency}{ numeral( item.line_total ).format('0.00') }</div>
+                <div className="col-md-2 col-sm-4 cw__cart_item_quantity">
+                    <span>{ quantity }</span><span>{ item.quantity }</span>
+                </div>
+                <div className="col-md-2 col-sm-4 cw__cart_item_total">
+                    <span>{ item_total }</span><span>{currency}{ numeral( item.line_total ).format('0.00') }</span>
+                </div>
                 <div className="col-md-2">
                     <Button className="btn btn-sm btn-update" onClick={() => {
                         dispatch( showGroupedItemsOptions( product.id ) )

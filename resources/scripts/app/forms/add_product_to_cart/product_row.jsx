@@ -202,7 +202,7 @@ class ProductRow extends Component
                         </div>
                     ))}
                     { (!!index || mode === MODE_EDIT) &&
-                    <div className="col-md-3 pull-right">
+                    <div className="col-md-3 pull-right cw__add_to_cart_remove_button_wrapper">
                         <div className="cw__add_to_cart_remove_button">
                             <button className="option btn btn-remove" onClick={event => {
 

@@ -5,3 +5,11 @@
 .right-sidebar .content-area {
   width: 100%;
 }
+
+.clearfix {
+  &:after {
+    content: '';
+    display: table;
+    width: 100%;
+  }
+}

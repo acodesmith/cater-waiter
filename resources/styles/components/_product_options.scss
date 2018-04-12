@@ -9,6 +9,12 @@
   }
 }
 
+.cw__add_to_cart_remove_button_wrapper.pull-right {
+  @include respondto(sm,xs) {
+    float: none !important;
+  }
+}
+
 .cw__add_to_cart_remove_button {
   button {
     background: #dbd8d8;
@@ -18,6 +24,11 @@
     padding: 1rem !important;
     text-transform: capitalize;
     width: 100%;
+
+    @include respondto(sm,xs) {
+      margin-top: 0.5rem !important;
+      margin-bottom: 2rem;
+    }
   }
 }
 
@@ -28,5 +39,18 @@
 
   span {
     padding-left: 1rem;
+  }
+}
+
+.product-variations-wrap {
+
+  .cw__variation {
+    clear: both;
+
+    &:not(:first-child) {
+      @include respondto(sm,xs) {
+        margin-top: 3rem;
+      }
+    }
   }
 }

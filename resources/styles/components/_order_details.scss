@@ -32,12 +32,15 @@
   text-transform: uppercase;
   transition: background 300ms ease;
   width: 100%;
-  z-index: 10000;
+
+  button {
+    padding: 1rem !important;
+  }
 }
 
 .cw__cart {
   .sticky {
-    z-index:10000;
+    z-index: 1040;
 
     .cw__order_details_mobile {
       background: white;

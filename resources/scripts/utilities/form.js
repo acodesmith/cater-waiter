@@ -68,8 +68,11 @@ export const renderDatePicker = ({input, label, hint, meta: {touched, error, war
 
 export const renderTimePicker = ({input, label, hint, meta: {touched, error, warning} }) => {
 
-    if( typeof input.value !== 'object' )
+    if( typeof input.value !== 'undefined' && input.value !== '' && typeof input.value !== 'object' )
         input.value = moment(input.value, 'hh:mm A')
+
+    if(input.value === '')
+        input.value = null
 
     return (
         <div className='cw__timepicker'>

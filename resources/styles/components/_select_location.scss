@@ -20,4 +20,8 @@
 
 .cw__select_location form input[name="zip_code"] {
   padding: 1.4rem;
+
+  @include respondto(sm, xs) {
+    margin-bottom: 1rem;
+  }
 }
