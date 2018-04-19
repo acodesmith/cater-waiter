@@ -48,7 +48,7 @@ class Modal extends Component {
         return ReactDOM.createPortal(
             (
                 <div className="cw__modal modal fade in" tabIndex="-1" style={styles} role="dialog">
-                    <div className="modal-dialog modal-lg" role="document" style={{ marginTop: `${window_scroll_top + 100}px` }}>
+                    <div className="modal-dialog modal-lg" role="document" style={{ marginTop: `${window_scroll_top + 60}px` }}>
                         <div className="modal-content">
                             { loading &&
                             <div className="cw__modal_loading">

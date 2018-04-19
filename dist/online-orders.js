@@ -88037,7 +88037,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var _onChange = input.onChange,
             _onBlur = input.onBlur,
             _input$value = input.value,
-            value = _input$value === undefined ? { value: value } : _input$value;
+            value = _input$value === undefined ? { value: null } : _input$value;
 
 
         return _react2.default.createElement(
@@ -88058,7 +88058,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 },
                 onBlur: function onBlur(value) {
                     return _onBlur(value.value);
-                }
+                },
+                searchable: false
             })),
             _react2.default.createElement(FieldMeta, { hint: hint, touched: touched, error: error, warning: warning })
         );
@@ -110184,7 +110185,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     { className: 'cw__modal modal fade in', tabIndex: '-1', style: styles, role: 'dialog' },
                     _react2.default.createElement(
                         'div',
-                        { className: 'modal-dialog modal-lg', role: 'document', style: { marginTop: window_scroll_top + 100 + 'px' } },
+                        { className: 'modal-dialog modal-lg', role: 'document', style: { marginTop: window_scroll_top + 60 + 'px' } },
                         _react2.default.createElement(
                             'div',
                             { className: 'modal-content' },
