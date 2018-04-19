@@ -117,7 +117,8 @@ class ProductRow extends Component
         const { variations, dispatch } = this.props
 
         const newVariation = variations.filter(variation => {
-            return typeof variation.attributeValue[ attribute ] !== 'undefined' && variation.attributeValue[ attribute ] === newValue.toLowerCase()
+            return variation.attributeValue && typeof variation.attributeValue[ attribute ] !== 'undefined'
+                && variation.attributeValue[ attribute ] === newValue.toLowerCase()
         })
 
         if( newVariation.length )

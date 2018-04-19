@@ -9,7 +9,9 @@ import { TaxFreePrompt } from "../tax_free_prompt"
 import { Totals } from "./totals"
 import { Item } from "./item"
 
-const Confirm = ({ labels, dispatch, data, order, settings, ...props }) => {
+const Confirm = props => {
+
+    const { labels, dispatch, data, order, settings } = props
 
     const {
         order_checkout_url,

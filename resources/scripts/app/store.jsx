@@ -35,8 +35,10 @@ locally_stored_data.order.order_cart            = cw__config.order.order_cart
 /**
  * In case someone is stuck in a loading state after a failed request clear loading state.
  */
-locally_stored_data.data.loading = false
-locally_stored_data.data.modal_loading = false
+locally_stored_data.data.loading                = false
+locally_stored_data.data.modal_loading          = false
+locally_stored_data.data.show_product_options   = null
+locally_stored_data.data.update_grouped_products= null
 
 /**
  * Validate the location is in the wp_post table.

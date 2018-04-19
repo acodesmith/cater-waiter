@@ -33,7 +33,7 @@ export const renderField = ({ input, label, type, placeholder, hint, className =
 
 export const renderSelect = ({input, label, options, name, id, className, hint, meta: { touched, error, warning }}) => {
 
-    const { onChange, onBlur, value } = input
+    const { onChange, onBlur, value = { value } } = input
 
     return (
         <div className={`cw__form_field ${className}`}>

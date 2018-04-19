@@ -14,6 +14,7 @@ jQuery(function(){
         if( typeof cw__config !== 'undefined' ) {
 
             clearInterval( cw__config_watcher );
+            createModalDiv();
             runApp();
         }
 
@@ -25,3 +26,10 @@ jQuery(function(){
 
     }, 300 );
 });
+
+// Used with ReactDOM.portal to render modal in better DOM location
+const createModalDiv =  () => {
+    jQuery(document.createElement('div')).attr({
+        id: 'cw__modal_wrapper'
+    }).appendTo(jQuery('body'));
+}

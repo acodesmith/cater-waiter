@@ -907,6 +907,10 @@ li.rc-time-picker-panel-select-option-disabled:hover {
   #cater_waiter__react_base .modal .modal-dialog {
     margin-top: 10vh; }
 
+.cw__modal.modal {
+  background: rgba(0, 0, 0, 0.81);
+  position: absolute; }
+
 .cw__cart .cw__category:first-child h3 {
   margin-top: 1rem; }
 

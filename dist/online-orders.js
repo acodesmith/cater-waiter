@@ -59029,7 +59029,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
                 var newVariation = variations.filter(function (variation) {
-                    return typeof variation.attributeValue[attribute] !== 'undefined' && variation.attributeValue[attribute] === newValue.toLowerCase();
+                    return variation.attributeValue && typeof variation.attributeValue[attribute] !== 'undefined' && variation.attributeValue[attribute] === newValue.toLowerCase();
                 });
 
                 if (newVariation.length) dispatch((0, _reduxForm.change)(_constansts.FORM_ADD_PRODUCT_TO_CART, 'items[' + itemIndex + '].variation_id', newVariation[0].variation_id));
@@ -59335,6 +59335,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             if (typeof cw__config !== 'undefined') {
 
                 clearInterval(cw__config_watcher);
+                createModalDiv();
                 (0, _index2.default)();
             }
 
@@ -59344,6 +59345,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             if (cw__watcher_count > 100) clearInterval(cw__config_watcher);
         }, 300);
     });
+
+    // Used with ReactDOM.portal to render modal in better DOM location
+    var createModalDiv = function createModalDiv() {
+        jQuery(document.createElement('div')).attr({
+            id: 'cw__modal_wrapper'
+        }).appendTo(jQuery('body'));
+    };
 });
 
 /***/ }),
@@ -78320,6 +78328,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
    */
   locally_stored_data.data.loading = false;
   locally_stored_data.data.modal_loading = false;
+  locally_stored_data.data.show_product_options = null;
+  locally_stored_data.data.update_grouped_products = null;
 
   /**
    * Validate the location is in the wp_post table.
@@ -88026,7 +88036,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             warning = _ref3$meta.warning;
         var _onChange = input.onChange,
             _onBlur = input.onBlur,
-            value = input.value;
+            _input$value = input.value,
+            value = _input$value === undefined ? { value: value } : _input$value;
 
 
         return _react2.default.createElement(
@@ -107865,28 +107876,26 @@ module.exports = exports['default'];
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(315), __webpack_require__(2), __webpack_require__(20), __webpack_require__(18), __webpack_require__(6), __webpack_require__(800), __webpack_require__(801), __webpack_require__(802)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(20), __webpack_require__(18), __webpack_require__(6), __webpack_require__(800), __webpack_require__(801), __webpack_require__(802)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('babel-runtime/helpers/objectWithoutProperties'), require('react'), require('../../components'), require('../../elements/button_no_event'), require('../../../utilities'), require('../tax_free_prompt'), require('./totals'), require('./item'));
+        factory(exports, require('react'), require('../../components'), require('../../elements/button_no_event'), require('../../../utilities'), require('../tax_free_prompt'), require('./totals'), require('./item'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.objectWithoutProperties, global.react, global.components, global.button_no_event, global.utilities, global.tax_free_prompt, global.totals, global.item);
+        factory(mod.exports, global.react, global.components, global.button_no_event, global.utilities, global.tax_free_prompt, global.totals, global.item);
         global.index = mod.exports;
     }
-})(this, function (exports, _objectWithoutProperties2, _react, _components, _button_no_event, _utilities, _tax_free_prompt, _totals, _item) {
+})(this, function (exports, _react, _components, _button_no_event, _utilities, _tax_free_prompt, _totals, _item) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
     exports.Confirm = undefined;
-
-    var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
 
     var _react2 = _interopRequireDefault(_react);
 
@@ -107896,13 +107905,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         };
     }
 
-    var Confirm = function Confirm(_ref) {
-        var labels = _ref.labels,
-            dispatch = _ref.dispatch,
-            data = _ref.data,
-            order = _ref.order,
-            settings = _ref.settings,
-            props = (0, _objectWithoutProperties3.default)(_ref, ['labels', 'dispatch', 'data', 'order', 'settings']);
+    var Confirm = function Confirm(props) {
+        var labels = props.labels,
+            dispatch = props.dispatch,
+            data = props.data,
+            order = props.order,
+            settings = props.settings;
         var order_checkout_url = order.order_checkout_url,
             _order$order_cart = order.order_cart,
             order_cart = _order$order_cart === undefined ? {
@@ -109804,17 +109812,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 });
 
                 return _react2.default.createElement(
-                    'div',
-                    { className: 'cw__update_grouped_products' },
+                    _index.Modal,
+                    {
+                        display_footer: false,
+                        loading: modal_loading,
+                        loading_message: modal_loading_message,
+                        loading_default_message: this.props.labels.loading,
+                        heading: _lodash2.default.upperFirst(update) + ' ' + product.name + ' ' + _lodash2.default.upperFirst(items_label),
+                        close: close },
                     _react2.default.createElement(
-                        _index.Modal,
-                        {
-                            display_footer: false,
-                            loading: modal_loading,
-                            loading_message: modal_loading_message,
-                            loading_default_message: this.props.labels.loading,
-                            heading: _lodash2.default.upperFirst(update) + ' ' + product.name + ' ' + _lodash2.default.upperFirst(items_label),
-                            close: close },
+                        'div',
+                        { className: 'cw__update_grouped_products' },
                         _react2.default.createElement(_update_cart_items2.default, {
                             labels: this.props.labels,
                             items: items.filter(isPartOfGroup),
@@ -110077,20 +110085,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(28), __webpack_require__(7), __webpack_require__(10), __webpack_require__(8), __webpack_require__(9), __webpack_require__(2), __webpack_require__(14), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('prop-types'));
+        factory(exports, require('babel-runtime/core-js/object/get-prototype-of'), require('babel-runtime/helpers/classCallCheck'), require('babel-runtime/helpers/createClass'), require('babel-runtime/helpers/possibleConstructorReturn'), require('babel-runtime/helpers/inherits'), require('react'), require('react-dom'), require('prop-types'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.propTypes);
+        factory(mod.exports, global.getPrototypeOf, global.classCallCheck, global.createClass, global.possibleConstructorReturn, global.inherits, global.react, global.reactDom, global.propTypes);
         global.modal = mod.exports;
     }
-})(this, function (exports, _react, _propTypes) {
+})(this, function (exports, _getPrototypeOf, _classCallCheck2, _createClass2, _possibleConstructorReturn2, _inherits2, _react, _reactDom, _propTypes) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -110098,7 +110106,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     });
     exports.Modal = undefined;
 
+    var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+    var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+    var _createClass3 = _interopRequireDefault(_createClass2);
+
+    var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+    var _inherits3 = _interopRequireDefault(_inherits2);
+
     var _react2 = _interopRequireDefault(_react);
+
+    var _reactDom2 = _interopRequireDefault(_reactDom);
 
     var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -110108,95 +110128,141 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         };
     }
 
-    var Modal = function Modal(_ref) {
-        var children = _ref.children,
-            close = _ref.close,
-            display_footer = _ref.display_footer,
-            loading = _ref.loading,
-            loading_message = _ref.loading_message,
-            loading_default_message = _ref.loading_default_message,
-            heading = _ref.heading,
-            heading_format = _ref.heading_format;
-        return _react2.default.createElement(
-            'div',
-            { className: 'modal fade in', tabIndex: '-1', style: { display: 'block' }, role: 'dialog' },
-            _react2.default.createElement(
-                'div',
-                { className: 'modal-dialog modal-lg', role: 'document' },
-                _react2.default.createElement(
+    var Modal = function (_Component) {
+        (0, _inherits3.default)(Modal, _Component);
+
+        function Modal() {
+            var _ref;
+
+            var _temp, _this, _ret;
+
+            (0, _classCallCheck3.default)(this, Modal);
+
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
+
+            return _ret = (_temp = (_this = (0, _possibleConstructorReturn3.default)(this, (_ref = Modal.__proto__ || (0, _getPrototypeOf2.default)(Modal)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+                body_height: null
+            }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
+        }
+
+        (0, _createClass3.default)(Modal, [{
+            key: 'componentWillMount',
+            value: function componentWillMount() {
+                this.setState({
+                    body_height: jQuery('body').height()
+                });
+            }
+        }, {
+            key: 'render',
+            value: function render() {
+                var _props = this.props,
+                    children = _props.children,
+                    close = _props.close,
+                    display_footer = _props.display_footer,
+                    loading = _props.loading,
+                    loading_message = _props.loading_message,
+                    loading_default_message = _props.loading_default_message,
+                    heading = _props.heading,
+                    heading_format = _props.heading_format;
+                var body_height = this.state.body_height;
+
+
+                var styles = {
+                    display: 'block'
+                };
+
+                if (body_height) {
+                    styles.height = body_height + 'px';
+                }
+
+                var window_scroll_top = jQuery(window).scrollTop();
+
+                return _reactDom2.default.createPortal(_react2.default.createElement(
                     'div',
-                    { className: 'modal-content' },
-                    loading && _react2.default.createElement(
+                    { className: 'cw__modal modal fade in', tabIndex: '-1', style: styles, role: 'dialog' },
+                    _react2.default.createElement(
                         'div',
-                        { className: 'cw__modal_loading' },
+                        { className: 'modal-dialog modal-lg', role: 'document', style: { marginTop: window_scroll_top + 100 + 'px' } },
                         _react2.default.createElement(
                             'div',
-                            { className: 'cw__modal_loading_content' },
-                            loading_message ? loading_message : loading_default_message
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'modal-header' },
-                        _react2.default.createElement(
-                            'button',
-                            {
-                                type: 'button',
-                                className: 'close',
-                                'data-dismiss': 'modal',
-                                onClick: close,
-                                'aria-label': 'Close' },
+                            { className: 'modal-content' },
+                            loading && _react2.default.createElement(
+                                'div',
+                                { className: 'cw__modal_loading' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'cw__modal_loading_content' },
+                                    loading_message ? loading_message : loading_default_message
+                                )
+                            ),
                             _react2.default.createElement(
-                                'span',
-                                { 'aria-hidden': 'true' },
-                                '\xD7'
+                                'div',
+                                { className: 'modal-header' },
+                                _react2.default.createElement(
+                                    'button',
+                                    {
+                                        type: 'button',
+                                        className: 'close',
+                                        'data-dismiss': 'modal',
+                                        onClick: close,
+                                        'aria-label': 'Close' },
+                                    _react2.default.createElement(
+                                        'span',
+                                        { 'aria-hidden': 'true' },
+                                        '\xD7'
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    'h4',
+                                    { className: 'modal-title' },
+                                    function () {
+                                        switch (heading_format) {
+                                            case 'html':
+                                                return _react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: heading } });
+                                            case 'string':
+                                            default:
+                                                return heading;
+                                        }
+                                    }()
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'modal-body' },
+                                children
+                            ),
+                            display_footer && _react2.default.createElement(
+                                'div',
+                                { className: 'modal-footer' },
+                                _react2.default.createElement(
+                                    'button',
+                                    {
+                                        type: 'button',
+                                        className: 'btn btn-default',
+                                        onClick: close,
+                                        'data-dismiss': 'modal' },
+                                    'Close'
+                                )
                             )
-                        ),
-                        _react2.default.createElement(
-                            'h4',
-                            { className: 'modal-title' },
-                            function () {
-                                switch (heading_format) {
-                                    case 'html':
-                                        return _react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: heading } });
-                                    case 'string':
-                                    default:
-                                        return heading;
-                                }
-                            }()
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'modal-body' },
-                        children
-                    ),
-                    display_footer && _react2.default.createElement(
-                        'div',
-                        { className: 'modal-footer' },
-                        _react2.default.createElement(
-                            'button',
-                            {
-                                type: 'button',
-                                className: 'btn btn-default',
-                                onClick: close,
-                                'data-dismiss': 'modal' },
-                            'Close'
                         )
                     )
-                )
-            )
-        );
-    };
-
-    Modal.propTypes = {
-        close: _propTypes2.default.func.isRequired
-    };
+                ), document.getElementById('cw__modal_wrapper'));
+            }
+        }]);
+        return Modal;
+    }(_react.Component);
 
     Modal.defaultProps = {
         display_footer: true,
         heading_format: 'string',
         loading: false
+    };
+
+
+    Modal.propTypes = {
+        close: _propTypes2.default.func.isRequired
     };
 
     exports.Modal = Modal;

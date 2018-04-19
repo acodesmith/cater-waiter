@@ -69,14 +69,14 @@ class UpdateGroupedProducts extends Component{
         })
 
         return (
-            <div className="cw__update_grouped_products">
-                <Modal
-                    display_footer={false}
-                    loading={modal_loading}
-                    loading_message={modal_loading_message}
-                    loading_default_message={this.props.labels.loading}
-                    heading={`${_.upperFirst(update)} ${product.name} ${_.upperFirst(items_label)}`}
-                    close={close}>
+            <Modal
+                display_footer={false}
+                loading={modal_loading}
+                loading_message={modal_loading_message}
+                loading_default_message={this.props.labels.loading}
+                heading={`${_.upperFirst(update)} ${product.name} ${_.upperFirst(items_label)}`}
+                close={close}>
+                <div className="cw__update_grouped_products">
                     <FormUpdateCartItems
                         labels={this.props.labels}
                         items={items.filter(isPartOfGroup)}
@@ -87,8 +87,8 @@ class UpdateGroupedProducts extends Component{
                             dispatch( updateCartItems( values, update_cart_items, updating_cart ) )
                         }}
                     />
-                </Modal>
-            </div>
+                </div>
+            </Modal>
         )
     }
 }
