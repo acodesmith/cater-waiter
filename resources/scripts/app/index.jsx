@@ -11,9 +11,9 @@ import { ErrorBoundary } from './components'
 const state = store.getState()
 
 const { order } = state
-    , { order_location = { id } } = order
+    , { order_location = { id: null } } = order
 
-if( order_location )
+if( order_location && order_location.id )
     set_tax_session( order_location.id )
 
 /**

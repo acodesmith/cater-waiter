@@ -1,7 +1,10 @@
 /*global cw__config*/
-
+import moment from 'moment'
 import createStore from '../configs/store'
-import { LOCAL_STORAGE_KEY } from '../constansts/local_storage'
+import {
+    LOCAL_STORAGE_KEY,
+    LOCAL_STORAGE_DATE
+} from '../constansts/local_storage'
 import {
     storeLocal,
     retrieve,
@@ -60,6 +63,18 @@ if( order_location && locations.length ) {
 }
 
 /**
+ * Check the storage_lifespan setting.
+ * If expired then remove the store.
+ */
+const { storage_lifespan = 2 } = cw__config.settings
+const last_interaction = moment(window.localStorage.getItem(LOCAL_STORAGE_DATE), "YYYY-MM-DD")
+const expired = moment().diff(last_interaction, 'days') > storage_lifespan
+
+if(expired) {
+    locally_stored_data = cw__config
+}
+
+/**
  * Create the Redux Store
  */
 const store = createStore(locally_stored_data)
@@ -70,6 +85,9 @@ const store = createStore(locally_stored_data)
  */
 store.subscribe(() => {
     storeLocal(LOCAL_STORAGE_KEY, store.getState())
+    storeLocal(LOCAL_STORAGE_DATE, moment().format("YYYY-MM-DD"))
 })
+
+window.moment = moment;
 
 export { store }

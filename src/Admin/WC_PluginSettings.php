@@ -137,6 +137,12 @@ class WC_PluginSettings {
 				'desc' => __( 'Text appearing when a user selects "Are you a tax-exempt organization?"', 'cater_waiter' ),
 				'id'   => 'wc_settings_woofranchise_tax_free_prompt',
 			),
+			'storage_lifespan' => array(
+				'name' => __( 'Storage Lifespan', 'cater_waiter' ),
+				'type' => 'number',
+				'desc' => __( 'Number of days to store incomplete user data in the user browser. For example, 2 would mean the user could return for 2 days and their information would be still active.', 'cater_waiter' ),
+				'id'   => 'wc_settings_cater_waiter_storage_lifespan',
+			),
 			'section_end'                      => array(
 				'type' => 'sectionend',
 				'id'   => 'wc_settings_cater_waiter_section_end'
