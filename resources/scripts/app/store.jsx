@@ -8,6 +8,7 @@ import {
 import {
     storeLocal,
     retrieve,
+    clearCart,
     getLocationPostById
 } from '../utilities/'
 
@@ -72,6 +73,7 @@ const expired = moment().diff(last_interaction, 'days') > storage_lifespan
 
 if(expired) {
     locally_stored_data = cw__config
+    clearCart()
 }
 
 /**
