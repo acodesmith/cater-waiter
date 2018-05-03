@@ -10,6 +10,10 @@ class Order
 
 	const ORDER_INFO        = 'order_info';
 
+	const TYPE_PICKUP       = 'pickup';
+
+	const TYPE_DELIVERY     = 'delivery';
+
     public function __construct()
     {
         add_action( 'wp_ajax_set_tax_by_location', [ $this, 'set_tax_by_location' ] );
@@ -21,9 +25,12 @@ class Order
 
     public function set_tax_by_location()
     {
-    	$session = \WC()->session;
+    	if( empty( \WC()->session ) ) {
+		    $session_class  = apply_filters( 'woocommerce_session_handler', 'WC_Session_Handler' );
+		    \WC()->session  = new $session_class();
+	    }
 
-    	if( $session ) {
+    	if( \WC()->session && ! empty( $_REQUEST['location_id'] ) ) {
 		    \WC()->session->set( self::TAX_LOCATION_ID, $_REQUEST['location_id'] );
 
 		    wp_send_json([
@@ -33,7 +40,7 @@ class Order
 	    }else{
 		    wp_send_json([
 			    'success' => false,
-			    'error' => 'WC Session not running.',
+			    'error' => 'Missing location_id',
 		    ]);
 	    }
 

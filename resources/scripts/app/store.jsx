@@ -27,7 +27,6 @@ let locally_stored_data = Object.assign({}, cw__config, retrieve(LOCAL_STORAGE_K
 locally_stored_data.labels                      = cw__config.labels
 locally_stored_data.request                     = cw__config.request
 locally_stored_data.data                        = locally_stored_data.data ? locally_stored_data.data : {}
-//locally_stored_data.data.locations              = cw__config.data.locations
 locally_stored_data.data.products               = cw__config.data.products
 locally_stored_data.data.location_posts         = cw__config.data.location_posts
 locally_stored_data.data.grouped_products       = cw__config.data.grouped_products
@@ -65,7 +64,7 @@ if( order_location && locations.length ) {
 
 /**
  * Check the storage_lifespan setting.
- * If expired then remove the store.
+ * If expired then clear certain fields.
  */
 const { storage_lifespan = 2 } = cw__config.settings
 const last_interaction = moment(window.localStorage.getItem(LOCAL_STORAGE_DATE), "YYYY-MM-DD")
@@ -100,7 +99,5 @@ store.subscribe(() => {
     storeLocal(LOCAL_STORAGE_KEY, store.getState())
     storeLocal(LOCAL_STORAGE_DATE, moment().format("YYYY-MM-DD"))
 })
-
-window.moment = moment;
 
 export { store }

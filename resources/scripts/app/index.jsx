@@ -4,17 +4,37 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux'
 import { store } from "./store"
-import { set_tax_session } from "../utilities/taxes"
-import App from './app'
 import { ErrorBoundary } from './components'
+import { setCart } from '../constansts'
+import {
+    setTaxSessionRequest,
+    syncOrderDataToSession,
+    getCart
+} from "../utilities/"
+import App from './app'
 
-const state = store.getState()
+const { getState, dispatch } = store
+const state = getState()
 
 const { order } = state
     , { order_location = { id: null } } = order
 
-if( order_location && order_location.id )
-    set_tax_session( order_location.id )
+if( order && order_location && order_location.id ) {
+    syncOrderDataToSession( order )
+        .then(() => {
+
+            const { order } = state
+            const { order_location = { id: null } } = order
+
+            return setTaxSessionRequest(order_location.id)
+        })
+        .then(() => {
+            return getCart()
+        })
+        .then(result => {
+            return dispatch(setCart(result.cart))
+        })
+}
 
 /**
  * Run the main application.

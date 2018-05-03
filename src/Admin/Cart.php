@@ -73,8 +73,11 @@ class Cart
 
     public function clear_cart()
     {
-	     global $woocommerce;
-	     $woocommerce->cart->empty_cart();
+	    $woocommerce = \WC();
+	    $woocommerce->cart->empty_cart();
+
+	    if(! empty( $woocommerce->session ) )
+	        $woocommerce->session->set( Order::ORDER_INFO, null );
 
 	    wp_send_json([
 		    'success' => true,
@@ -89,6 +92,9 @@ class Cart
     {
 	    $cart = \WC()->cart;
 	    $cart_items = [];
+
+	    \WC()->cart->calculate_totals();
+	    \WC()->cart->calculate_fees();
 
 	    foreach ( WC()->cart->get_cart() as $cart_item ) {
 		    $cart_items[] = $cart_item;

@@ -9,13 +9,15 @@ import {
     setLocation,
     clearNotification,
     loadingToggle,
-    setError
+    setError,
+    setCart
 } from '../constansts/'
 import {
     extractDataFromResults,
     getLocationsFromZip,
     getLocationFromId,
-    setTaxRateBasedOnLocation
+    setTaxRateBasedOnLocation,
+    getCart
 } from '../utilities/'
 
 /**
@@ -90,6 +92,8 @@ export const selectLocation = (location, loading_message) => {
                 return dispatch(setLocation(location))
             })
             .then(() => setTaxRateBasedOnLocation( id ))
+            .then(() => getCart())
+            .then((result) => dispatch( setCart(result.cart) ))
             .then(() => dispatch( loadingToggle() ))
             .then(() => dispatch(setCurrentScreen(VIEW_SCHEDULE_ORDER)))
     }
