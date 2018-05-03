@@ -69,12 +69,23 @@ if( order_location && locations.length ) {
  */
 const { storage_lifespan = 2 } = cw__config.settings
 const last_interaction = moment(window.localStorage.getItem(LOCAL_STORAGE_DATE), "YYYY-MM-DD")
-const expired = moment().diff(last_interaction, 'days') > storage_lifespan
 
-if(expired) {
-    locally_stored_data = cw__config
-    clearCart()
+
+if(last_interaction) {
+    const expired = moment().diff(last_interaction, 'days') > storage_lifespan
+
+    if(expired) {
+        locally_stored_data = cw__config
+        locally_stored_data.order.order_cart = {
+            items: [],
+            subtotal: 0,
+            tax: 0,
+            total: "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&#36;</span>0.00</span>"
+        }
+        clearCart()
+    }
 }
+
 
 /**
  * Create the Redux Store

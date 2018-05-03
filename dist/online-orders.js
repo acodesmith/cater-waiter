@@ -78245,125 +78245,134 @@ function verifySubselectors(mapStateToProps, mapDispatchToProps, mergeProps, dis
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(24), __webpack_require__(1), __webpack_require__(491), __webpack_require__(292), __webpack_require__(9)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(24), __webpack_require__(1), __webpack_require__(491), __webpack_require__(292), __webpack_require__(9)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else if (typeof exports !== "undefined") {
-    factory(exports, require('babel-runtime/core-js/object/assign'), require('moment'), require('../configs/store'), require('../constansts/local_storage'), require('../utilities/'));
-  } else {
-    var mod = {
-      exports: {}
-    };
-    factory(mod.exports, global.assign, global.moment, global.store, global.local_storage, global.utilities);
-    global.store = mod.exports;
-  }
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('babel-runtime/core-js/object/assign'), require('moment'), require('../configs/store'), require('../constansts/local_storage'), require('../utilities/'));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.assign, global.moment, global.store, global.local_storage, global.utilities);
+        global.store = mod.exports;
+    }
 })(this, function (exports, _assign, _moment, _store, _local_storage, _utilities) {
-  'use strict';
+    'use strict';
 
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.store = undefined;
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.store = undefined;
 
-  var _assign2 = _interopRequireDefault(_assign);
+    var _assign2 = _interopRequireDefault(_assign);
 
-  var _moment2 = _interopRequireDefault(_moment);
+    var _moment2 = _interopRequireDefault(_moment);
 
-  var _store2 = _interopRequireDefault(_store);
+    var _store2 = _interopRequireDefault(_store);
 
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  /**
-   * Retrieve the locally stored data to rehydrate the redux application.
-   * Only use part of the locally stored data in case labels or settings
-   * have changed.
-   *
-   * @type {*}
-   */
-  /*global cw__config*/
-  var locally_stored_data = (0, _assign2.default)({}, cw__config, (0, _utilities.retrieve)(_local_storage.LOCAL_STORAGE_KEY));
-
-  /**
-   * Always pull most recent labels, products and cart data
-   */
-  locally_stored_data.labels = cw__config.labels;
-  locally_stored_data.request = cw__config.request;
-  locally_stored_data.data = locally_stored_data.data ? locally_stored_data.data : {};
-  //locally_stored_data.data.locations              = cw__config.data.locations
-  locally_stored_data.data.products = cw__config.data.products;
-  locally_stored_data.data.location_posts = cw__config.data.location_posts;
-  locally_stored_data.data.grouped_products = cw__config.data.grouped_products;
-  locally_stored_data.data.catering_categories = cw__config.data.catering_categories;
-  locally_stored_data.settings = cw__config.settings;
-  locally_stored_data.order = locally_stored_data.order ? locally_stored_data.order : {};
-  locally_stored_data.order.order_cart = cw__config.order.order_cart;
-
-  /**
-   * In case someone is stuck in a loading state after a failed request clear loading state.
-   */
-  locally_stored_data.data.loading = false;
-  locally_stored_data.data.modal_loading = false;
-  locally_stored_data.data.show_product_options = null;
-  locally_stored_data.data.update_grouped_products = null;
-
-  /**
-   * Validate the location is in the wp_post table.
-   */
-  var order_location = locally_stored_data.order.order_location,
-      locations = cw__config.data.locations;
-
-
-  if (order_location && locations.length) {
-    var location = (0, _utilities.getLocationPostById)(order_location.id, locations);
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
 
     /**
-     * The stored location data does not match what is in the wp_post table.
-     * Clear the order data and view data to trigger a restart.
+     * Retrieve the locally stored data to rehydrate the redux application.
+     * Only use part of the locally stored data in case labels or settings
+     * have changed.
+     *
+     * @type {*}
      */
-    if (!location) {
-      locally_stored_data.order = cw__config.order;
-      locally_stored_data.view = cw__config.view;
+    /*global cw__config*/
+    var locally_stored_data = (0, _assign2.default)({}, cw__config, (0, _utilities.retrieve)(_local_storage.LOCAL_STORAGE_KEY));
+
+    /**
+     * Always pull most recent labels, products and cart data
+     */
+    locally_stored_data.labels = cw__config.labels;
+    locally_stored_data.request = cw__config.request;
+    locally_stored_data.data = locally_stored_data.data ? locally_stored_data.data : {};
+    //locally_stored_data.data.locations              = cw__config.data.locations
+    locally_stored_data.data.products = cw__config.data.products;
+    locally_stored_data.data.location_posts = cw__config.data.location_posts;
+    locally_stored_data.data.grouped_products = cw__config.data.grouped_products;
+    locally_stored_data.data.catering_categories = cw__config.data.catering_categories;
+    locally_stored_data.settings = cw__config.settings;
+    locally_stored_data.order = locally_stored_data.order ? locally_stored_data.order : {};
+    locally_stored_data.order.order_cart = cw__config.order.order_cart;
+
+    /**
+     * In case someone is stuck in a loading state after a failed request clear loading state.
+     */
+    locally_stored_data.data.loading = false;
+    locally_stored_data.data.modal_loading = false;
+    locally_stored_data.data.show_product_options = null;
+    locally_stored_data.data.update_grouped_products = null;
+
+    /**
+     * Validate the location is in the wp_post table.
+     */
+    var order_location = locally_stored_data.order.order_location,
+        locations = cw__config.data.locations;
+
+
+    if (order_location && locations.length) {
+        var location = (0, _utilities.getLocationPostById)(order_location.id, locations);
+
+        /**
+         * The stored location data does not match what is in the wp_post table.
+         * Clear the order data and view data to trigger a restart.
+         */
+        if (!location) {
+            locally_stored_data.order = cw__config.order;
+            locally_stored_data.view = cw__config.view;
+        }
     }
-  }
 
-  /**
-   * Check the storage_lifespan setting.
-   * If expired then remove the store.
-   */
-  var _cw__config$settings$ = cw__config.settings.storage_lifespan,
-      storage_lifespan = _cw__config$settings$ === undefined ? 2 : _cw__config$settings$;
+    /**
+     * Check the storage_lifespan setting.
+     * If expired then remove the store.
+     */
+    var _cw__config$settings$ = cw__config.settings.storage_lifespan,
+        storage_lifespan = _cw__config$settings$ === undefined ? 2 : _cw__config$settings$;
 
-  var last_interaction = (0, _moment2.default)(window.localStorage.getItem(_local_storage.LOCAL_STORAGE_DATE), "YYYY-MM-DD");
-  var expired = (0, _moment2.default)().diff(last_interaction, 'days') > storage_lifespan;
+    var last_interaction = (0, _moment2.default)(window.localStorage.getItem(_local_storage.LOCAL_STORAGE_DATE), "YYYY-MM-DD");
 
-  if (expired) {
-    locally_stored_data = cw__config;
-    (0, _utilities.clearCart)();
-  }
+    if (last_interaction) {
+        var expired = (0, _moment2.default)().diff(last_interaction, 'days') > storage_lifespan;
 
-  /**
-   * Create the Redux Store
-   */
-  var store = (0, _store2.default)(locally_stored_data);
+        if (expired) {
+            locally_stored_data = cw__config;
+            locally_stored_data.order.order_cart = {
+                items: [],
+                subtotal: 0,
+                tax: 0,
+                total: "<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&#36;</span>0.00</span>"
+            };
+            (0, _utilities.clearCart)();
+        }
+    }
 
-  /**
-   * Subscribe to Redux changes then write
-   * state to the localStorage
-   */
-  store.subscribe(function () {
-    (0, _utilities.storeLocal)(_local_storage.LOCAL_STORAGE_KEY, store.getState());
-    (0, _utilities.storeLocal)(_local_storage.LOCAL_STORAGE_DATE, (0, _moment2.default)().format("YYYY-MM-DD"));
-  });
+    /**
+     * Create the Redux Store
+     */
+    var store = (0, _store2.default)(locally_stored_data);
 
-  window.moment = _moment2.default;
+    /**
+     * Subscribe to Redux changes then write
+     * state to the localStorage
+     */
+    store.subscribe(function () {
+        (0, _utilities.storeLocal)(_local_storage.LOCAL_STORAGE_KEY, store.getState());
+        (0, _utilities.storeLocal)(_local_storage.LOCAL_STORAGE_DATE, (0, _moment2.default)().format("YYYY-MM-DD"));
+    });
 
-  exports.store = store;
+    window.moment = _moment2.default;
+
+    exports.store = store;
 });
 
 /***/ }),
