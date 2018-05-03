@@ -823,7 +823,12 @@ li.rc-time-picker-panel-select-option-disabled:hover {
   padding: .6em;
   -webkit-appearance: none; }
 
-.cw__button_back {
+.cw__back_buttons_top .cw__clear_data,
+.cw__back_buttons .cw__clear_data {
+  background: black;
+  font-size: 14px;
+  padding: 10px 50px 10px 50px;
+  margin-left: 1rem;
   /* Mobile Devices for Mice */
   /* Landscape phones and down */
   /* Landscape phone to portrait tablet */
@@ -835,11 +840,36 @@ li.rc-time-picker-panel-select-option-disabled:hover {
   /* Portrait tablet to landscape and desktop */
   /* desktop and large desktop */ }
   @media (min-width: 768px) and (max-width: 991px) {
-    .cw__button_back {
+    .cw__back_buttons_top .cw__clear_data,
+    .cw__back_buttons .cw__clear_data {
+      margin: 1rem 0;
+      width: 100%; } }
+  @media (max-width: 767px) {
+    .cw__back_buttons_top .cw__clear_data,
+    .cw__back_buttons .cw__clear_data {
+      margin: 1rem 0;
+      width: 100%; } }
+
+.cw__back_buttons_top {
+  margin-bottom: 2rem; }
+
+.cw__back_buttons {
+  /* Mobile Devices for Mice */
+  /* Landscape phones and down */
+  /* Landscape phone to portrait tablet */
+  /* Portrait tablet to landscape and desktop */
+  /* desktop and large desktop */
+  /* Mobile Devices for Mice */
+  /* Landscape phones and down */
+  /* Landscape phone to portrait tablet */
+  /* Portrait tablet to landscape and desktop */
+  /* desktop and large desktop */ }
+  @media (min-width: 768px) and (max-width: 991px) {
+    .cw__back_buttons {
       margin-top: 0 !important;
       width: 100%; } }
   @media (max-width: 767px) {
-    .cw__button_back {
+    .cw__back_buttons {
       margin-top: 0 !important;
       width: 100%; } }
 
@@ -1233,8 +1263,29 @@ li.rc-time-picker-panel-select-option-disabled:hover {
       .cw__cart .sticky .cw__order_details_mobile {
         visibility: visible; } }
 
-.cw__back_button_top {
-  margin-bottom: 2rem; }
+.cw__order_details .cw__buttons .cw__clear_data {
+  background: black;
+  font-size: 14px;
+  margin: 2rem auto;
+  width: 70%;
+  /* Mobile Devices for Mice */
+  /* Landscape phones and down */
+  /* Landscape phone to portrait tablet */
+  /* Portrait tablet to landscape and desktop */
+  /* desktop and large desktop */
+  /* Mobile Devices for Mice */
+  /* Landscape phones and down */
+  /* Landscape phone to portrait tablet */
+  /* Portrait tablet to landscape and desktop */
+  /* desktop and large desktop */ }
+  @media (min-width: 768px) and (max-width: 991px) {
+    .cw__order_details .cw__buttons .cw__clear_data {
+      display: block;
+      width: auto; } }
+  @media (max-width: 767px) {
+    .cw__order_details .cw__buttons .cw__clear_data {
+      display: block;
+      width: auto; } }
 
 .cw__product_options .modal-title .cw__product_price {
   color: #9e9e9e;

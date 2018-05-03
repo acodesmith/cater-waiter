@@ -1,14 +1,17 @@
 import React, {Component} from 'react'
-import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { IconHelp } from "../elements/icon_help"
 import { Button } from '../elements/button_no_event'
-    import {
+import {
     ORDER_TYPE_PICKUP,
     VIEW_CONFIRM,
     setCurrentScreen,
     showHelpInfo
 } from '../../constansts/'
+import {
+    clearData,
+    clearCart
+} from '../../utilities'
 import {
     OrderType,
     PickupLocation,
@@ -45,7 +48,9 @@ class OrderDetails extends Component {
             dispatch,
             labels: {
                 order_details_title,
-                review_order_button
+                review_order_button,
+                delete_cart,
+                delete_cart_confirmation
             },
             order: {
                 order_type,
@@ -73,12 +78,24 @@ class OrderDetails extends Component {
                 <MenuItems {...this.props} />
                 <div className="cw__buttons text-center">
                     { !!items.length &&
-                    <Button
-                        className='cw__review_order'
-                        onClick={() => { dispatch( setCurrentScreen( VIEW_CONFIRM ) ) }}
-                    >
-                        { review_order_button }
-                    </Button>
+                    <React.Fragment>
+                        <Button
+                            className='cw__review_order'
+                            onClick={() => { dispatch( setCurrentScreen( VIEW_CONFIRM ) ) }}
+                        >
+                            { review_order_button }
+                        </Button>
+                        <Button
+                            className='cw__clear_data'
+                            onClick={() => {
+                                const confirmation = confirm(delete_cart_confirmation)
+
+                                if(confirmation) {
+                                    clearCart().then(clearData)
+                                }
+                            }}
+                        >{delete_cart}</Button>
+                    </React.Fragment>
                     }
                 </div>
             </div>

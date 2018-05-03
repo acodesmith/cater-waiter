@@ -5,38 +5,44 @@ import {
     backToPreviousScreen,
     VIEW_CONFIRM
 } from '../../constansts/'
+import {
+    clearCart,
+    clearData
+} from '../../utilities'
 
-const displayMap = {
-    [VIEW_CONFIRM]: (label, action) => (
-        <Button
-            className="cw__button_continue_shopping"
-            onClick={action}
-        >
-            {label}
-        </Button>
-    )
-}
+const renderButtonBasedOnView = (view, dispatch, labels) => {
 
-const actionMap = {
-    [VIEW_CONFIRM]: dispatch => {
-        return () => { dispatch(backToPreviousScreen()) }
+    switch(view) {
+        case VIEW_CONFIRM:
+
+            const { continue_shopping, delete_cart, delete_cart_confirmation } = labels
+
+            return (
+                <React.Fragment>
+                    <Button
+                        className="cw__button_continue_shopping"
+                        onClick={() => {
+                            dispatch(backToPreviousScreen())
+                        }}
+                    >{continue_shopping}</Button>
+                    <Button
+                        className='cw__clear_data'
+                        onClick={() => {
+                            const confirmation = confirm(delete_cart_confirmation)
+
+                            if(confirmation) {
+                                clearCart().then(clearData)
+                            }
+                        }}
+                    >{delete_cart}</Button>
+                </React.Fragment>
+            )
     }
+
+    return null;
 }
 
-const labelMap = {
-    [VIEW_CONFIRM]: labels => {
-        return labels.continue_shopping
-    }
-}
-
-const renderButtonBasedOnView = (current, dispatch, labels) => {
-    return displayMap[current]
-        && actionMap[current]
-        && labelMap[current]
-        && displayMap[current](labelMap[current](labels), actionMap[current](dispatch))
-}
-
-let BackButton = ({ display, dispatch, children, current, labels, className = '' }) => {
+const BackButtonComponent = ({ display, dispatch, children, current, labels, className = '' }) => {
 
     if( ! display )
         return null
@@ -54,12 +60,12 @@ let BackButton = ({ display, dispatch, children, current, labels, className = ''
     )
 }
 
-BackButton = connect(
+const BackButton = connect(
     state => ({
         display: state.view.history.length,
         current: state.view.current,
         labels: state.labels
     })
-)(BackButton)
+)(BackButtonComponent)
 
 export { BackButton }

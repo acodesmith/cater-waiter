@@ -14,9 +14,11 @@ const App = props => (
         <div className="container-fluid">
             <div className="row">
                 <div className="col-sm-12">
-                    <BackButton className='cw__back_button_top'>
-                        Back
-                    </BackButton>
+                    <div className="cw__back_buttons_top">
+                        <BackButton className='cw__back_button_top'>
+                            Back
+                        </BackButton>
+                    </div>
                 </div>
             </div>
             <div className="row">
@@ -27,7 +29,9 @@ const App = props => (
             </div>
             <div className="row">
                 <div className="col-sm-12">
-                    <BackButton>Back</BackButton>
+                    <div className="cw__back_buttons">
+                        <BackButton>Back</BackButton>
+                    </div>
                 </div>
             </div>
         </div>

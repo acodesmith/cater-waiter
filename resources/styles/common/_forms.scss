@@ -42,7 +42,25 @@
 }
 
 //common back button
-.cw__button_back {
+.cw__back_buttons_top,
+.cw__back_buttons {
+  .cw__clear_data {
+    background: black;
+    font-size: 14px;
+    padding: 10px 50px 10px 50px;
+    margin-left: 1rem;
+
+    @include respondto(sm,xs) {
+      margin: 1rem 0;
+      width: 100%;
+    }
+  }
+}
+.cw__back_buttons_top {
+  margin-bottom: 2rem;
+}
+
+.cw__back_buttons {
   @include respondto(sm,xs) {
     margin-top: 0 !important;
     width: 100%;

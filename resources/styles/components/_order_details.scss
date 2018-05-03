@@ -54,6 +54,16 @@
   }
 }
 
-.cw__back_button_top {
-  margin-bottom: 2rem;
+.cw__order_details .cw__buttons {
+  .cw__clear_data {
+    background: black;
+    font-size: 14px;
+    margin: 2rem auto;
+    width: 70%;
+
+    @include respondto(sm,xs) {
+      display: block;
+      width: auto;
+    }
+  }
 }

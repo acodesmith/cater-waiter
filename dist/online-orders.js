@@ -45071,8 +45071,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var VIEW_SCHEDULE_ORDER = exports.VIEW_SCHEDULE_ORDER = 'schedule_order';
     var VIEW_CART = exports.VIEW_CART = 'cart';
     var VIEW_CONFIRM = exports.VIEW_CONFIRM = 'confirm';
-    // export const VIEW_CHECKOUT                  = 'checkout'
-    // export const VIEW_COMPLETE                  = 'complete'
 
     /*
      * action types
@@ -59242,7 +59240,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
 
     var ClearData = function ClearData(_ref) {
-        var need_help_clear_data = _ref.labels.need_help_clear_data;
+        var _ref$labels = _ref.labels,
+            need_help_clear_data = _ref$labels.need_help_clear_data,
+            delete_cart = _ref$labels.delete_cart,
+            delete_cart_confirmation = _ref$labels.delete_cart_confirmation;
         return _react2.default.createElement(
             'div',
             { className: 'cw__help_info_clear_data' },
@@ -59252,12 +59253,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 {
                     className: 'cw__clear_data',
                     onClick: function onClick() {
-                        (0, _utilities.clearCart)().then(function () {
-                            (0, _utilities.clearData)();
-                        });
+                        var confirmation = confirm(delete_cart_confirmation);
+
+                        if (confirmation) {
+                            (0, _utilities.clearCart)().then(_utilities.clearData);
+                        }
                     }
                 },
-                'Clear Data'
+                delete_cart
             )
         );
     };
@@ -105920,9 +105923,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         'div',
                         { className: 'col-sm-12' },
                         _react2.default.createElement(
-                            _containers.BackButton,
-                            { className: 'cw__back_button_top' },
-                            'Back'
+                            'div',
+                            { className: 'cw__back_buttons_top' },
+                            _react2.default.createElement(
+                                _containers.BackButton,
+                                { className: 'cw__back_button_top' },
+                                'Back'
+                            )
                         )
                     )
                 ),
@@ -105943,9 +105950,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         'div',
                         { className: 'col-sm-12' },
                         _react2.default.createElement(
-                            _containers.BackButton,
-                            null,
-                            'Back'
+                            'div',
+                            { className: 'cw__back_buttons' },
+                            _react2.default.createElement(
+                                _containers.BackButton,
+                                null,
+                                'Back'
+                            )
                         )
                     )
                 )
@@ -106034,28 +106045,26 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(80), __webpack_require__(2), __webpack_require__(17), __webpack_require__(18), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(2), __webpack_require__(17), __webpack_require__(18), __webpack_require__(5), __webpack_require__(9)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('babel-runtime/helpers/defineProperty'), require('react'), require('react-redux'), require('../elements/button_no_event'), require('../../constansts/'));
+        factory(exports, require('react'), require('react-redux'), require('../elements/button_no_event'), require('../../constansts/'), require('../../utilities'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.defineProperty, global.react, global.reactRedux, global.button_no_event, global.constansts);
+        factory(mod.exports, global.react, global.reactRedux, global.button_no_event, global.constansts, global.utilities);
         global.back_button = mod.exports;
     }
-})(this, function (exports, _defineProperty2, _react, _reactRedux, _button_no_event, _constansts) {
+})(this, function (exports, _react, _reactRedux, _button_no_event, _constansts, _utilities) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
     exports.BackButton = undefined;
-
-    var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 
     var _react2 = _interopRequireDefault(_react);
 
@@ -106065,32 +106074,49 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         };
     }
 
-    var displayMap = (0, _defineProperty3.default)({}, _constansts.VIEW_CONFIRM, function (label, action) {
-        return _react2.default.createElement(
-            _button_no_event.Button,
-            {
-                className: 'cw__button_continue_shopping',
-                onClick: action
-            },
-            label
-        );
-    });
+    var renderButtonBasedOnView = function renderButtonBasedOnView(view, dispatch, labels) {
 
-    var actionMap = (0, _defineProperty3.default)({}, _constansts.VIEW_CONFIRM, function (dispatch) {
-        return function () {
-            dispatch((0, _constansts.backToPreviousScreen)());
-        };
-    });
+        switch (view) {
+            case _constansts.VIEW_CONFIRM:
+                var continue_shopping = labels.continue_shopping,
+                    delete_cart = labels.delete_cart,
+                    delete_cart_confirmation = labels.delete_cart_confirmation;
 
-    var labelMap = (0, _defineProperty3.default)({}, _constansts.VIEW_CONFIRM, function (labels) {
-        return labels.continue_shopping;
-    });
 
-    var renderButtonBasedOnView = function renderButtonBasedOnView(current, dispatch, labels) {
-        return displayMap[current] && actionMap[current] && labelMap[current] && displayMap[current](labelMap[current](labels), actionMap[current](dispatch));
+                return _react2.default.createElement(
+                    _react2.default.Fragment,
+                    null,
+                    _react2.default.createElement(
+                        _button_no_event.Button,
+                        {
+                            className: 'cw__button_continue_shopping',
+                            onClick: function onClick() {
+                                dispatch((0, _constansts.backToPreviousScreen)());
+                            }
+                        },
+                        continue_shopping
+                    ),
+                    _react2.default.createElement(
+                        _button_no_event.Button,
+                        {
+                            className: 'cw__clear_data',
+                            onClick: function onClick() {
+                                var confirmation = confirm(delete_cart_confirmation);
+
+                                if (confirmation) {
+                                    (0, _utilities.clearCart)().then(_utilities.clearData);
+                                }
+                            }
+                        },
+                        delete_cart
+                    )
+                );
+        }
+
+        return null;
     };
 
-    var BackButton = function BackButton(_ref) {
+    var BackButtonComponent = function BackButtonComponent(_ref) {
         var display = _ref.display,
             dispatch = _ref.dispatch,
             children = _ref.children,
@@ -106119,13 +106145,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         );
     };
 
-    exports.BackButton = BackButton = (0, _reactRedux.connect)(function (state) {
+    var BackButton = (0, _reactRedux.connect)(function (state) {
         return {
             display: state.view.history.length,
             current: state.view.current,
             labels: state.labels
         };
-    })(BackButton);
+    })(BackButtonComponent);
 
     exports.BackButton = BackButton;
 });
@@ -110851,20 +110877,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(21), __webpack_require__(6), __webpack_require__(10), __webpack_require__(7), __webpack_require__(8), __webpack_require__(2), __webpack_require__(12), __webpack_require__(17), __webpack_require__(822), __webpack_require__(18), __webpack_require__(5), __webpack_require__(823)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(21), __webpack_require__(6), __webpack_require__(10), __webpack_require__(7), __webpack_require__(8), __webpack_require__(2), __webpack_require__(17), __webpack_require__(822), __webpack_require__(18), __webpack_require__(5), __webpack_require__(9), __webpack_require__(823)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('babel-runtime/core-js/object/get-prototype-of'), require('babel-runtime/helpers/classCallCheck'), require('babel-runtime/helpers/createClass'), require('babel-runtime/helpers/possibleConstructorReturn'), require('babel-runtime/helpers/inherits'), require('react'), require('react-dom'), require('react-redux'), require('../elements/icon_help'), require('../elements/button_no_event'), require('../../constansts/'), require('../components/order_details/'));
+        factory(exports, require('babel-runtime/core-js/object/get-prototype-of'), require('babel-runtime/helpers/classCallCheck'), require('babel-runtime/helpers/createClass'), require('babel-runtime/helpers/possibleConstructorReturn'), require('babel-runtime/helpers/inherits'), require('react'), require('react-redux'), require('../elements/icon_help'), require('../elements/button_no_event'), require('../../constansts/'), require('../../utilities'), require('../components/order_details/'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.getPrototypeOf, global.classCallCheck, global.createClass, global.possibleConstructorReturn, global.inherits, global.react, global.reactDom, global.reactRedux, global.icon_help, global.button_no_event, global.constansts, global.order_details);
+        factory(mod.exports, global.getPrototypeOf, global.classCallCheck, global.createClass, global.possibleConstructorReturn, global.inherits, global.react, global.reactRedux, global.icon_help, global.button_no_event, global.constansts, global.utilities, global.order_details);
         global.order_details = mod.exports;
     }
-})(this, function (exports, _getPrototypeOf, _classCallCheck2, _createClass2, _possibleConstructorReturn2, _inherits2, _react, _reactDom, _reactRedux, _icon_help, _button_no_event, _constansts, _order_details) {
+})(this, function (exports, _getPrototypeOf, _classCallCheck2, _createClass2, _possibleConstructorReturn2, _inherits2, _react, _reactRedux, _icon_help, _button_no_event, _constansts, _utilities, _order_details) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -110883,8 +110909,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var _inherits3 = _interopRequireDefault(_inherits2);
 
     var _react2 = _interopRequireDefault(_react);
-
-    var _reactDom2 = _interopRequireDefault(_reactDom);
 
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
@@ -110931,6 +110955,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     _props$labels = _props.labels,
                     order_details_title = _props$labels.order_details_title,
                     review_order_button = _props$labels.review_order_button,
+                    delete_cart = _props$labels.delete_cart,
+                    delete_cart_confirmation = _props$labels.delete_cart_confirmation,
                     _props$order = _props.order,
                     order_type = _props$order.order_type,
                     _props$order$order_ca = _props$order.order_cart,
@@ -110964,14 +110990,32 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         'div',
                         { className: 'cw__buttons text-center' },
                         !!items.length && _react2.default.createElement(
-                            _button_no_event.Button,
-                            {
-                                className: 'cw__review_order',
-                                onClick: function onClick() {
-                                    dispatch((0, _constansts.setCurrentScreen)(_constansts.VIEW_CONFIRM));
-                                }
-                            },
-                            review_order_button
+                            _react2.default.Fragment,
+                            null,
+                            _react2.default.createElement(
+                                _button_no_event.Button,
+                                {
+                                    className: 'cw__review_order',
+                                    onClick: function onClick() {
+                                        dispatch((0, _constansts.setCurrentScreen)(_constansts.VIEW_CONFIRM));
+                                    }
+                                },
+                                review_order_button
+                            ),
+                            _react2.default.createElement(
+                                _button_no_event.Button,
+                                {
+                                    className: 'cw__clear_data',
+                                    onClick: function onClick() {
+                                        var confirmation = confirm(delete_cart_confirmation);
+
+                                        if (confirmation) {
+                                            (0, _utilities.clearCart)().then(_utilities.clearData);
+                                        }
+                                    }
+                                },
+                                delete_cart
+                            )
                         )
                     )
                 );

@@ -23,6 +23,8 @@ return apply_filters( 'cater_waiter_filter_labels', [
 	'continue_shopping'                 => __( 'Continue Shopping', 'cater_waiter' ),
 	'continue_to_checkout_button'       => __( 'Continue To Checkout', 'cater_waiter' ),
 	'currency'                          => __( '$', 'cater_waiter' ),
+	'delete_cart'                       => __( 'Delete Cart', 'cater_waiter' ),
+	'delete_cart_confirmation'          => __( 'Are you sure you want to delete the entire cart?', 'cater_waiter' ),
 	'delivery_address_title'            => __( 'Enter Your Delivery Address', 'cater_waiter' ),
 	'delivery_address_validating'       => __( 'Validating Delivery Address...', 'cater_waiter' ),
 	'delivery_location'                 => __( 'Delivery Location', 'cater_waiter'),
