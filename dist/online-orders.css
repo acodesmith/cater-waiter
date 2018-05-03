@@ -1182,7 +1182,8 @@ li.rc-time-picker-panel-select-option-disabled:hover {
   float: right;
   height: 30px;
   margin: 0;
-  max-width: 30px; }
+  max-width: 30px;
+  padding: 0.25rem !important; }
 
 #cater_waiter__react_base .cw__menu_item button.btn,
 #cater_waiter__react_base .cw__order_details section button {

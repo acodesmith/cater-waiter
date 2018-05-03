@@ -1,5 +1,6 @@
 /*global jQuery*/
 /*global cw__config*/
+import 'whatwg-fetch'
 let { request } = cw__config;
 
 request.ajax.baseurl = request.ajax.baseurl.replace( request.ajax.site_url, '' )
