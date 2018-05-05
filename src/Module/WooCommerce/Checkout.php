@@ -24,7 +24,6 @@ class Checkout {
 		$order_data = ! empty( WC()->session ) ? (array) json_decode( \WC()->session->get( Order::ORDER_INFO ) ) : [];
 		$order_type = ! empty( $order_data['order_type'] ) ? $order_data['order_type'] : null;
 
-		var_dump(\WC()->session);
 		if ( \WC()->cart->total < $minimum && $order_type === Order::TYPE_DELIVERY ) {
 
 			if( is_cart() ) {
