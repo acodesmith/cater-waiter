@@ -5,6 +5,9 @@ import {
     getProductById,
     mapValue,
 } from '../../../utilities'
+import {
+    ORDER_TYPE_PICKUP
+} from '../../../constansts'
 import { TaxFreePrompt } from "../tax_free_prompt"
 import { Totals } from "./totals"
 import { Item } from "./item"
@@ -15,6 +18,7 @@ const Confirm = props => {
 
     const {
         order_checkout_url,
+        order_type,
         order_cart = {
             subtotal: 0,
             tax: [],
@@ -51,7 +55,7 @@ const Confirm = props => {
 
     const order_total = +subtotal + +tax
 
-    const minimum_met = order_total >= +delivery_minimum
+    const minimum_met = order_type === ORDER_TYPE_PICKUP || order_total >= +delivery_minimum
 
     return (
         <div className="cw__confirm">

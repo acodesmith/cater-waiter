@@ -4,13 +4,12 @@ import { Button } from '../elements/button'
 import {
     VIEW_DELIVERY_ADDRESS,
     VIEW_SELECT_LOCATION,
-    setCurrentScreen,
-} from '../../constansts/view'
-import {
     ORDER_TYPE_DELIVERY,
     ORDER_TYPE_PICKUP,
+    setCurrentScreen,
     setOrderType,
-} from '../../constansts/order'
+} from '../../constansts/'
+
 
 const SelectOrderType = props =>
 {
