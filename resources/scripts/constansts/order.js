@@ -25,8 +25,8 @@ export function setOrderType(text) {
     return { type: SET_ORDER_TYPE, text: text }
 }
 
-export function setOrderTime(text) {
-    return { type: SET_ORDER_TIME, data: text }
+export function setOrderTime(data) {
+    return { type: SET_ORDER_TIME, data: data }
 }
 
 export function setDeliveryAddress(address, location) {

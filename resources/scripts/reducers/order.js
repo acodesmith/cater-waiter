@@ -1,3 +1,4 @@
+import moment from 'moment'
 import {
     ADD_ITEM_TO_CART,
     OUT_OF_RANGE_DELIVERY,
@@ -37,9 +38,16 @@ const order = (state, action) => {
                 ),
             }
         case SET_ORDER_TIME:
+
+            let { order_date, order_time } = action.data
+            const order_time_obj = moment(order_time)
+
             return {
                 ...state,
-                order_pickup_time: action.data,
+                order_pickup_time: {
+                    order_date,
+                    order_time: order_time_obj.format("HH:mmA")
+                },
             }
         case ADD_ITEM_TO_CART:
             return {

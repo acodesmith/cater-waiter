@@ -60,8 +60,11 @@ class Order {
 				$order_delivery_address                                            = implode( ' ',
 					$order_info['order_delivery_address'] );
 
-				add_post_meta( $order_id, 'order_delivery_address', $order_delivery_address );
-				add_post_meta( $order_id, 'order_delivery_address_json', json_encode( $order_delivery_address_raw ) );
+				//Check for a blank delivery address which only contains a comma
+				if( strlen($order_delivery_address) > 4 ) {
+					add_post_meta( $order_id, 'order_delivery_address', $order_delivery_address );
+					add_post_meta( $order_id, 'order_delivery_address_json', json_encode( $order_delivery_address_raw ) );
+				}
 			}
 		}
 	}
@@ -85,11 +88,11 @@ class Order {
 		}
 
 		if ( ! empty( $order_pickup_time ) ) {
-			echo "<h3>Order Time</h3>" . date( 'Y-m-d g:i A', strtotime( $order_pickup_time ) );
+			echo "<h3>Order Time</h3>$order_pickup_time";
 		}
 
-		if ( ! empty( $order_delivery_address ) ) {
-			echo "<h3>Order Time</h3>$order_delivery_address";
+		if ( ! empty( $order_delivery_address ) && strlen($order_delivery_address) > 4 ) {
+			echo "<h3>Order Delivery Address</h3>$order_delivery_address";
 		}
 
 		if ( ! empty( $order_location ) ) {
@@ -131,10 +134,10 @@ class Order {
 
 		if ( ! empty( $order_pickup_time ) ) {
 			$label = __( 'Order Time', 'cater_waiter' );
-			echo "<h3>$label</h3>" . date( 'Y-m-d g:i A', strtotime( $order_pickup_time ) );
+			echo "<h3>$label</h3>$order_pickup_time";
 		}
 
-		if ( ! empty( $order_delivery_address ) ) {
+		if ( ! empty( $order_delivery_address ) && strlen($order_delivery_address) > 4 ) {
 			$label = __( 'Order Delivery Address', 'cater_waiter' );
 			echo "<h3>$label</h3>$order_delivery_address";
 		}

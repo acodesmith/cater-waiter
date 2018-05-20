@@ -57276,8 +57276,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         return { type: SET_ORDER_TYPE, text: text };
     }
 
-    function setOrderTime(text) {
-        return { type: SET_ORDER_TIME, data: text };
+    function setOrderTime(data) {
+        return { type: SET_ORDER_TIME, data: data };
     }
 
     function setDeliveryAddress(address, location) {
@@ -96666,7 +96666,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             order_delivery_address = _ref.order_delivery_address,
             order_pickup_time = _ref.order_pickup_time;
 
-        return { order_type: order_type, order_location: order_location, order_delivery_address: order_delivery_address, order_pickup_time: order_pickup_time };
+
+        var formated_order_pickup_time = order_pickup_time; //.format();
+
+        return { order_type: order_type, order_location: order_location, order_delivery_address: order_delivery_address, order_pickup_time: formated_order_pickup_time };
     }
 
     function syncOrderDataToSession(order) {
@@ -111588,20 +111591,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
     if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(24), __webpack_require__(18), __webpack_require__(413), __webpack_require__(411)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(24), __webpack_require__(18), __webpack_require__(1), __webpack_require__(413), __webpack_require__(411)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('babel-runtime/core-js/object/assign'), require('babel-runtime/helpers/extends'), require('../constansts/order'), require('../constansts/locations'));
+        factory(exports, require('babel-runtime/core-js/object/assign'), require('babel-runtime/helpers/extends'), require('moment'), require('../constansts/order'), require('../constansts/locations'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.assign, global._extends, global.order, global.locations);
+        factory(mod.exports, global.assign, global._extends, global.moment, global.order, global.locations);
         global.order = mod.exports;
     }
-})(this, function (exports, _assign, _extends2, _order, _locations) {
+})(this, function (exports, _assign, _extends2, _moment, _order, _locations) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -111611,6 +111614,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var _assign2 = _interopRequireDefault(_assign);
 
     var _extends3 = _interopRequireDefault(_extends2);
+
+    var _moment2 = _interopRequireDefault(_moment);
 
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
@@ -111640,8 +111645,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     order_delivery_address: (0, _assign2.default)({}, state.order_delivery_address, address)
                 });
             case _order.SET_ORDER_TIME:
+                var _action$data2 = action.data,
+                    order_date = _action$data2.order_date,
+                    order_time = _action$data2.order_time;
+
+                var order_time_obj = (0, _moment2.default)(order_time);
+
                 return (0, _extends3.default)({}, state, {
-                    order_pickup_time: action.data
+                    order_pickup_time: {
+                        order_date: order_date,
+                        order_time: order_time_obj.format("HH:mmA")
+                    }
                 });
             case _order.ADD_ITEM_TO_CART:
                 return (0, _extends3.default)({}, state, {

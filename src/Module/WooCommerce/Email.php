@@ -36,7 +36,7 @@ class Email {
 			echo "<h3>$label</h3>" . date( 'Y-m-d g:i A', strtotime( $order_pickup_time ) );
 		}
 
-		if ( ! empty( $order_delivery_address ) ) {
+		if ( ! empty( $order_delivery_address ) && strlen($order_delivery_address) > 4 ) {
 			$label = __( 'Order Delivery Address', 'cater_waiter' );
 			echo "<h3>$label</h3>$order_delivery_address";
 		}
